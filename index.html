@@ -812,6 +812,31 @@ body[data-msbtheme="marmer"] #msbVoiceModal input[type=text],body[data-msbtheme=
 body[data-msbtheme="marmer"] #msbVoiceModal select{background:#fff;color:#0b1f1a}
 body[data-msbtheme="marmer"] #msbVoiceModal .siriOrb em{color:#0f766e}
 </style>
+
+<style id="msbV43Css">
+/* ===== v4.3: tombol melayang bisa disembunyikan tanpa getaran + jam rata tengah di HP ===== */
+#msbDock{transition:none!important;min-height:44px}
+#msbDock .dk.tg{border-style:dashed;background:linear-gradient(135deg,rgba(12,52,40,.96),rgba(5,22,18,.96));color:#ffe6ab}
+#msbDock .dk.tg svg{width:18px;height:18px;stroke-width:2;transition:transform .18s ease}
+#msbDock.min .dk:not(.tg){display:none!important}
+#msbDock.min .dk.tg svg{transform:rotate(180deg)}
+#msbDock.min .dk.tg{border-style:solid;background:linear-gradient(135deg,#10b981,#0e7490);color:#04120f;border-color:transparent}
+body[data-msbtheme="marmer"] #msbDock .dk.tg{background:linear-gradient(135deg,#ffffff,#e7f2ef);color:#0f766e;border-color:rgba(15,118,110,.42)}
+body[data-msbtheme="ottoman"] #msbDock .dk.tg{background:linear-gradient(135deg,rgba(74,14,22,.97),rgba(28,6,10,.97))}
+body[data-msbtheme="safir"] #msbDock .dk.tg{background:linear-gradient(135deg,rgba(12,32,88,.97),rgba(5,12,36,.97))}
+body[data-msbtheme="kiswah"] #msbDock .dk.tg{background:linear-gradient(135deg,rgba(24,22,14,.98),rgba(6,6,7,.98))}
+@media (max-width:768px){
+  #msbDock{min-height:42px}
+  .clock-box{text-align:center!important;margin:2px auto 0!important;padding:8px 16px!important}
+  .clock{text-align:center!important}
+  .date{text-align:center!important;margin-top:2px}
+  .header-left{flex-direction:column!important;justify-content:center!important;align-items:center!important;
+    gap:6px!important;text-align:center;width:100%}
+  .header-left .mosque-icon{font-size:34px!important;line-height:1}
+  .header-left>div{text-align:center;width:100%}
+}
+@media (max-height:760px){ #msbDock{min-height:38px} }
+</style>
 </head>
 <link rel="stylesheet"
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -1124,6 +1149,10 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
 
 <!-- ===== v3.6 DOCK TOMBOL MELAYANG ===== -->
 <div id="msbDock">
+  <button class="dk tg" id="msbDockToggle" type="button" onclick="msbDockToggle()" title="Sembunyikan / tampilkan tombol melayang" aria-expanded="true">
+    <svg viewBox="0 0 24 24"><path d="M9.5 5.5 16 12l-6.5 6.5"/><path d="M4.5 5.5 11 12l-6.5 6.5" opacity=".55"/></svg>
+    <span class="lbl">SEMBUNYIKAN</span>
+  </button>
   <button class="dk" id="msbDockDoa" type="button" onclick="msbDoaToggle()" title="Tampilkan / sembunyikan panel doa">
     <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19"/><path d="M9 8h6"/></svg>
     <span class="lbl">DOA / PENGUMUMAN</span>
@@ -1145,6 +1174,9 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     <span class="lbl">CHAT</span>
   </button>
 </div>
+<script>/* v4.3: terapkan status dock sebelum paint agar tidak ada lompatan */
+try{ if(localStorage.getItem('msb_dock_min')==='1'){ var _dk=document.getElementById('msbDock'); if(_dk) _dk.classList.add('min'); } }catch(e){}
+</script>
 
 
 <!-- ================= v4.0 MODAL SUARA SIRI & ADZAN ================= -->
@@ -2473,7 +2505,7 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 (function(){
   const $ = id => document.getElementById(id);
   const DEFBG = window.MSB_DEF_BG || 'https://media.base44.com/images/public/6a48d0b8744792061258ff83/543208d38_masjid_terang.jpg';
-  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv','msb_doa_vis','msb_voice_v1','msb_adzan_played'];
+  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv','msb_dock_min','msb_doa_vis','msb_voice_v1','msb_adzan_played'];
 
   function st(){ return window.MSBS || null; }
   function persist(){ try{ localStorage.setItem('msb_set_v3', JSON.stringify(window.MSBS)); }catch(e){} }
@@ -2775,13 +2807,30 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 /* ================= v3.6 DOCK MELAYANG, PROGRAMMER, HELP SYSTEM ================= */
 (function(){
   const $ = id => document.getElementById(id);
-  /* v4.1: tombol sembunyikan/tampilkan (>> / <<) dihapus karena memicu getaran tata letak.
-     Dock kini selalu tampil lengkap; sisa status lama dibersihkan sekali. */
-  (function(){
-    try{ localStorage.removeItem('msb_dock_min'); }catch(e){}
-    const dock = $('msbDock');
-    if(dock) dock.classList.remove('min','hidden');
-  })();
+  /* v4.3: tombol melayang bisa disembunyikan lagi.
+     Tinggi baris dock dijaga tetap (tombol toggle seukuran tombol lain) sehingga
+     menyembunyikan tombol tidak menggeser tata letak dan tidak bergetar. */
+  const DOCK_KEY = 'msb_dock_min';
+  function applyDock(){
+    const dock = $('msbDock'), t = $('msbDockToggle');
+    let min = false;
+    try{ min = localStorage.getItem(DOCK_KEY) === '1'; }catch(e){}
+    if(dock) dock.classList.toggle('min', min);
+    if(t){
+      t.setAttribute('aria-expanded', min ? 'false' : 'true');
+      t.title = min ? 'Tampilkan tombol melayang' : 'Sembunyikan tombol melayang';
+      const lbl = t.querySelector('.lbl');
+      if(lbl) lbl.textContent = min ? 'TAMPILKAN' : 'SEMBUNYIKAN';
+    }
+  }
+  window.msbDockToggle = function(){
+    const dock = $('msbDock'); if(!dock) return;
+    const min = !dock.classList.contains('min');
+    dock.classList.toggle('min', min);
+    try{ localStorage.setItem(DOCK_KEY, min ? '1' : '0'); }catch(e){}
+    applyDock();
+  };
+  applyDock();
 
 
   function pushCard(html){
