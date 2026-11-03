@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jadwal Sholat Masjid Al Huda</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    transition: background-image 1s ease-in-out;
+}
+
+.overlay {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Konten atas */
+.top-content {
+    flex: 1;
+}
+
+/* Konten bawah nempel ke bawah */
+.bottom-content {
+    margin-top: auto;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,.6);
+    padding: 15px 20px;
+    border-radius: 12px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left h1 {
+    font-size: 22px;
+}
+
+.header-left p {
+    font-size: 14px;
+    opacity: .9;
+}
+
+.mosque-icon {
+    font-size: 46px;
+    color: #d4af37; /* emas */
+    text-shadow: 0 0 10px rgba(0,0,0,.6);
+}
+
+.clock-box {
+    background: #1f1f1f;
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-align: right;
+}
+
+.clock {
+    font-size: 32px;
+    color: #ff9f1c;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 14px;
+}
+
+/* INFO */
+.info-left,
+.info-right {
+    background: rgba(0,0,0,.45);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* INFO KIRI */
+.info-left {
+    float: left;
+    margin: 0 0 15px 0; /* jarak ke SHOLAT */
+    border-left: 3px solid #ff9f1c;
+}
+
+/* INFO KANAN */
+.info-right {
+    float: right;
+    margin: 0 0 15px 0; /* jarak ke SHOLAT */
+    border-right: 3px solid #ff9f1c;
+    text-align: right;
+}
+
+
+
+/* SHOLAT */
+.sholat-grid {
+    clear: both;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.sholat {
+    background: rgba(0,0,0,.65);
+    border-radius: 12px;
+    text-align: center;
+    padding: 12px;
+}
+
+.sholat h3 {
+    font-size: 16px;
+}
+
+.sholat span {
+    display: block;
+    margin-top: 8px;
+    font-size: 22px;
+    color: #ff9f1c;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 15px;
+    background: rgba(0,0,0,.75);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+      .mosque-icon {
+        font-size: 36px;
+    }
+
+    .sholat-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    /* INFO kiri & kanan */
+    .info-left,
+    .info-right {
+        float: none;              /* PENTING */
+        margin: 8px auto;
+        display: block;
+        text-align: center;
+        border: none;
+    }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<style id="msbCss">
+/* ================= MASJID AL-BARKAH v3.3 — MENUJU RAMADHAN ================= */
+:root{--gold:#e8c46a;--gold2:#b98d2f;--ink:#05100f;--em:#10b981;--teal:#06b6d4}
+body{background:transparent!important;background-image:none!important}
+#bgLayer{position:fixed;inset:0;z-index:0;overflow:hidden;background:radial-gradient(circle at 50% 0%,#0b2a24 0%,#061613 45%,#03090c 100%)}
+#bgMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+#bgStars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.85),transparent),radial-gradient(1.5px 1.5px at 70% 20%,rgba(255,255,255,.7),transparent),radial-gradient(1.6px 1.6px at 40% 70%,rgba(255,255,255,.6),transparent),radial-gradient(1.4px 1.4px at 85% 65%,rgba(255,255,255,.55),transparent),radial-gradient(1.2px 1.2px at 55% 45%,rgba(255,255,255,.5),transparent);background-size:600px 600px,500px 500px,700px 700px,450px 450px,550px 550px;animation:tw 7s ease-in-out infinite alternate;opacity:.7}
+@keyframes tw{from{opacity:.35}to{opacity:.85}}
+#bgShade{position:fixed;inset:0;z-index:1;background:rgba(3,10,9,.58);pointer-events:none;transition:background .3s}
+.overlay{position:relative;z-index:2}
+
+/* ---- Banner Ramadhan ---- */
+#ramadhanBar{margin:10px 4px 0;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:linear-gradient(120deg,rgba(6,44,36,.92),rgba(9,24,32,.92));border:1px solid rgba(232,196,106,.45);
+  box-shadow:0 10px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+#ramadhanBar .moon{width:44px;height:44px;flex:0 0 auto;filter:drop-shadow(0 0 10px rgba(232,196,106,.55));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#ramadhanBar .ttl{font-size:15px;font-weight:800;letter-spacing:.10em;color:var(--gold);text-transform:uppercase}
+#ramadhanBar .sub{font-size:11px;color:#9fd8c4;letter-spacing:.04em}
+#ramadhanBar .clockbox{margin-left:auto;display:flex;gap:8px;align-items:center}
+#ramadhanBar .unit{min-width:58px;text-align:center;background:rgba(2,16,14,.7);border:1px solid rgba(232,196,106,.30);border-radius:12px;padding:6px 8px}
+#ramadhanBar .unit b{display:block;font-size:20px;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+#ramadhanBar .unit span{font-size:9px;letter-spacing:.12em;color:#8fc7b6}
+#ramadhanProg{height:6px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden;margin-top:8px}
+#ramadhanProg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#10b981,#e8c46a);transition:width .6s}
+.lantern{position:absolute;top:-6px;width:26px;opacity:.9;animation:sway 6s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+
+/* ---- Toolbar ---- */
+#msbBar{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:8px 6px}
+.msb-btn{font:700 11px/1 'Segoe UI',sans-serif;letter-spacing:.05em;padding:9px 13px;border-radius:11px;cursor:pointer;
+  background:rgba(6,26,23,.85);color:#d7f3e7;border:1px solid rgba(16,185,129,.42);transition:.2s;white-space:nowrap}
+.msb-btn:hover{background:rgba(16,185,129,.20);border-color:#10b981;transform:translateY(-1px)}
+.msb-btn.gold{color:#ffe6ab;border-color:rgba(232,196,106,.55);background:rgba(40,30,8,.6)}
+.msb-btn.red{color:#ffd7de;border-color:rgba(244,63,94,.55);background:rgba(60,10,18,.75)}
+.msb-btn.red:hover{background:rgba(244,63,94,.22);border-color:#f43f5e}
+.msb-btn.on{background:linear-gradient(135deg,rgba(16,185,129,.85),rgba(14,116,144,.85));color:#04120f;border-color:transparent}
+
+/* ---- Loading ---- */
+#msbBoot{position:fixed;inset:0;z-index:13000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:radial-gradient(circle at 50% 35%,#0a2b25 0%,#04100e 55%,#01070a 100%);color:#e9f7f1;text-align:center;padding:24px}
+#msbBoot.gone{display:none}
+#msbBoot h1{font:800 clamp(18px,3.4vw,30px)/1.2 'Segoe UI',sans-serif;letter-spacing:.14em;background:linear-gradient(90deg,#e8c46a,#7cf0c4,#e8c46a);-webkit-background-clip:text;background-clip:text;color:transparent}
+#msbEarthWrap{width:min(60vw,270px);height:min(60vw,270px);position:relative;filter:drop-shadow(0 0 34px rgba(16,185,129,.35))}
+#msbBoot .bsub{font-size:12px;letter-spacing:.22em;color:#8fd8bd;text-transform:uppercase}
+#msbPct{font:800 22px/1 'Segoe UI',sans-serif;color:#e8c46a}
+#msbProg{width:min(78vw,420px);height:7px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+#msbProg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#10b981,#e8c46a);transition:width .35s}
+#msbBootGo{margin-top:6px;padding:13px 26px;border-radius:13px;border:0;cursor:pointer;font:800 13px/1 'Segoe UI',sans-serif;letter-spacing:.10em;
+  background:linear-gradient(135deg,#e8c46a,#bf8f2c);color:#20180a;box-shadow:0 12px 30px rgba(232,196,106,.28);opacity:1;pointer-events:auto;transition:.35s}
+#msbBootGo.on{opacity:1;pointer-events:auto}
+
+/* ---- Screensaver ---- */
+#msbSS{position:fixed;inset:0;z-index:12500;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:radial-gradient(circle at 50% 30%,#08211d 0%,#020b09 60%,#000 100%);color:#fff;text-align:center;padding:22px}
+#msbSS.on{display:flex}
+#msbSsEarth{width:min(58vw,290px);height:min(58vw,290px);position:relative;filter:drop-shadow(0 0 40px rgba(16,185,129,.30))}
+#msbSsClock{font:800 clamp(34px,9vw,74px)/1 'Segoe UI',sans-serif;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#fff}
+#msbSsDate{font-size:13px;letter-spacing:.18em;color:#9de0c5;text-transform:uppercase}
+#msbQuote{max-width:min(720px,90vw);padding:18px 22px;border-radius:18px;background:rgba(6,26,22,.72);border:1px solid rgba(232,196,106,.32);backdrop-filter:blur(10px)}
+#msbQChip{display:inline-block;font-size:10px;letter-spacing:.16em;padding:5px 10px;border-radius:99px;background:rgba(16,185,129,.16);color:#8ff0c2;border:1px solid rgba(16,185,129,.4);margin-bottom:9px}
+#msbQT{font-size:clamp(13px,2.4vw,18px);line-height:1.55;color:#f2fbf7;font-style:italic}
+#msbQA{font-size:11px;color:#9de0c5;margin-top:8px}
+#msbSsHint{position:absolute;bottom:18px;font-size:10px;letter-spacing:.16em;color:#6fb79e}
+#msbSS .moon{position:absolute;top:6%;right:10%;width:54px;opacity:.9;animation:float 5s ease-in-out infinite}
+
+/* ---- Chat ---- */
+#msbFab{position:fixed;right:16px;bottom:16px;z-index:9000;width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#10b981,#0e7490);color:#04120f;font-size:22px;box-shadow:0 10px 26px rgba(16,185,129,.42)}
+#msbFab::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(16,185,129,.45);animation:ping 2.4s ease-out infinite}
+@keyframes ping{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+#msbChat{position:fixed;right:14px;bottom:84px;z-index:9100;width:min(92vw,392px);height:min(74vh,560px);display:none;flex-direction:column;
+  background:rgba(4,18,16,.97);border:1px solid rgba(16,185,129,.42);border-radius:18px;overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.6)}
+#msbChat.on{display:flex}
+#msbChatHead{padding:11px 14px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(232,196,106,.14));border-bottom:1px solid rgba(16,185,129,.28);display:flex;align-items:center;gap:9px}
+#msbChatHead b{font-size:12px;letter-spacing:.10em;color:#d9fbee}
+#msbChatBody{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.msbMsg{max-width:88%;padding:9px 11px;border-radius:13px;font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.msbMsg.u{align-self:flex-end;background:rgba(16,185,129,.16);border:1px solid rgba(16,185,129,.34);color:#eafff6}
+.msbMsg.b{align-self:flex-start;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);color:#e6f5ef}
+.msbMsg b.h{display:block;color:#8ff0c2;font-size:11px;letter-spacing:.08em;margin-bottom:4px;text-transform:uppercase}
+.msbSrc{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.msbSrc a{font-size:10px;text-align:center;padding:6px 4px;border-radius:8px;text-decoration:none;color:#c9f6e4;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.28)}
+#msbChips{display:flex;gap:6px;overflow-x:auto;padding:8px 10px;border-top:1px solid rgba(255,255,255,.06)}
+#msbChips button{flex:0 0 auto;font-size:10px;padding:6px 9px;border-radius:99px;cursor:pointer;background:rgba(16,185,129,.10);color:#bdf3e0;border:1px solid rgba(16,185,129,.28)}
+#msbChatForm{display:flex;gap:7px;padding:9px;border-top:1px solid rgba(255,255,255,.07)}
+#msbChatForm input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:9px 11px;color:#fff;font-size:12px;outline:none}
+#msbChatForm button{background:linear-gradient(135deg,#10b981,#0891b2);border:0;border-radius:10px;padding:0 14px;color:#04120f;font-weight:800;cursor:pointer}
+
+/* ---- Modal generik ---- */
+.msbModal{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(1,7,6,.78);backdrop-filter:blur(6px)}
+.msbModal.on{display:flex}
+.msbCard{width:min(96vw,620px);max-height:88vh;overflow-y:auto;background:linear-gradient(160deg,rgba(7,28,24,.98),rgba(3,14,13,.98));
+  border:1px solid rgba(16,185,129,.36);border-radius:18px;padding:16px;color:#e7f7f0}
+.msbCard h3{margin:0 0 4px;font-size:15px;letter-spacing:.10em;color:#e8c46a;text-transform:uppercase}
+.msbCard p.sm{font-size:11px;color:#8fc7b6;margin:0 0 12px;line-height:1.6}
+.msbRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:9px 0}
+.msbRow label{font-size:11px;color:#a8d8c7;min-width:104px}
+.msbRow input[type=text],.msbRow input[type=number],.msbRow select{flex:1;min-width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:9px;padding:8px 10px;font-size:12px}
+.msbRow input[type=range]{flex:1}
+.msbBtn{padding:9px 14px;border-radius:10px;border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.14);color:#d6fbea;font-weight:700;font-size:11px;cursor:pointer}
+.msbBtn.pri{background:linear-gradient(135deg,#10b981,#0e7490);color:#03130f;border:0}
+.msbBtn.warn{background:rgba(244,63,94,.14);border-color:rgba(244,63,94,.4);color:#ffc9d4}
+#msbAppsGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:52vh;overflow-y:auto;padding-right:2px}
+#msbAppsGrid a{display:block;padding:9px;border-radius:10px;text-decoration:none;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);transition:.18s}
+#msbAppsGrid a:hover{border-color:#10b981;background:rgba(16,185,129,.12)}
+#msbAppsGrid b{display:block;font-size:11px;color:#eafaf3;line-height:1.3}
+#msbAppsGrid span{font-size:9px;color:#7fc4ac}
+#msbAppsSearch{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:9px;padding:9px 11px;font-size:12px;margin-bottom:9px}
+@media(max-width:700px){
+  #msbCard{width:96vw}
+  #ramadhanBar{padding:10px 12px;gap:10px}
+  #ramadhanBar .clockbox{margin-left:0;width:100%;justify-content:space-between}
+  #ramadhanBar .unit{min-width:0;flex:1}
+  #msbChat{right:8px;left:8px;width:auto;bottom:78px;height:72vh}
+  #msbAppsGrid{grid-template-columns:1fr}
+  .header{flex-direction:column;align-items:flex-start;gap:8px}
+  .info-grid,.schedule{grid-template-columns:1fr!important}
+}
+</style>
+
+<style id="msbViewCss">
+/* ===== v3.3 PENGATURAN TAMPILAN ===== */
+body[data-msbtheme="zamrud"]{--acc1:#10b981;--acc2:#34d399;--accTxt:#d7f3e7;--accGold:#e8c46a}
+body[data-msbtheme="emas"]{--acc1:#d4af37;--acc2:#f7e089;--accTxt:#fff3d1;--accGold:#ffd97a}
+body[data-msbtheme="malam"]{--acc1:#3b82f6;--acc2:#60a5fa;--accTxt:#dbeafe;--accGold:#93c5fd}
+body[data-msbtheme="marmer"]{--acc1:#0f766e;--acc2:#14b8a6;--accTxt:#0b1f1a;--accGold:#b8860b}
+
+body[data-msbtheme="emas"] .header{border-color:rgba(232,196,106,.55)!important;box-shadow:0 10px 30px rgba(232,196,106,.14)}
+body[data-msbtheme="emas"] .clock{color:#ffe6ab!important;text-shadow:0 0 16px rgba(232,196,106,.5)}
+body[data-msbtheme="emas"] .moon{color:#ffd97a!important}
+body[data-msbtheme="emas"] .msb-btn{border-color:rgba(232,196,106,.5)!important;color:#ffe6ab!important}
+body[data-msbtheme="emas"] #ramadhanBar{border-color:rgba(232,196,106,.55)!important}
+
+body[data-msbtheme="malam"] .header{border-color:rgba(96,165,250,.5)!important}
+body[data-msbtheme="malam"] .clock{color:#bfdbfe!important;text-shadow:0 0 16px rgba(59,130,246,.55)}
+body[data-msbtheme="malam"] .msb-btn{border-color:rgba(96,165,250,.5)!important;color:#dbeafe!important}
+body[data-msbtheme="malam"] #ramadhanBar{border-color:rgba(96,165,250,.5)!important}
+
+body[data-msbtheme="marmer"]{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] .header{background:rgba(255,255,255,.78)!important;border-color:rgba(15,118,110,.35)!important;color:#0b1f1a!important}
+body[data-msbtheme="marmer"] .header h1,body[data-msbtheme="marmer"] .header p{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] .clock{color:#0f766e!important;text-shadow:none}
+body[data-msbtheme="marmer"] .date{color:#14532d!important}
+body[data-msbtheme="marmer"] .info-left,body[data-msbtheme="marmer"] .info-right{background:rgba(255,255,255,.72)!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.25)!important}
+body[data-msbtheme="marmer"] #ramadhanBar{background:rgba(255,255,255,.80)!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.35)!important}
+body[data-msbtheme="marmer"] #ramadhanBar *{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] .msb-btn{background:rgba(255,255,255,.85)!important;color:#0f766e!important;border-color:rgba(15,118,110,.35)!important}
+body[data-msbtheme="marmer"] .footer{background:rgba(255,255,255,.7)!important;color:#0b1f1a!important}
+
+#msbViewModal .msbCard{max-width:560px;max-height:88vh;overflow-y:auto}
+#msbViewModal h4{font:800 11px/1.4 'Segoe UI';letter-spacing:.10em;text-transform:uppercase;color:#e8c46a;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(16,185,129,.22)}
+#msbViewModal h4:first-of-type{margin-top:4px}
+.msbThemeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.msbTheme{position:relative;height:54px;border-radius:12px;cursor:pointer;border:2px solid rgba(255,255,255,.14);overflow:hidden;transition:.2s}
+.msbTheme:hover{transform:translateY(-2px)}
+.msbTheme.on{border-color:#e8c46a;box-shadow:0 0 0 3px rgba(232,196,106,.22)}
+.msbTheme span{position:absolute;left:0;right:0;bottom:0;font:800 8px/1.6 'Segoe UI';text-align:center;background:rgba(0,0,0,.45);color:#fff;letter-spacing:.04em}
+.msbSw{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
+.msbSw:last-child{border-bottom:0}
+.msbSw label{font:600 11px/1.3 'Segoe UI';color:#cfe9dd}
+.msbTog{position:relative;width:44px;height:24px;border-radius:99px;background:rgba(255,255,255,.16);cursor:pointer;flex:0 0 auto;transition:.2s}
+.msbTog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.msbTog.on{background:linear-gradient(135deg,#10b981,#0d9488)}
+.msbTog.on::after{left:23px}
+.msbRange{width:100%;accent-color:#e8c46a}
+#msbViewModal input[type=text],#msbViewModal input[type=number],#msbViewModal select{background:rgba(2,20,16,.9);border:1px solid rgba(16,185,129,.3);color:#d7f3e7;border-radius:9px;padding:8px 10px;font:600 11px 'Segoe UI';outline:none;width:100%}
+.msbSeg{display:flex;gap:6px;flex-wrap:wrap}
+.msbSeg button{font:800 10px/1 'Segoe UI';padding:8px 12px;border-radius:9px;cursor:pointer;background:rgba(6,26,23,.9);color:#a7d9c8;border:1px solid rgba(16,185,129,.3)}
+.msbSeg button.on{background:linear-gradient(135deg,#10b981,#0d9488);color:#04140f;border-color:transparent}
+</style>
+
+<style id="msbV3Css">
+/* ================= v3.3 TEMA & PENGATURAN LENGKAP ================= */
+body{--a1:#0f7a54;--a2:#d4af37;--panel:rgba(4,22,17,.88);--panelBd:rgba(212,175,55,.42);--txt:#eafaf1;--txtSoft:#9fd8c4;--hdr1:rgba(9,44,31,.95);--hdr2:rgba(4,20,14,.95)}
+
+/* ---- TEMA 1 NABAWI (hijau-emas) ---- */
+body[data-msbtheme="nabawi"]{--a1:#0f7a54;--a2:#d4af37;--panel:rgba(4,22,17,.88);--panelBd:rgba(212,175,55,.42);--txt:#eafaf1;--txtSoft:#9fd8c4;--hdr1:rgba(9,44,31,.95);--hdr2:rgba(4,20,14,.95)}
+/* ---- TEMA 2 SAFIR (biru royal) ---- */
+body[data-msbtheme="safir"]{--a1:#1d4ed8;--a2:#e6c46a;--panel:rgba(8,18,50,.90);--panelBd:rgba(96,165,250,.45);--txt:#e8f0ff;--txtSoft:#a9c4f5;--hdr1:rgba(12,30,86,.95);--hdr2:rgba(5,12,36,.96)}
+/* ---- TEMA 3 KISWAH (hitam-emas) ---- */
+body[data-msbtheme="kiswah"]{--a1:#c8a24a;--a2:#f4dc9a;--panel:rgba(9,9,11,.92);--panelBd:rgba(200,162,74,.55);--txt:#fdf6e3;--txtSoft:#d8c79a;--hdr1:rgba(16,15,12,.97);--hdr2:rgba(4,4,5,.98)}
+/* ---- TEMA 4 OTTOMAN (maroon hangat) ---- */
+body[data-msbtheme="ottoman"]{--a1:#9b1b30;--a2:#e6c069;--panel:rgba(42,10,16,.90);--panelBd:rgba(230,192,105,.45);--txt:#fff3e6;--txtSoft:#e8bfa8;--hdr1:rgba(70,14,22,.95);--hdr2:rgba(28,6,10,.96)}
+/* ---- TEMA 5 MARMER (putih modern) ---- */
+body[data-msbtheme="marmer"]{--a1:#0f766e;--a2:#b8860b;--panel:rgba(255,255,255,.90);--panelBd:rgba(15,118,110,.30);--txt:#0b1f1a;--txtSoft:#3f6b60;--hdr1:rgba(255,255,255,.92);--hdr2:rgba(233,242,240,.94)}
+
+body{color:var(--txt)}
+.header{background:linear-gradient(135deg,var(--hdr1),var(--hdr2))!important;border:1px solid var(--panelBd)!important;color:var(--txt)!important;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.header h1{color:var(--txt)!important;letter-spacing:.04em}
+.header p{color:var(--txtSoft)!important}
+.clock{color:var(--a2)!important;text-shadow:0 0 18px color-mix(in srgb,var(--a2) 55%,transparent)}
+.date{color:var(--txtSoft)!important}
+.info-left,.info-right{background:var(--panel)!important;border:1px solid var(--panelBd)!important;color:var(--txt)!important}
+.sholat{background:var(--panel)!important;border:1px solid var(--panelBd)!important;box-shadow:0 8px 22px rgba(0,0,0,.30)!important}
+.sholat h3{color:var(--txtSoft)!important}
+.sholat span{color:var(--a2)!important;text-shadow:0 0 12px color-mix(in srgb,var(--a2) 45%,transparent)}
+.footer{background:var(--panel)!important;border-top:1px solid var(--panelBd)!important;color:var(--txt)!important}
+.footer marquee{color:var(--txt)!important}
+#ramadhanBar{background:linear-gradient(120deg,var(--hdr1),var(--hdr2))!important;border:1px solid var(--panelBd)!important}
+#ramadhanBar .ttl{color:var(--a2)!important}
+#ramadhanBar .sub{color:var(--txtSoft)!important}
+#ramadhanBar .unit{background:var(--panel)!important;border-color:var(--panelBd)!important}
+#ramadhanBar .unit b{color:var(--txt)!important}
+#ramadhanBar .unit span{color:var(--txtSoft)!important}
+#ramadhanProg i{background:linear-gradient(90deg,var(--a1),var(--a2))!important}
+.msb-btn{background:var(--panel)!important;border-color:var(--panelBd)!important;color:var(--txt)!important}
+.msb-btn:hover{background:color-mix(in srgb,var(--a1) 30%,var(--panel))!important}
+.msbCard{background:linear-gradient(160deg,var(--hdr1),var(--hdr2))!important;border:1px solid var(--panelBd)!important;color:var(--txt)!important}
+#msbChat,#msbChatBody{background:var(--hdr2)!important}
+.msbMsg.b{background:var(--panel)!important;color:var(--txt)!important;border-color:var(--panelBd)!important}
+.msbMsg.u{background:color-mix(in srgb,var(--a1) 28%,transparent)!important;color:var(--txt)!important}
+body[data-msbtheme="marmer"] .msbCard h3{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] .msbCard p.sm{color:#3f6b60!important}
+body[data-msbtheme="marmer"] .msbRow label{color:#14532d!important}
+body[data-msbtheme="marmer"] #msbBoot{background:radial-gradient(circle at 50% 35%,#eaf5f2,#cfe4de)}
+
+/* ---- Modal pengaturan lengkap ---- */
+#msbSetModal .msbCard{width:min(96vw,600px);max-height:90vh;overflow-y:auto}
+#msbSetModal h4{font:800 10.5px/1.5 'Segoe UI';letter-spacing:.10em;text-transform:uppercase;color:var(--a2);
+  margin:15px 0 8px;padding-bottom:5px;border-bottom:1px dashed color-mix(in srgb,var(--a2) 40%,transparent)}
+#msbSetModal h4:first-of-type{margin-top:6px}
+#msbSetModal input[type=text],#msbSetModal textarea,#msbSetModal select{
+  width:100%;background:rgba(0,0,0,.35);border:1px solid var(--panelBd);color:var(--txt);
+  border-radius:9px;padding:9px 11px;font:600 11.5px/1.5 'Segoe UI';outline:none}
+body[data-msbtheme="marmer"] #msbSetModal input[type=text],body[data-msbtheme="marmer"] #msbSetModal textarea{background:#fff;color:#0b1f1a}
+#msbSetModal textarea{min-height:64px;resize:vertical}
+.msbSteppers{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.msbStep{display:flex;align-items:center;justify-content:space-between;gap:6px;background:rgba(0,0,0,.28);
+  border:1px solid var(--panelBd);border-radius:10px;padding:6px 8px}
+body[data-msbtheme="marmer"] .msbStep{background:#fff}
+.msbStep b{font:800 9.5px/1.2 'Segoe UI';letter-spacing:.06em;color:var(--txtSoft);text-align:left;flex:1}
+.msbStep button{width:24px;height:24px;border-radius:7px;border:1px solid var(--panelBd);
+  background:color-mix(in srgb,var(--a1) 22%,transparent);color:var(--txt);font-weight:800;cursor:pointer;line-height:1}
+.msbStep i{font:800 12px/1 'Segoe UI';color:var(--a2);min-width:26px;text-align:center;font-style:normal}
+.msbTG{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.msbTG button{border-radius:11px;border:2px solid rgba(255,255,255,.16);cursor:pointer;padding:7px 4px 6px;
+  font:800 8.5px/1.35 'Segoe UI';letter-spacing:.02em;color:#fff;transition:.18s;background:#123}
+.msbTG button:hover{transform:translateY(-2px)}
+.msbTG button.on{border-color:var(--a2);box-shadow:0 0 0 3px color-mix(in srgb,var(--a2) 26%,transparent)}
+.msbTG b{display:block;font-size:12px;margin-bottom:2px}
+#msbGallery{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:150px;overflow-y:auto;padding:2px}
+#msbGallery button{position:relative;padding:0;border:2px solid rgba(255,255,255,.14);border-radius:10px;overflow:hidden;cursor:pointer;background:#07110f;height:52px}
+#msbGallery button.on{border-color:var(--a2);box-shadow:0 0 0 2px color-mix(in srgb,var(--a2) 30%,transparent)}
+#msbGallery img{width:100%;height:100%;object-fit:cover;display:block}
+#msbGallery span{position:absolute;left:0;right:0;bottom:0;font:700 7px/1.5 'Segoe UI';background:rgba(0,0,0,.55);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+.msbFoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;position:sticky;bottom:-2px;background:linear-gradient(0deg,var(--hdr2) 70%,transparent);padding-top:10px}
+.msbHint{font:600 9.5px/1.5 'Segoe UI';color:var(--txtSoft);margin-top:5px}
+@media(max-width:700px){
+  .msbTG{grid-template-columns:repeat(3,1fr)}
+  .msbSteppers{grid-template-columns:1fr}
+  #msbGallery{grid-template-columns:repeat(3,1fr)}
+  #msbSetModal .msbCard{width:96vw;padding:13px}
+}
+</style>
+
+
+
+<style id="msbV31Fix">
+/* ===== v3.3: tombol pengaturan selalu terjangkau ===== */
+html,body{overflow-y:auto}
+
+/* strip tombol tetap di aliran dokumen, dibuat ringkas */
+#msbBar{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:6px;
+  padding:6px 8px!important;margin-top:6px}
+#msbBar .msb-btn{padding:8px 11px!important;font-size:10px!important}
+
+/* tombol mengapung PENGATURAN */
+#msbGear{position:fixed;left:14px;bottom:14px;z-index:12000;display:inline-flex;align-items:center;gap:7px;
+  padding:10px 14px;border-radius:14px;cursor:pointer;border:1px solid rgba(232,196,106,.60);
+  background:linear-gradient(135deg,rgba(12,52,40,.97),rgba(5,22,18,.97));color:#ffe6ab;
+  font:800 11px/1 'Segoe UI',sans-serif;letter-spacing:.06em;
+  box-shadow:0 10px 26px rgba(0,0,0,.48),0 0 0 3px rgba(232,196,106,.10);transition:transform .18s}
+#msbGear:hover{transform:translateY(-2px)}
+#msbGear:active{transform:scale(.97)}
+#msbGear .g{font-size:16px;line-height:1}
+body[data-msbtheme="marmer"] #msbGear{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.45)}
+body[data-msbtheme="ottoman"] #msbGear{background:linear-gradient(135deg,rgba(74,14,22,.97),rgba(28,6,10,.97))}
+body[data-msbtheme="safir"] #msbGear{background:linear-gradient(135deg,rgba(12,32,88,.97),rgba(5,12,36,.97))}
+body[data-msbtheme="kiswah"] #msbGear{background:linear-gradient(135deg,rgba(24,22,14,.98),rgba(6,6,7,.98))}
+
+/* ruang supaya marquee tidak tertutup tombol */
+.bottom-content{padding-bottom:42px}
+
+/* ringkas di layar pendek agar semuanya masuk satu layar */
+@media (max-height:900px){
+  .header{padding:10px 14px!important}
+  .header h1{font-size:19px!important}
+  .header p{font-size:9.5px!important}
+  .clock{font-size:32px!important}
+  #ramadhanBar{padding:8px 12px!important;margin-top:6px!important}
+  .sholat{padding:9px 7px!important}
+  .sholat h3{font-size:9.5px!important}
+  .sholat span{font-size:19px!important}
+  .info-left,.info-right{padding:6px 11px!important;font-size:10.5px!important}
+  .footer{padding:4px 0!important}
+  .footer marquee{font-size:10.5px!important}
+}
+@media(max-width:700px){
+  #msbGear{left:10px;bottom:12px;padding:9px 12px;font-size:10px}
+  .bottom-content{padding-bottom:40px}
+}
+</style>
+<script>
+/* v3.3: tombol pengaturan + auto-fit satu layar tanpa scroll */
+(function(){
+  function makeGear(){
+    if(document.getElementById('msbGear')) return;
+    var b=document.createElement('button');
+    b.id='msbGear'; b.type='button'; b.title='Buka pengaturan tampilan & koreksi waktu (F2)';
+    b.innerHTML='<span class="g">⚙️</span><span>PENGATURAN</span>';
+    b.onclick=function(){
+      if(typeof window.msbOpen==='function'){ msbOpen('msbSetModal'); }
+      else alert('Modul pengaturan belum siap. Muat ulang halaman.');
+    };
+    document.body.appendChild(b);
+  }
+
+  window.msbFitFactor=1;
+  window.msbAutoFit=function(){
+    var base=(window.MSBS && Number(MSBS.scale)?Number(MSBS.scale):100)/100;
+    document.body.style.zoom=1;
+    var z=1, guard=0;
+    while(document.documentElement.scrollHeight > window.innerHeight+2 && z>0.62 && guard<20){
+      z=Math.round((z-0.02)*100)/100; document.body.style.zoom=z; guard++;
+    }
+    window.msbFitFactor=z;
+    document.body.style.zoom=Math.min(Math.round(z*base*100)/100, 1.4);
+  };
+  // setiap simpan / ubah skala, hitung ulang agar tetap terjangkau
+  setTimeout(function(){
+    ['msbSaveSet','msbSetScale','msbPickTheme'].forEach(function(fn){
+      var f=window[fn];
+      if(typeof f==='function' && !f.__fit){
+        window[fn]=function(){ var r=f.apply(null,arguments); setTimeout(window.msbAutoFit,300); return r; };
+        window[fn].__fit=true;
+      }
+    });
+  },600);
+
+  function boot(){
+    makeGear();
+    // banner hitung mundur dipindah tepat di bawah header agar terlihat di layar
+    try{
+      var bar=document.getElementById('ramadhanBar'), hdr=document.querySelector('.header');
+      if(bar && hdr && hdr.parentNode && bar.compareDocumentPosition(hdr) & Node.DOCUMENT_POSITION_PRECEDING){
+        hdr.parentNode.insertBefore(bar, hdr.nextSibling);
+        bar.style.margin='8px 0 0';
+      }
+    }catch(e){}
+
+    setTimeout(window.msbAutoFit,400);
+    setTimeout(window.msbAutoFit,1800);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+  window.addEventListener('resize',function(){ setTimeout(window.msbAutoFit,250); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F2'){ makeGear(); var g=document.getElementById('msbGear'); if(g) g.click(); }
+  });
+  // setiap kali pengaturan disimpan / skala diubah, hitung ulang
+  var tries=0;
+  var t=setInterval(function(){ window.msbAutoFit(); if(++tries>3) clearInterval(t); },2500);
+})();
+</script>
+
+
+<style id="msbDoaCss">
+/* ===== v3.5 PANEL DOA AL-QUR'AN (tengah layar) ===== */
+.top-content{display:flex;flex-direction:column}
+#msbPin{z-index:1}
+#doaWrap{position:relative;margin:auto;z-index:2;width:min(94vw,900px);padding:2px;border-radius:24px;
+  overflow:hidden;isolation:isolate;display:flex;max-height:min(46vh,400px);
+  box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06) inset}
+#doaWrap::before{content:'';position:absolute;inset:-70%;z-index:0;opacity:.95;
+  background:conic-gradient(from 0deg,rgba(0,0,0,0) 0deg,var(--a2) 45deg,var(--a1) 110deg,rgba(0,0,0,0) 170deg,rgba(0,0,0,0) 205deg,var(--a1) 265deg,var(--a2) 320deg,rgba(0,0,0,0) 360deg);
+  animation:doaSpin 9s linear infinite}
+@keyframes doaSpin{to{transform:rotate(360deg)}}
+#doaCard{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;
+  border-radius:22px;padding:11px 17px 8px;color:var(--txt);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--hdr1) 94%,transparent),color-mix(in srgb,var(--hdr2) 97%,transparent))}
+#doaCard::before{content:'';position:absolute;inset:-30% -15%;pointer-events:none;
+  background:radial-gradient(circle at 18% 12%,color-mix(in srgb,var(--a2) 26%,transparent),transparent 58%),
+             radial-gradient(circle at 84% 88%,color-mix(in srgb,var(--a1) 32%,transparent),transparent 60%);
+  animation:doaAura 14s ease-in-out infinite alternate}
+@keyframes doaAura{from{transform:translate3d(-4%,-3%,0) scale(1)}to{transform:translate3d(4%,3%,0) scale(1.12)}}
+#doaCard::after{content:'';position:absolute;top:-20%;left:0;width:36%;height:140%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.08),rgba(255,255,255,.20),rgba(255,255,255,.08),transparent);
+  transform:translateX(-140%) rotate(8deg);animation:doaSweep 9s ease-in-out infinite}
+@keyframes doaSweep{0%,58%{transform:translateX(-140%) rotate(8deg)}100%{transform:translateX(420%) rotate(8deg)}}
+.doaTop{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.doaChip{display:inline-flex;align-items:center;gap:6px;font:800 9.5px/1 'Segoe UI',sans-serif;letter-spacing:.16em;
+  padding:5px 10px;border-radius:99px;text-transform:uppercase;white-space:nowrap;
+  color:color-mix(in srgb,var(--a2) 82%,var(--txt));
+  background:color-mix(in srgb,var(--a2) 13%,transparent);
+  border:1px solid color-mix(in srgb,var(--a2) 45%,transparent)}
+.doaChip b{font-style:normal;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--a2) 70%,transparent))}
+.doaCount{font:700 9.5px/1 'Segoe UI',sans-serif;letter-spacing:.12em;color:var(--txtSoft);white-space:nowrap}
+#doaBody{position:relative;z-index:2;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;
+  justify-content:center;gap:3px;text-align:center}
+.doaAr{font-family:'Traditional Arabic','Amiri','Scheherazade New','Noto Naskh Arabic','Segoe UI',serif;
+  font-size:clamp(17px,1.25vw + 11px,32px);line-height:1.95;direction:rtl;color:var(--txt);
+  text-shadow:0 0 22px color-mix(in srgb,var(--a2) 45%,transparent),0 2px 12px rgba(0,0,0,.55);
+  animation:doaGlow 6s ease-in-out infinite}
+@keyframes doaGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15)}}
+.doaOrn{display:flex;align-items:center;justify-content:center;gap:9px;margin:1px 0;
+  color:color-mix(in srgb,var(--a2) 85%,transparent);font-size:8px;letter-spacing:.3em}
+.doaOrn span{height:1px;width:min(96px,24%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--a2) 75%,transparent),transparent)}
+.doaLatin{font:italic 600 clamp(9px,.45vw + 6px,12px)/1.5 'Segoe UI',sans-serif;color:var(--txtSoft)}
+.doaId{font:600 clamp(10px,.42vw + 7px,13px)/1.55 'Segoe UI',sans-serif;color:var(--txt);opacity:.96}
+.doaRef{margin-top:3px;align-self:center;display:inline-flex;align-items:center;gap:6px;
+  font:800 clamp(8.5px,.3vw + 6px,10.5px)/1 'Segoe UI',sans-serif;letter-spacing:.13em;padding:4px 9px;border-radius:99px;
+  color:color-mix(in srgb,var(--a2) 88%,var(--txt));
+  background:color-mix(in srgb,var(--a2) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--a2) 38%,transparent)}
+.doaFoot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:5px}
+.doaDots{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.doaDot{cursor:pointer;width:5px;height:5px;border-radius:99px;background:color-mix(in srgb,var(--txt) 24%,transparent);transition:.3s}
+.doaDot.on{width:16px;background:linear-gradient(90deg,var(--a1),var(--a2));box-shadow:0 0 10px color-mix(in srgb,var(--a2) 70%,transparent)}
+.doaNav{display:flex;gap:6px}
+.doaNav button{width:24px;height:24px;border-radius:8px;cursor:pointer;font:800 13px/1 'Segoe UI',sans-serif;
+  color:var(--txt);background:color-mix(in srgb,var(--a2) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--a2) 35%,transparent);transition:.2s}
+.doaNav button:hover{background:color-mix(in srgb,var(--a2) 26%,transparent);transform:translateY(-1px)}
+.doaProg{position:absolute;left:0;right:0;bottom:0;height:2px;z-index:2;pointer-events:none;
+  background:color-mix(in srgb,var(--txt) 10%,transparent)}
+.doaProg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a2))}
+.doaIn{animation:doaIn .75s cubic-bezier(.22,1,.36,1) both}
+.doaOut{animation:doaOut .32s ease-in both}
+@keyframes doaIn{from{opacity:0;transform:translateY(18px) scale(.975);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes doaOut{from{opacity:1;transform:none;filter:blur(0)}to{opacity:0;transform:translateY(-12px) scale(.985);filter:blur(6px)}}
+.doaSpark{position:absolute;z-index:3;width:5px;height:5px;border-radius:99px;pointer-events:none;
+  background:radial-gradient(circle,#fff,color-mix(in srgb,var(--a2) 90%,transparent) 60%,transparent 72%);
+  animation:doaSparkUp 1.6s ease-out forwards}
+@keyframes doaSparkUp{0%{opacity:0;transform:translateY(8px) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translateY(-74px) scale(1.15)}}
+body[data-msbtheme="marmer"] #doaCard{background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(233,242,240,.96))}
+body[data-msbtheme="marmer"] .doaAr{text-shadow:0 0 18px rgba(15,118,110,.18)}
+@media (max-width:760px){
+  #doaWrap{width:96vw;max-height:min(42vh,315px);border-radius:20px}
+  #doaCard{padding:8px 11px 6px;border-radius:18px}
+  .doaAr{line-height:1.8}
+  .doaLatin{display:none}
+  .doaDot{width:4px;height:4px}
+}
+@media (max-height:640px){
+  #doaWrap{max-height:min(44vh,270px)}
+  .doaLatin{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  #doaWrap::before,#doaCard::before,#doaCard::after,.doaAr{animation:none!important}
+  .doaIn,.doaOut{animation-duration:.01s!important}
+  .doaSpark{display:none}
+}
+</style>
+</head>
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<body>
+<div class="overlay">
+ <div class="top-content">
+    <!-- HEADER -->
+    <div class="header">
+<div class="header-left">
+    <i class="fa-solid fa-mosque mosque-icon"></i>
+
+    <div>
+        <h1>MASJID AL HUDA</h1>
+        <p>Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326</p>
+    </div>
+</div>
+
+        <div class="clock-box">
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="date" id="date"></div>
+        </div>
+    </div>
+
+    <!-- ===== v3.5 PANEL DOA AL-QUR'AN (tengah layar) ===== -->
+    <div id="doaWrap" aria-live="polite">
+      <div id="doaCard">
+        <div class="doaTop">
+          <span class="doaChip"><b>۞</b> DOA DARI AL-QUR'AN</span>
+          <span class="doaCount" id="doaCount">1 / 14</span>
+        </div>
+        <div id="doaBody">
+          <div class="doaAr" id="doaAr" dir="rtl" lang="ar"></div>
+          <div class="doaOrn"><span></span>✦<span></span></div>
+          <div class="doaLatin" id="doaLatin"></div>
+          <div class="doaId" id="doaId"></div>
+          <div class="doaRef" id="doaRef"></div>
+        </div>
+        <div class="doaFoot">
+          <div class="doaDots" id="doaDots"></div>
+          <div class="doaNav">
+            <button type="button" onclick="msbDoaPrev()" aria-label="Doa sebelumnya">&#8249;</button>
+            <button type="button" onclick="msbDoaNext()" aria-label="Doa berikutnya">&#8250;</button>
+          </div>
+        </div>
+        <div class="doaProg"><i id="doaProg"></i></div>
+      </div>
+    </div>
+ </div>
+
+<div class="bottom-content">
+
+    <!-- INFO KIRI -->
+    <div class="info-left">
+        ⏳ Menuju Ramadhan:
+        <b id="ramadhanCountdown">-</b>
+    </div>
+
+    <!-- INFO KANAN -->
+    <div class="info-right">
+        🕌 Menuju Sholat Terdekat:
+        <b id="nextPrayerCountdown">-</b>
+    </div>
+
+    <!-- SHOLAT -->
+    <div class="sholat-grid">
+        <div class="sholat"><h3>Subuh</h3><span id="Fajr">--:--</span></div>
+        <div class="sholat"><h3>Syuruq</h3><span id="Sunrise">--:--</span></div>
+        <div class="sholat"><h3>Dzuhur</h3><span id="Dhuhr">--:--</span></div>
+        <div class="sholat"><h3>Ashar</h3><span id="Asr">--:--</span></div>
+        <div class="sholat"><h3>Maghrib</h3><span id="Maghrib">--:--</span></div>
+        <div class="sholat"><h3>Isya</h3><span id="Isha">--:--</span></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <marquee behavior="scroll" scrollamount="4">
+            🕌 Ust. Adi Masjid Al-Huda – “Persiapan Menuju Bulan Suci Ramadhan” | Jadwal Sholat Kota Kudus, Jawa Tengah</marquee>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+/* REAL TIME CLOCK */
+function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').innerText =
+        now.toLocaleTimeString('id-ID');
+    document.getElementById('date').innerText =
+        now.toLocaleDateString('id-ID', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* BACKGROUND ROTATE */
+const bgDesktop = [
+    'asset/bg/masjid1.jpg',
+    'asset/bg/masjid2.jpg',
+    'asset/bg/masjid3.jpg'
+];
+const bgMobile = [
+    'asset/bg/masjidhp1.jpg',
+    'asset/bg/masjidhp2.jpg',
+    'asset/bg/masjidhp3.jpg'
+];
+
+let bgIndex = 0;
+function changeBackground() {
+    const bg = window.innerWidth < 768 ? bgMobile : bgDesktop;
+    /* v3.3: latar tetap citra satelit masjid, bukan aset gambar lama */
+    bgIndex = (bgIndex + 1) % bg.length;
+}
+changeBackground();
+setInterval(changeBackground, 30000);
+
+/* JADWAL SHOLAT API (JONGGOL) */
+let prayerTimes = {};
+
+fetch('https://api.aladhan.com/v1/timingsByCity?city=Kudus&country=Indonesia&method=20')
+.then(res => res.json())
+.then(data => {
+    prayerTimes = data.data.timings;
+    for (let key in prayerTimes) {
+        if (document.getElementById(key)) {
+            document.getElementById(key).innerText = prayerTimes[key];
+        }
+    }
+});
+
+/* COUNTDOWN SHOLAT TERDEKAT CMIIW*/
+function nextPrayerCountdown() {
+    if (!prayerTimes.Fajr) return;
+
+    const now = new Date();
+
+    const prayers = [
+        { name: 'Subuh', time: prayerTimes.Fajr },
+        { name: 'Dzuhur', time: prayerTimes.Dhuhr },
+        { name: 'Ashar', time: prayerTimes.Asr },
+        { name: 'Maghrib', time: prayerTimes.Maghrib },
+        { name: 'Isya', time: prayerTimes.Isha }
+    ];
+
+    let nearest = null;
+    let prayerName = '';
+
+    prayers.forEach(p => {
+        // ambil HH:MM saja (buang WIB)
+        const clean = p.time.split(' ')[0];
+        const [h, m] = clean.split(':').map(Number);
+
+        const t = new Date();
+        t.setHours(h, m, 0, 0);
+
+        // kalau sudah lewat → anggap besok
+        if (t <= now) {
+            t.setDate(t.getDate() + 1);
+        }
+
+        if (!nearest || t < nearest) {
+            nearest = t;
+            prayerName = p.name;
+        }
+    });
+
+    const diff = nearest - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('nextPrayerCountdown').innerText =
+        `${prayerName} ${h}j ${m}m ${s}d`;
+}
+
+setInterval(nextPrayerCountdown, 1000);
+
+/* COUNTDOWN RAMADHAN */
+function ramadhanCountdown() {
+    const now = new Date();
+    const year = now.getFullYear();
+    let ramadhan;
+
+    // Acuan Ramadhan (Indonesia / Kemenag)
+    if (year === 2025) {
+        ramadhan = new Date('2025-03-01T00:00:00');
+    } else if (year === 2026) {
+        ramadhan = new Date('2026-02-18T00:00:00');
+    } else {
+        // fallback aman
+        ramadhan = new Date(year, 1, 18);
+    }
+
+    // Jika Ramadhan tahun ini sudah lewat → hitung tahun depan
+    if (now > ramadhan) {
+        ramadhan.setFullYear(year + 1);
+    }
+
+    const diff = ramadhan - now;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    const el = document.getElementById('ramadhanCountdown');
+
+    if (days <= 0 && days >= -30) {
+        el.innerText = 'Selamat Menunaikan Ibadah Puasa';
+    } else {
+        el.innerText = days + ' hari';
+    }
+}
+
+// update pertama + refresh tiap jam
+ramadhanCountdown();
+setInterval(ramadhanCountdown, 60 * 60 * 1000);
+</script>
+
+<!-- ================= v3.3 MARKUP ================= -->
+<div id="bgLayer"><img id="bgMedia" alt=""><div id="bgStars"></div></div>
+<div id="msbMap"><div id="msbMapTiles"></div></div>
+<div id="msbPin"><div class="pin">🕌</div><div class="lbl"></div></div>
+<div id="msbMapAttr"></div>
+<div id="bgShade"></div>
+
+<!-- BOOT BUMI -->
+<div id="msbBoot">
+  <div class="bsub">MASJID AL HUDA · Kudus</div>
+  <h1>MENUJU RAMADHAN</h1>
+  <div id="msbEarthWrap"></div>
+  <div id="msbPct">0%</div>
+  <div id="msbProg"><i></i></div>
+  <div class="bsub" id="msbSt">Menyiapkan mesin waktu sholat</div>
+  <button id="msbBootGo">MASUK KE JADWAL</button>
+</div>
+
+<!-- BANNER RAMADHAN -->
+<div id="ramadhanBar">
+  <svg class="moon" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="gn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe9ad"/><stop offset="1" stop-color="#c9971f"/></linearGradient></defs><path d="M41 8a24 24 0 1 0 0 48 25 25 0 0 1 0-48z" fill="url(#gn)"/><circle cx="50" cy="16" r="2.4" fill="#fff8dc"/><circle cx="56" cy="27" r="1.7" fill="#fff8dc"/></svg>
+  <div>
+    <div class="ttl" id="rmTitle">MENUJU RAMADHAN 1448 H</div>
+    <div class="sub" id="rmSub">Perkiraan 8 Februari 2027 · menunggu penetapan pemerintah</div>
+  </div>
+  <div class="clockbox">
+    <div class="unit"><b id="rmD">0</b><span>HARI</span></div>
+    <div class="unit"><b id="rmH">00</b><span>JAM</span></div>
+    <div class="unit"><b id="rmM">00</b><span>MENIT</span></div>
+    <div class="unit"><b id="rmS">00</b><span>DETIK</span></div>
+  </div>
+  <div style="width:100%"><div id="ramadhanProg"><i></i></div></div>
+</div>
+
+<!-- TOOLBAR -->
+<div id="msbBar">
+  <button class="msb-btn gold" onclick="msbOpen('msbSetModal');setTimeout(()=>{const g=document.getElementById('msbGallery');if(g)g.scrollIntoView({behavior:'smooth',block:'center'});},250)">🖼️ LATAR</button>
+  <button class="msb-btn" onclick="msbQibla()">🧭 KIBLAT</button>
+  <button class="msb-btn" onclick="msbApps()">📱 MY APPS</button>
+  <button class="msb-btn" onclick="msbOpen('msbSetModal')">⚙️ PENGATURAN</button>
+  <button class="msb-btn red" id="msbResetBtn" onclick="msbResetDefault()" title="Kembalikan latar foto masjid & semua pengaturan ke kondisi awal">🔄 RESET DEFAULT</button>
+  <button class="msb-btn" onclick="msbSsOn()">🌙 SCREENSAVER</button>
+  <button class="msb-btn" onclick="msbOpen('msbHelpModal')">❓ BANTUAN</button>
+</div>
+
+<!-- SCREENSAVER -->
+<div id="msbSS">
+  <svg class="moon" viewBox="0 0 64 64" fill="none"><path d="M41 8a24 24 0 1 0 0 48 25 25 0 0 1 0-48z" fill="#ffe9ad"/></svg>
+  <div id="msbSsEarth"></div>
+  <div id="msbSsClock">00:00:00</div>
+  <div id="msbSsDate">—</div>
+  <div id="msbQuote">
+    <span id="msbQChip">DOA</span>
+    <div id="msbQT">—</div>
+    <div id="msbQA">—</div>
+  </div>
+  <div id="msbSsHint">SENTUH LAYAR ATAU TEKAN ESC UNTUK KEMBALI</div>
+</div>
+
+<!-- CHAT -->
+<button id="msbFab" onclick="msbChatToggle()">🤖</button>
+<div id="msbChat">
+  <div id="msbChatHead"><span style="font-size:18px">🤖</span><b>ASISTEN MASJID AL HUDA</b><button class="msbBtn" style="margin-left:auto;padding:5px 9px" onclick="msbChatToggle(false)">✕</button></div>
+  <div id="msbChatBody"></div>
+  <div id="msbChips">
+    <button onclick="msbAsk('Kapan Ramadhan tahun ini?')">Ramadhan</button>
+    <button onclick="msbAsk('Apa itu sholat tarawih?')">Tarawih</button>
+    <button onclick="msbAsk('Berapa nisab zakat fitrah?')">Zakat Fitrah</button>
+    <button onclick="msbAsk('Arah kiblat masjid ini?')">Kiblat</button>
+    <button onclick="msbAsk('Doa berbuka puasa')">Doa Buka</button>
+    <button onclick="msbAsk('Jadwal sholat hari ini')">Jadwal</button>
+  </div>
+  <form id="msbChatForm" onsubmit="event.preventDefault();msbAsk(document.getElementById('msbChatInput').value);">
+    <input id="msbChatInput" placeholder="Tanya apa saja…" autocomplete="off">
+    <button type="submit">➤</button>
+  </form>
+</div>
+
+<!-- MODAL LATAR -->
+<div class="msbModal" id="msbBgModal">
+  <div class="msbCard">
+    <h3>Latar Masjid</h3>
+    <p class="sm">Tempel tautan gambar masjid dari internet (jpg / png / webp), atau unggah dari galeri. Latar disimpan otomatis di perangkat ini.</p>
+    <div class="msbRow"><label>Link gambar</label><input type="text" id="msbBgUrl" placeholder="https://contoh.com/masjid.jpg"></div>
+    <div class="msbRow"><label>Contoh masjid</label>
+      <button class="msbBtn" onclick="document.getElementById('msbBgUrl').value='https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1600&q=80'">Contoh 1</button>
+      <button class="msbBtn" onclick="document.getElementById('msbBgUrl').value='https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1600&q=80'">Contoh 2</button>
+    </div>
+    <div class="msbRow"><label>Atau unggah</label><input type="file" id="msbBgFile" accept="image/*" style="font-size:11px;color:#a8d8c7"></div>
+    <div class="msbRow"><label>Kecerahan</label><input type="range" id="msbBgDim" min="0" max="80" value="58" oninput="msbSetDim(this.value)"><span id="msbDimVal" style="font-size:11px;color:#8fc7b6">58%</span></div>
+    <div class="msbRow" style="margin-top:12px">
+      <button class="msbBtn pri" onclick="msbApplyBgUrl()">TERAPKAN LINK</button>
+      <button class="msbBtn" onclick="msbApplyBgFile()">PAKAI FILE</button>
+      <button class="msbBtn" onclick="msbBgDefault()">↺ LATAR BAWAAN (MASJID)</button>
+      <button class="msbBtn warn" onclick="msbClearBg()">HAPUS LATAR</button>
+      <button class="msbBtn" onclick="msbClose('msbBgModal')">TUTUP</button>
+    </div>
+    <p class="sm" style="margin-top:10px">Tip: gunakan foto masjid beresolusi lebar (1920×1080) agar tajam di layar TV atau proyektor.</p>
+  </div>
+</div>
+
+<!-- MODAL PENGATURAN -->
+<!-- ===== MODAL PENGATURAN TAMPAILAN & KOREKSI WAKTU (v3.3) ===== -->
+<div class="msbModal" id="msbSetModal">
+  <div class="msbCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <h3 style="margin:0">Pengaturan Tampilan &amp; Koreksi Waktu</h3>
+      <button class="msbBtn" onclick="msbClose('msbSetModal')">✕</button>
+    </div>
+    <p class="sm">Semua perubahan tersimpan di perangkat ini setelah ditekan Simpan.</p>
+
+    <h4>1. Nama Masjid (judul utama)</h4>
+    <input type="text" id="msbName" placeholder="Masjid Al-Barkah">
+    <div class="msbHint">Nama ini tampil besar di pojok kiri atas dan menjadi judul halaman.</div>
+
+    <h4>2. Update Pesan Running Text (warta masjid)</h4>
+    <textarea id="msbRun" placeholder="Tulis pengumuman, jadwal kajian, atau imbauan jamaah…"></textarea>
+    <div class="msbHint">Teks berjalan di bagian bawah layar. Boleh beberapa kalimat sekaligus.</div>
+
+    <h4>3. Koreksi Waktu Sholat (menit +/-)</h4>
+    <div class="msbSteppers" id="msbSteppers">
+      <div class="msbStep"><b>SUBUH</b><button onclick="msbCorrStep('subuh',-1)">−</button><i id="corrSubuh">0</i><button onclick="msbCorrStep('subuh',1)">+</button></div>
+      <div class="msbStep"><b>DZUHUR</b><button onclick="msbCorrStep('dzuhur',-1)">−</button><i id="corrDzuhur">0</i><button onclick="msbCorrStep('dzuhur',1)">+</button></div>
+      <div class="msbStep"><b>ASHAR</b><button onclick="msbCorrStep('ashar',-1)">−</button><i id="corrAshar">0</i><button onclick="msbCorrStep('ashar',1)">+</button></div>
+      <div class="msbStep"><b>MAGHRIB</b><button onclick="msbCorrStep('maghrib',-1)">−</button><i id="corrMaghrib">0</i><button onclick="msbCorrStep('maghrib',1)">+</button></div>
+      <div class="msbStep"><b>ISYA</b><button onclick="msbCorrStep('isya',-1)">−</button><i id="corrIsya">0</i><button onclick="msbCorrStep('isya',1)">+</button></div>
+      <div class="msbStep"><b>SYURUQ</b><button onclick="msbCorrStep('syuruq',-1)">−</button><i id="corrSyuruq">0</i><button onclick="msbCorrStep('syuruq',1)">+</button></div>
+    </div>
+    <div class="msbHint">Dipakai bila jadwal masjid berbeda beberapa menit dari hitungan aplikasi.</div>
+
+    <h4>4. Pilih Tema Warna Tampilan (5 tema)</h4>
+    <div class="msbTG" id="msbThemes">
+      <button data-th="nabawi" onclick="msbPickTheme('nabawi')" style="background:linear-gradient(140deg,#0b5c3f,#d4af37)"><b>1</b>Nabawi<br>Hijau-Emas</button>
+      <button data-th="safir" onclick="msbPickTheme('safir')" style="background:linear-gradient(140deg,#12306e,#3b82f6)"><b>2</b>Safir<br>Biru Royal</button>
+      <button data-th="kiswah" onclick="msbPickTheme('kiswah')" style="background:linear-gradient(140deg,#08080a,#c8a24a)"><b>3</b>Kiswah<br>Hitam-Emas</button>
+      <button data-th="ottoman" onclick="msbPickTheme('ottoman')" style="background:linear-gradient(140deg,#5c1018,#e6c069)"><b>4</b>Ottoman<br>Maroon</button>
+      <button data-th="marmer" onclick="msbPickTheme('marmer')" style="background:linear-gradient(140deg,#f2f7f5,#0f766e)"><b>5</b>Marmer<br>Putih Modern</button>
+    </div>
+
+    <h4>5. Kota / Wilayah Acuan Jadwal</h4>
+    <input type="text" id="msbCity3" placeholder="Contoh: Kudus, Jepara, Pati">
+    <label class="msbSw" style="margin-top:8px;border-bottom:0">
+      <span style="font:600 11px/1.3 'Segoe UI';color:var(--txt)">Gunakan deteksi lokasi otomatis (GPS)</span>
+      <span class="msbTog" id="msbTogGps" onclick="msbToggleGps()"></span>
+    </label>
+    <div class="msbHint" id="msbGpsNote">Bila GPS aktif, jadwal dihitung dari koordinat perangkat, bukan nama kota.</div>
+
+    <h4>6. Alamat, Koordinat &amp; Latar Masjid</h4>
+    <div class="msbRow"><label>Alamat masjid</label><input type="text" id="msbAddr" placeholder="Jl. Sosrokartono, Bacin, Bae, Kudus"></div>
+    <div class="msbRow"><label>Lintang</label><input type="text" id="msbLatVal" placeholder="-6.786862" inputmode="decimal"></div>
+    <div class="msbRow"><label>Bujur</label><input type="text" id="msbLngVal" placeholder="110.8498833" inputmode="decimal"></div>
+    <div class="msbModes">
+      <button type="button" data-mode="sat" onclick="msbSetMode('sat')">🛰️ SATELIT<br>MASJID</button>
+      <button type="button" data-mode="street" onclick="msbSetMode('street')">🗺️ PETA<br>JALAN</button>
+      <button type="button" data-mode="photo" onclick="msbSetMode('photo')">🖼️ FOTO<br>MASJID</button>
+    </div>
+    <div class="msbRow">
+      <button class="msbBtn" onclick="msbPickCoord()">TAMPILKAN PETA</button>
+      <button class="msbBtn" onclick="msbGpsToMap()">AMBIL DARI GPS</button>
+    </div>
+    <div class="msbHint" id="msbMapNote">Latar bawaan memakai foto masjid. Pilih SATELIT atau PETA untuk memakai citra dari koordinat di atas.</div>
+    <div class="msbRow"><label>Tautan gambar</label><input type="text" id="msbBgUrl3" placeholder="https://…/masjid.jpg"></div>
+    <div class="msbRow">
+      <label>Dari perangkat</label>
+      <input type="file" id="msbBgFile3" accept="image/*" onchange="msbPickFile(this)" style="font-size:10.5px;color:var(--txtSoft)">
+    </div>
+    <div class="msbHint">Galeri masjid megah (ketuk untuk memakai):</div>
+    <div id="msbGallery"><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/6186d2394_generated_image.png" onclick="msbPickPreset(0)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/6186d2394_generated_image.png" alt="Grand Dome · Emerald Gold" loading="lazy"><span>Grand Dome · Emerald Gold</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/8a0371c15_generated_image.png" onclick="msbPickPreset(1)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/8a0371c15_generated_image.png" alt="Nabawi Dusk" loading="lazy"><span>Nabawi Dusk</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/3891d616c_generated_image.png" onclick="msbPickPreset(2)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/3891d616c_generated_image.png" alt="Ottoman Sunset" loading="lazy"><span>Ottoman Sunset</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/ca6cb4754_generated_image.png" onclick="msbPickPreset(3)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/ca6cb4754_generated_image.png" alt="Marmer Modern" loading="lazy"><span>Marmer Modern</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/b9577cd76_generated_image.png" onclick="msbPickPreset(4)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/b9577cd76_generated_image.png" alt="Lentera Ramadhan" loading="lazy"><span>Lentera Ramadhan</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/381d1000c_generated_image.png" onclick="msbPickPreset(5)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/381d1000c_generated_image.png" alt="Kompleks Masjid" loading="lazy"><span>Kompleks Masjid</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/ab7738b58_generated_image.png" onclick="msbPickPreset(6)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/ab7738b58_generated_image.png" alt="Masjid Bukit Fajar" loading="lazy"><span>Masjid Bukit Fajar</span></button><button type="button" data-bg="https://media.base44.com/images/public/6a48d0b8744792061258ff83/17d1d2ccf_generated_image.png" onclick="msbPickPreset(7)"><img src="https://media.base44.com/images/public/6a48d0b8744792061258ff83/17d1d2ccf_generated_image.png" alt="Ruang Sholat Utama" loading="lazy"><span>Ruang Sholat Utama</span></button></div>
+    <div class="msbRow" style="margin-top:8px"><label>Kecerahan</label>
+      <input type="range" id="msbBgDim3" min="15" max="88" value="58" class="msbRange" oninput="msbSetDim(this.value)">
+      <span id="msbDimVal3" style="font:700 10px 'Segoe UI';color:var(--txtSoft)">58%</span></div>
+    <div class="msbRow">
+      <button class="msbBtn" onclick="msbApplyUrl3()">PAKAI TAUTAN</button>
+      <button class="msbBtn warn" onclick="msbBgReset()">LATAR BAWAAN</button>
+    </div>
+
+    <h4>7. Jam, Teks &amp; Screensaver</h4>
+    <div class="msbSw"><label>Format 24 jam</label><div class="msbTog" id="msbTog24" onclick="msbToggle('clock24')"></div></div>
+    <div class="msbSw"><label>Tampilkan detik</label><div class="msbTog" id="msbTogSec" onclick="msbToggle('seconds')"></div></div>
+    <div class="msbSw"><label>Tampilkan banner Ramadhan</label><div class="msbTog" id="msbTogRam" onclick="msbToggle('showRamadhan')"></div></div>
+    <div class="msbRow"><label>Ukuran teks</label>
+      <div class="msbSeg">
+        <button data-sc="90" onclick="msbSetScale(90)">90%</button>
+        <button data-sc="100" onclick="msbSetScale(100)">100%</button>
+        <button data-sc="110" onclick="msbSetScale(110)">110%</button>
+        <button data-sc="120" onclick="msbSetScale(120)">120%</button>
+      </div>
+    </div>
+    <div class="msbRow"><label>Screensaver</label>
+      <div class="msbSeg">
+        <button data-ss="1" onclick="msbSetSs(1)">1 mnt</button>
+        <button data-ss="2" onclick="msbSetSs(2)">2 mnt</button>
+        <button data-ss="4" onclick="msbSetSs(4)">4 mnt</button>
+        <button data-ss="10" onclick="msbSetSs(10)">10 mnt</button>
+      </div>
+    </div>
+
+    <div class="msbFoot">
+      <button class="msbBtn warn" onclick="msbResetDefault()" title="Kembalikan semua ke bawaan">↺ RESET BAWAAN</button>
+      <button class="msbBtn" onclick="msbCancelSet()">Batal</button>
+      <button class="msbBtn pri" onclick="msbSaveSet()">Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL KIBLAT -->
+<div class="msbModal" id="msbQiblaModal">
+  <div class="msbCard" style="text-align:center">
+    <h3>Arah Kiblat</h3>
+    <p class="sm" id="msbQiblaSub">—</p>
+    <div style="position:relative;width:190px;height:190px;margin:12px auto;border-radius:50%;border:2px solid rgba(16,185,129,.35);background:radial-gradient(circle,rgba(16,185,129,.10),transparent 70%)">
+      <div id="msbQiblaNeedle" style="position:absolute;left:50%;top:50%;width:4px;height:80px;margin-left:-2px;margin-top:-80px;border-radius:3px;background:linear-gradient(180deg,#e8c46a,#10b981);transform-origin:bottom center;transform:rotate(0deg);transition:transform .8s"></div>
+      <div style="position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#e8c46a"></div>
+    </div>
+    <div id="msbQiblaDeg" style="font:800 24px/1 'Segoe UI';color:#e8c46a">—</div>
+    <p class="sm" style="margin-top:8px">Sudut diukur dari utara sejati, searah jarum jam. Arahkan kompas ponsel ke utara, lalu putar badan sampai menghadap sudut ini.</p>
+    <button class="msbBtn" onclick="msbClose('msbQiblaModal')" style="margin-top:10px">TUTUP</button>
+  </div>
+</div>
+
+<!-- MODAL MY APPS -->
+<div class="msbModal" id="msbAppsModal">
+  <div class="msbCard">
+    <h3>My Aplikasi · 61 Proyek</h3>
+    <p class="sm">Karya digital Ir. Mohamad Hartadi. Ketuk untuk membuka.</p>
+    <input id="msbAppsSearch" placeholder="Cari nama atau kategori…" oninput="msbRenderApps(this.value)">
+    <div id="msbAppsGrid"></div>
+    <button class="msbBtn" onclick="msbClose('msbAppsModal')" style="margin-top:10px">TUTUP</button>
+  </div>
+</div>
+
+<!-- MODAL BANTUAN -->
+<div class="msbModal" id="msbHelpModal">
+  <div class="msbCard">
+    <h3>Bantuan &amp; Fitur</h3>
+    <p class="sm">Panduan singkat penggunaan layar jadwal sholat Masjid Al-Barkah.</p>
+    <div id="msbHelpList" style="display:grid;gap:8px"></div>
+    <div style="background:rgba(244,63,94,.10);border:1px solid rgba(244,63,94,.30);border-radius:11px;padding:9px 11px;margin-top:10px"><b style="color:#ffc9d4;font-size:11px">Reset ke Bawaan</b><div style="font-size:10.5px;color:#ffd7de;line-height:1.5;margin-top:3px">Tombol 🔄 RESET DEFAULT di toolbar mengembalikan latar foto masjid bawaan serta nama, tema, koreksi waktu, koordinat, ukuran teks, dan kecerahan ke kondisi awal.</div></div>
+    <p class="sm" style="margin-top:12px">Dikembangkan oleh <b style="color:#e8c46a">Ir. Mohamad Hartadi, S.T.</b> · Facebook: m.hartadi · Blog: newbieonline7.blogspot.com · WhatsApp: 0822-3103-6047</p>
+    <button class="msbBtn" onclick="msbClose('msbHelpModal')" style="margin-top:8px">TUTUP</button>
+  </div>
+</div>
+
+<script>window.MY_APPS_61=[{"u": "https://adikds.github.io/jarvis-ai/", "n": "JARVIS AI", "cat": "AI & Agent"}, {"u": "https://adikds.github.io/-Doa-Digital-Pro/", "n": "Doa Digital Pro", "cat": "Religi & Islami"}, {"u": "https://adikds.github.io/Al-Quran-Karim/", "n": "Al-Quran Karim", "cat": "Religi & Islami"}, {"u": "https://adikds.github.io/ai-meeting-assistant/", "n": "AI Meeting Pro", "cat": "AI & Produktivitas"}, {"u": "https://adikds.github.io/NEXUS-PAGE-AGENT-VER.1.0/", "n": "Nexus Page Agent", "cat": "AI & Agent"}, {"u": "https://adikds.github.io/APEX-Foundations-v3.3-Geotechnical-AI-/", "n": "Apex Foundations", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/ANALISIS-PONDASI-TELAPAK-/", "n": "Analisis Pondasi", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/AASHTO-SOIL-CLASSIFIER/", "n": "AASHTO Soil", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/ATLAS-GEOTEKNIK/", "n": "Atlas Geoteknik", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/GeoStructPro-15-Essential-Geotechnical-Formulas/", "n": "GeoStructPro 15", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/GEOSTRUCT-PRO-20-FORMULA-GEOTECHNICAL/", "n": "GeoStruct Pro 20", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/UNIFIED-SOIL-CLASSIFICATION-SYSTEM/", "n": "USCS Soil", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/WAY-APU-DAM/", "n": "Way Apu Dam", "cat": "Bendungan & Hidrologi"}, {"u": "https://adikds.github.io/INTEGRATED-DAM-ANALYTICS-ASSESSMENT-SYSTEM/", "n": "Dam Analytics", "cat": "Bendungan & Hidrologi"}, {"u": "https://adikds.github.io/SISTEM-MONITORING-SEISMIK-PERINGATAN-TSUNAMI/", "n": "Monitoring Seismik", "cat": "Seismik & Mitigasi"}, {"u": "https://adikds.github.io/MONITORING-PREDIKSI-STATUS-EI-NI-O-LA-NI-A/", "n": "El Nino La Nina", "cat": "Klimatologi & Cuaca"}, {"u": "https://adikds.github.io/MONITORING-PREDIKSI-ANGIN-MUSON-INDONESIA/", "n": "Monitoring Cuaca", "cat": "Klimatologi & Cuaca"}, {"u": "https://adikds.github.io/AERORADAR-PRO/", "n": "AeroRadar Pro", "cat": "Radar & Navigasi"}, {"u": "https://adikds.github.io/HYDRACANAL-PRO-GEOMETRIC-DESIGN/", "n": "HydraCanal Pro", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/EVENT-DRIVEN-ARCHITECTURE-FOR-AI-AGENTS/", "n": "EDA AI Agents", "cat": "AI & Agent"}, {"u": "https://adikds.github.io/edu-market-pro/", "n": "EduMarket Pro", "cat": "Edukasi & Pasar"}, {"u": "https://adikds.github.io/iptv-terminal/", "n": "IPTV Terminal", "cat": "Media & Streaming"}, {"u": "https://adikds.github.io/TV-streaming-live/", "n": "TV Streaming Live", "cat": "Media & Streaming"}, {"u": "https://adikds.github.io/pos-system/", "n": "POS Terminal Pro", "cat": "Bisnis & Kasir"}, {"u": "https://adikds.github.io/Aplikasi_Point_of_Sale_-POS-_atau_sistem_kasir/", "n": "POS Kasir", "cat": "Bisnis & Kasir"}, {"u": "https://adikds.github.io/business-suite/", "n": "Business Suite", "cat": "Bisnis & Manajemen"}, {"u": "https://adikds.github.io/stock-manager/", "n": "Stock Manager", "cat": "Bisnis & Manajemen"}, {"u": "https://adikds.github.io/financial-planner/", "n": "Financial Planner", "cat": "Keuangan & Finansial"}, {"u": "https://adikds.github.io/KEUANGANKU/", "n": "Keuanganku", "cat": "Keuangan & Finansial"}, {"u": "https://adikds.github.io/DOKTER-AI/", "n": "DOKTER AI EXPERT", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/DARUSSYIFA-MEDIKA/", "n": "DARUSSYIFA V.5.0", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/DARUSSYIFA_MEDIKA/", "n": "DARUSSYIFA V.2.0", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/SMILE-SYIFA-AI/", "n": "SMILE SYIFA AI", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/SKIN_SYIFA_AI/", "n": "SKIN SYIFA AI", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/NEURO-PSYCH_AI/", "n": "NEURO-PSYCH AI", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/-MEGA-ATLAS-FKG/", "n": "Mega Atlas FKG", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/Mega-Atlas-Kedokteran-Neurologi-Bedah-Syaraf/", "n": "Neurology Atlas", "cat": "Medis & Kesehatan"}, {"u": "https://adikds.github.io/STATISTICS_for_ENGINEERS-/", "n": "Statistics Engineers", "cat": "Teknik & Sains"}, {"u": "https://adikds.github.io/AI-VIDEO-EDITOR/", "n": "AI Video Editor", "cat": "Multimedia & AI"}, {"u": "https://adikds.github.io/SIMULASI-DAN-JADWAL-SERTA-SCOR-WORLD-CUP-2026/", "n": "World Cup 2026", "cat": "Olahraga & Hiburan"}, {"u": "https://adikds.github.io/FREE-CLAUDE-CODE/", "n": "Free Claude Code", "cat": "AI & Developer"}, {"u": "https://adikds.github.io/konstruksi-ai/", "n": "KONAI Pro", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/pabrik-ai/", "n": "Pabrik AI Pro", "cat": "AI & Industri"}, {"u": "https://adikds.github.io/gudang-bulog/", "n": "Gudang Bulog FEM", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds.github.io/Adi_Newbie/", "n": "ADI NEWBIE", "cat": "Personal & Portofolio"}, {"u": "https://famelack.com/radio/id", "n": "Famelack Radio ID", "cat": "Media & Streaming"}, {"u": "https://famelack.com/tv/id", "n": "Famelack TV ID", "cat": "Media & Streaming"}, {"u": "https://www.f15library.com/", "n": "F15 Library", "cat": "Edukasi & Perpustakaan"}, {"u": "https://adikds-byte.github.io/InaTEWS-Pro-v45/", "n": "InaTEWS Pro Tsunami", "cat": "Seismik & Mitigasi"}, {"u": "https://adikds-byte.github.io/Seismic_Site_Report_Pro/", "n": "Seismic Site Report Pro", "cat": "Seismik & Mitigasi"}, {"u": "https://adikds-byte.github.io/DSS-Sedimen-Pro-v4.81-Pro/", "n": "DSS Sedimen Pro", "cat": "Pesisir & Sedimen"}, {"u": "https://adikds-byte.github.io/COASTAL-SWI-ENGINE-PRO/", "n": "Coastal SWI Engine", "cat": "Pesisir & Coastal SWI"}, {"u": "https://adikds-byte.github.io/Indonesia_Dams_DSS/", "n": "Indonesia Dams DSS", "cat": "Bendungan & Energy"}, {"u": "https://adikds-byte.github.io/GeoStruct_Pro_Master_Edition/", "n": "GeoStruct Pro Master", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds-byte.github.io/SoilLabKit-Pro-Master-Edition-V7.0/", "n": "SoilLabKit Pro", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds-byte.github.io/kalkulator_budget_rumah_pro_v2.7/", "n": "Kalkulator Budget Rumah", "cat": "Budget & Home"}, {"u": "https://adikds-byte.github.io/GeoTestKit-PRO-V1.0/", "n": "GeoTestKit-PRO", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds-byte.github.io/AL-FALAK-RAMADAN-SIKLUS-33-TAHUN/", "n": "AL FALAK RAMADAN", "cat": "Religi & Islami"}, {"u": "https://adikds-byte.github.io/BENDUNGAN-TAILING-COMMAND-CENTRE/", "n": "Tailing Dam Command Centre", "cat": "Geoteknik & Sipil"}, {"u": "https://adikds-byte.github.io/DCPKit-Pro/", "n": "DCPKit Pro", "cat": "Geoteknik & Sipil"}, {"u": "https://newbieonline7.blogspot.com/", "n": "My Blog Engineering & AI", "cat": "Blog Artikel & AI"}];</script>
+<script>
+/* ================= MASJID AL-BARKAH v3.3 — MESIN ================= */
+(function(){
+  const $=id=>document.getElementById(id);
+  const pad=n=>String(n).padStart(2,'0');
+  const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const DAYS=['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const KAABA={lat:21.4225,lng:39.8262};
+  let MASJID={lat:-6.786862,lng:110.8498833,city:'Kudus',country:'Indonesia'};
+
+  /* ---------------- BUMI REALISTIS ---------------- */
+  const TEX={
+    day:'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
+    cloud:'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_clouds_1024.png',
+    spec:'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_specular_2048.jpg'
+  };
+  const earths=[];
+  function makeEarth(hostId,size){
+    const host=$(hostId); if(!host||typeof THREE==='undefined') return null;
+    host.innerHTML='';
+    const w=host.clientWidth||size||260, h=host.clientHeight||size||260;
+    const scene=new THREE.Scene();
+    const cam=new THREE.PerspectiveCamera(42,w/h,0.1,100); cam.position.set(0,0,4.2);
+    const rnd=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    rnd.setPixelRatio(Math.min(devicePixelRatio,2)); rnd.setSize(w,h);
+    rnd.domElement.style.cssText='width:100%;height:100%;display:block'; host.appendChild(rnd.domElement);
+    const loader=new THREE.TextureLoader();
+    const geo=new THREE.SphereGeometry(1.32,64,64);
+    const globe=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({map:loader.load(TEX.day),specularMap:loader.load(TEX.spec),shininess:14}));
+    scene.add(globe);
+    const clouds=new THREE.Mesh(new THREE.SphereGeometry(1.335,56,56),new THREE.MeshLambertMaterial({map:loader.load(TEX.cloud),transparent:true,opacity:.62,depthWrite:false}));
+    scene.add(clouds);
+    const glow=new THREE.Mesh(new THREE.SphereGeometry(1.46,48,48),new THREE.MeshBasicMaterial({color:0x22d3ee,transparent:true,opacity:.09,side:THREE.BackSide}));
+    scene.add(glow);
+    scene.add(new THREE.AmbientLight(0x9fd8ff,0.85));
+    const sun=new THREE.DirectionalLight(0xffffff,1.25); sun.position.set(3,2,4); scene.add(sun);
+    const rim=new THREE.DirectionalLight(0x22d3ee,0.55); rim.position.set(-4,-1,-2); scene.add(rim);
+    let run=true;
+    (function loop(){ if(!run) return; requestAnimationFrame(loop);
+      globe.rotation.y+=0.0018; clouds.rotation.y+=0.0026; glow.rotation.y+=0.0009;
+      rnd.render(scene,cam); })();
+    const o={stop(){run=false; try{rnd.dispose();}catch(e){} }, resize(){ const W=host.clientWidth,H=host.clientHeight; if(W&&H){cam.aspect=W/H;cam.updateProjectionMatrix();rnd.setSize(W,H);} }};
+    earths.push(o); return o;
+  }
+
+  /* ---------------- BOOT ---------------- */
+  let bootDone=false;
+  function bootTick(){
+    let p=0;
+    const steps=['Menyiapkan mesin waktu sholat','Memuat koordinat masjid','Menyusun jadwal hari ini','Menyiapkan tampilan Ramadhan','Hampir siap'];
+    const iv=setInterval(()=>{
+      p=Math.min(100,p+Math.random()*17+6);
+      const el=$('msbPct'), bar=$('msbProg').firstElementChild, st=$('msbSt');
+      if(el) el.textContent=Math.round(p)+'%';
+      if(bar) bar.style.width=p+'%';
+      if(st) st.textContent=steps[Math.min(steps.length-1,Math.floor(p/22))];
+      if(p>=100){ clearInterval(iv); const go=$('msbBootGo'); if(go) go.classList.add('on'); }
+    },320);
+  }
+  window.msbBootDone=function(){
+    const b=$('msbBoot'); if(!b) return;
+    const e=earths.find(x=>x); if(e) try{e.stop();}catch(_){}
+    b.classList.add('gone'); bootDone=true;
+    const ov=document.querySelector('.audio-overlay'); if(ov) ov.classList.add('hidden');
+    try{ if(typeof getAudioContext==='function') getAudioContext(); }catch(_){}
+    try{ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{}); }catch(_){}
+  };
+
+  /* ---------------- RAMADHAN ---------------- */
+  const RAMADHAN=[
+    {h:'1447 H',d:'2026-02-18'},{h:'1448 H',d:'2027-02-08'},{h:'1449 H',d:'2028-01-28'},
+    {h:'1450 H',d:'2029-01-16'},{h:'1451 H',d:'2030-01-06'},{h:'1452 H',d:'2031-12-26'}
+  ];
+  function ramadhanInfo(){
+    const now=new Date();
+    for(const r of RAMADHAN){
+      const st=new Date(r.d+'T00:00:00');
+      const en=new Date(st.getTime()+30*86400000);
+      if(now>=st && now<en) return {phase:'during',h:r.h,start:st,day:Math.floor((now-st)/86400000)+1,left:0};
+      if(now<st) return {phase:'before',h:r.h,start:st,day:0,left:st-now};
+    }
+    return {phase:'after',h:RAMADHAN[RAMADHAN.length-1].h,start:null,day:0,left:0};
+  }
+  function ramadhanTick(){
+    const i=ramadhanInfo(), now=new Date();
+    const t=$('rmTitle'), s=$('rmSub'), d=$('rmD'), hh=$('rmH'), mm=$('rmM'), ss=$('rmS'), pr=document.querySelector('#ramadhanProg i');
+    if(i.phase==='before'){
+      const diff=i.left, days=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), sec=Math.floor(diff%60000/1000);
+      if(t) t.textContent='MENUJU RAMADHAN '+i.h;
+      if(s) s.textContent='Perkiraan '+i.start.getDate()+' '+MONTHS[i.start.getMonth()]+' '+i.start.getFullYear()+' · menunggu penetapan pemerintah';
+      if(d) d.textContent=days; if(hh) hh.textContent=pad(h); if(mm) mm.textContent=pad(m); if(ss) ss.textContent=pad(sec);
+      if(pr) pr.style.width=Math.max(4,Math.min(100,(1-days/120)*100))+'%';
+    } else if(i.phase==='during'){
+      if(t) t.textContent='RAMADHAN '+i.h+' · HARI KE-'+i.day;
+      if(s) s.textContent='Selamat menunaikan ibadah puasa · semoga amal diterima';
+      if(d) d.textContent=i.day; if(hh) hh.textContent='00'; if(mm) mm.textContent='00'; if(ss) ss.textContent='00';
+      if(pr) pr.style.width=Math.min(100,i.day/30*100)+'%';
+    } else {
+      if(t) t.textContent='RAMADHAN '+i.h+' TELAH BERLALU';
+      if(s) s.textContent='Menghitung Ramadhan berikutnya';
+      if(pr) pr.style.width='100%';
+    }
+    // panel kecil bawaan aplikasi (bila ada)
+    const old=document.getElementById('ramadhanCountdown');
+    if(old) old.textContent = i.phase==='before' ? Math.floor(i.left/86400000)+' hari' : (i.phase==='during' ? 'Hari ke-'+i.day : '—');
+  }
+
+  /* ---------------- SCREENSAVER ---------------- */
+  const QUOTES=[
+    {c:'DOA',t:'“Ya Allah, berkahilah kami di bulan Rajab dan Sya’ban, dan sampaikanlah kami ke bulan Ramadhan.”',a:'HR. Ahmad'},
+    {c:'KATA BIJAK',t:'“Barangsiapa berpuasa Ramadhan dengan iman dan mengharap pahala, diampuni dosa-dosanya yang telah lalu.”',a:'HR. Bukhari & Muslim'},
+    {c:'MOTIVASI',t:'“Sebaik-baik amal adalah yang dilakukan terus-menerus, meskipun sedikit.”',a:'HR. Bukhari'},
+    {c:'DOA',t:'“Ya Allah, Engkaulah Tuhanku, tiada Tuhan selain Engkau. Engkau Maha Kuasa, aku lemah.”',a:'Doa Nabi Yunus'},
+    {c:'KATA BIJAK',t:'“Puasa bukan sekadar menahan lapar, tetapi menahan lisan, mata, dan hati dari yang sia-sia.”',a:'Imam Al-Ghazali'},
+    {c:'MOTIVASI',t:'“Bulan Ramadhan adalah madrasah jiwa; sehari saja di dalamnya lebih berharga dari seribu hari di luarnya.”',a:'Hadis riwayat'},
+    {c:'DOA',t:'“Ya Allah, jadikanlah masjid ini sumber keberkahan, ketenangan, dan persatuan bagi kaum muslimin.”',a:'Doa untuk masjid'},
+    {c:'KATA BIJAK',t:'“Sesungguhnya sholat itu mencegah dari perbuatan keji dan mungkar.”',a:'QS. Al-Ankabut: 45'}
+  ];
+  let qi=0, ssTimer=null, idleTimer=null;
+  function quoteTick(){
+    const q=QUOTES[qi%QUOTES.length]; qi++;
+    const c=$('msbQChip'), t=$('msbQT'), a=$('msbQA');
+    if(c) c.textContent=q.c; if(t) t.textContent=q.t; if(a) a.textContent='— '+q.a;
+  }
+  window.msbSsOn=function(){
+    const ss=$('msbSS'); if(!ss) return;
+    ss.classList.add('on'); quoteTick();
+    if(!ss._earth) ss._earth=makeEarth('msbSsEarth',280);
+    clearInterval(ssTimer); ssTimer=setInterval(quoteTick,8000);
+    const tick=()=>{ const n=new Date(); const c=$('msbSsClock'), d=$('msbSsDate');
+      if(c) c.textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
+      if(d) d.textContent=DAYS[n.getDay()]+', '+n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
+    }; tick(); ss._clock=setInterval(tick,1000);
+    const fab=$('msbFab'); if(fab) fab.style.display='none';
+  };
+  window.msbSsOff=function(){
+    const ss=$('msbSS'); if(!ss) return;
+    ss.classList.remove('on'); clearInterval(ssTimer); if(ss._clock) clearInterval(ss._clock);
+    const fab=$('msbFab'); if(fab) fab.style.display='';
+  };
+  function idleArm(){
+    clearTimeout(idleTimer);
+    idleTimer=setTimeout(()=>{ const ss=$('msbSS'); if(ss && !ss.classList.contains('on')) msbSsOn(); },4*60*1000);
+  }
+  ['click','keydown','touchstart','mousemove'].forEach(ev=>document.addEventListener(ev,idleArm,{passive:true}));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') msbSsOff(); });
+  document.addEventListener('click',e=>{ const ss=$('msbSS'); if(ss && ss.classList.contains('on') && e.target.closest('#msbSS')) msbSsOff(); });
+
+  /* ---------------- MODAL ---------------- */
+  window.msbOpen=function(id){ const m=$(id); if(m) m.classList.add('on'); };
+  window.msbClose=function(id){ const m=$(id); if(m) m.classList.remove('on'); };
+  document.querySelectorAll('.msbModal').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('on'); }));
+
+  /* ---------------- LATAR ---------------- */
+  function applyBg(url){
+    const img=$('bgMedia'); const layer=$('bgLayer');
+    if(!img) return;
+    img.onload=()=>{ img.style.display='block'; layer.style.background='#03090c'; };
+    img.onerror=()=>{ img.style.display='none'; alert('Gambar tidak bisa dimuat. Periksa tautan (harus berakhiran .jpg/.png/.webp atau tautan langsung).'); };
+    img.src=url;
+  }
+  window.msbApplyBgUrl=function(){
+    const v=($('msbBgUrl')||{}).value||'';
+    const url=v.trim(); if(!url) return alert('Tempel dulu tautan gambar masjid.');
+    try{ localStorage.setItem('msb_bg',JSON.stringify({type:'url',src:url,dim:$('msbBgDim').value})); }catch(_){}
+    applyBg(url); msbSetDim(($('msbBgDim')||{}).value||58);
+    msbClose('msbBgModal');
+  };
+  let pendingFile=null;
+  window.msbApplyBgFile=function(){
+    const f=($('msbBgFile')||{}).files; if(!f||!f[0]) return alert('Pilih dulu file gambar.');
+    const r=new FileReader();
+    r.onload=()=>{ pendingFile=r.result; applyBg(r.result); try{localStorage.setItem('msb_bg',JSON.stringify({type:'file',src:r.result,dim:$('msbBgDim').value}));}catch(_){ alert('File terlalu besar untuk disimpan permanen, tetapi sudah dipakai sekarang.'); } msbClose('msbBgModal'); };
+    r.readAsDataURL(f[0]);
+  };
+  window.msbClearBg=function(){
+    const img=$('bgMedia'); if(img){ img.style.display='none'; img.removeAttribute('src'); }
+    localStorage.removeItem('msb_bg'); msbClose('msbBgModal');
+  };
+  window.msbSetDim=function(v){
+    const sh=$('bgShade'); if(sh) sh.style.background='rgba(3,10,9,'+(v/100)+')';
+    const lab=$('msbDimVal'); if(lab) lab.textContent=v+'%';
+    try{ const s=JSON.parse(localStorage.getItem('msb_bg')||'{}'); s.dim=v; localStorage.setItem('msb_bg',JSON.stringify(s)); }catch(_){}
+  };
+  function restoreBg(){
+    try{
+      const s=JSON.parse(localStorage.getItem('msb_bg')||'{}');
+      if(s.dim!==undefined){ const sl=$('msbBgDim'); if(sl) sl.value=s.dim; msbSetDim(s.dim); }
+      if(s.src) applyBg(s.src);
+    }catch(_){}
+  }
+
+  /* ---------------- JADWAL & KOREKSI ---------------- */
+  const CORR_KEY='msb_corr', CITY_KEY='msb_city';
+  function corr(){ try{ return JSON.parse(localStorage.getItem(CORR_KEY)||'{}'); }catch(_){ return {}; } }
+  function addMin(t,mins){
+    if(!t) return t; const mt=String(t).trim().match(/^(\d{1,2}):(\d{2})/); if(!mt) return t;
+    let total=+mt[1]*60 + +mt[2] + (Number(mins)||0); total=((total%1440)+1440)%1440;
+    return pad(Math.floor(total/60))+':'+pad(total%60);
+  }
+  window.msbLoadTimes=function(city,country){
+    city=city||MASJID.city; country=country||MASJID.country;
+    const k=corr();
+    fetch('https://api.aladhan.com/v1/timingsByCity?city='+encodeURIComponent(city)+'&country='+encodeURIComponent(country)+'&method=20')
+      .then(r=>r.json()).then(d=>{
+        const t=d.data.timings, map={Fajr:'Fajr',Sunrise:'Sunrise',Dhuhr:'Dhuhr',Asr:'Asr',Maghrib:'Maghrib',Isha:'Isha'};
+        const use={Fajr:k.subuh||0,Dhuhr:k.dzuhur||0,Asr:k.ashar||0,Maghrib:k.maghrib||0,Isha:k.isya||0};
+        Object.keys(map).forEach(kk=>{
+          const el=$(kk); if(!el) return;
+          const val=addMin(t[kk].split(' ')[0], use[kk]||0);
+          el.textContent=val;
+        });
+        // sinkronkan variabel global aplikasi agar hitung mundur ikut terkoreksi
+        try{
+          const pt={};
+          Object.keys(t).forEach(kk=>{ pt[kk]= addMin(t[kk].split(' ')[0], use[kk]||0)+' (WIB)'; });
+          prayerTimes=pt;
+        }catch(_){}
+        try{ const loc=document.getElementById('lokasiMasjid'); if(loc && loc.textContent.indexOf(city)<0) loc.textContent=city; }catch(_){}
+      }).catch(()=>{});
+  };
+  window.msbSaveSettings=function(){
+    const city=($('msbCity')||{}).value||'Kudus';
+    const country=($('msbCountry')||{}).value||'Indonesia';
+    const k={subuh:+($('msbCorrSubuh')||{}).value||0,dzuhur:+($('msbCorrDzuhur')||{}).value||0,
+             ashar:+($('msbCorrAshar')||{}).value||0,maghrib:+($('msbCorrMaghrib')||{}).value||0,
+             isya:+($('msbCorrIsya')||{}).value||0};
+    localStorage.setItem(CORR_KEY,JSON.stringify(k));
+    localStorage.setItem(CITY_KEY,JSON.stringify({city:city,country:country}));
+    MASJID.city=city; MASJID.country=country;
+    msbLoadTimes(city,country); msbClose('msbSetModal');
+    msbSay('bot','Jadwal diperbarui untuk <b style="color:#8ff0c2">'+city+'</b> dengan koreksi waktu tersimpan.');
+  };
+  function restoreSettings(){
+    try{ const c=JSON.parse(localStorage.getItem(CITY_KEY)||'{}');
+      if(c.city){ MASJID.city=c.city; MASJID.country=c.country||'Indonesia';
+        const ci=$('msbCity'); if(ci) ci.value=c.city; const co=$('msbCountry'); if(co) co.value=MASJID.country; } }catch(_){}
+    try{ const k=corr();
+      if(k.subuh!==undefined){ const a=$('msbCorrSubuh'); if(a) a.value=k.subuh; }
+      if(k.dzuhur!==undefined){ const a=$('msbCorrDzuhur'); if(a) a.value=k.dzuhur; }
+      if(k.ashar!==undefined){ const a=$('msbCorrAshar'); if(a) a.value=k.ashar; }
+      if(k.maghrib!==undefined){ const a=$('msbCorrMaghrib'); if(a) a.value=k.maghrib; }
+      if(k.isya!==undefined){ const a=$('msbCorrIsya'); if(a) a.value=k.isya; } }catch(_){}
+  }
+
+  /* ---------------- KIBLAT ---------------- */
+  function bearing(lat1,lng1,lat2,lng2){
+    const toR=d=>d*Math.PI/180;
+    const φ1=toR(lat1),φ2=toR(lat2),Δλ=toR(lng2-lng1);
+    const y=Math.sin(Δλ)*Math.cos(φ2);
+    const x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ);
+    return (Math.atan2(y,x)*180/Math.PI+360)%360;
+  }
+  window.msbQibla=function(){
+    const deg=bearing(MASJID.lat,MASJID.lng,KAABA.lat,KAABA.lng);
+    msbOpen('msbQiblaModal');
+    const n=$('msbQiblaNeedle'); if(n) n.style.transform='rotate('+deg.toFixed(1)+'deg)';
+    const dd=$('msbQiblaDeg'); if(dd) dd.textContent=deg.toFixed(1)+'°';
+    const s=$('msbQiblaSub');
+    if(s) s.textContent='Dari '+MASJID.city+' ('+MASJID.lat.toFixed(4)+', '+MASJID.lng.toFixed(4)+') ke Ka’bah, Makkah';
+  };
+
+  /* ---------------- CHATBOT ---------------- */
+  function msbSay(who,html){
+    const box=$('msbChatBody'); if(!box) return null;
+    const d=document.createElement('div'); d.className='msbMsg '+(who==='user'?'u':'b');
+    d.innerHTML = who==='user' ? html : '<b class="h">ASISTEN MASJID</b>'+html;
+    box.appendChild(d); box.scrollTop=box.scrollHeight; return d;
+  }
+  window.msbChatToggle=function(force){
+    const c=$('msbChat'); if(!c) return;
+    const on = force===undefined ? !c.classList.contains('on') : !!force;
+    c.classList.toggle('on',on);
+    if(on && !c._hello){ c._hello=1; msbSay('bot','Assalamu’alaikum. Saya asisten digital Masjid Al-Barkah. Tanyakan jadwal sholat, Ramadhan, tarawih, zakat, doa, atau arah kiblat. Untuk hal umum saya carikan dari Wikipedia dan sumber lain.'); }
+  };
+  const SRC=[
+    ['Wikipedia ID','https://id.wikipedia.org/w/index.php?search='],
+    ['Wikipedia EN','https://en.wikipedia.org/w/index.php?search='],
+    ['Google','https://www.google.com/search?q='],
+    ['Bing','https://www.bing.com/search?q='],
+    ['ChatGPT','https://chat.openai.com/?q='],
+    ['Gemini','https://gemini.google.com/app?q=']
+  ];
+  function srcGrid(q){
+    return '<div class="msbSrc">'+SRC.map(s=>'<a href="'+s[1]+encodeURIComponent(q)+'" target="_blank" rel="noopener">'+s[0]+'</a>').join('')+'</div>';
+  }
+  function nowJam(){ const n=new Date(); return pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds()); }
+  function tglIndo(){ const n=new Date(); return DAYS[n.getDay()]+', '+n.getDate()+' '+MONTHS[n.getMonth()]+' '+n.getFullYear(); }
+  function jadwalNow(){
+    const ids=[['Imsak','Imsak'],['Subuh','Fajr'],['Syuruq','Sunrise'],['Dzuhur','Dhuhr'],['Ashar','Asr'],['Maghrib','Maghrib'],['Isya','Isha']];
+    return '<br>'+ids.map(p=>{ const el=$(p[1]); return p[0]+' <b style="color:#e8c46a">'+(el?el.textContent:'—')+'</b>'; }).join(' · ');
+  }
+  const KB=[
+    {k:['ramadhan','ramadan','puasa mulai','kapan puasa'], a:()=>{ const i=ramadhanInfo();
+      if(i.phase==='before') return 'Ramadhan '+i.h+' diperkirakan mulai <b style="color:#e8c46a">'+i.start.getDate()+' '+MONTHS[i.start.getMonth()]+' '+i.start.getFullYear()+'</b>, sekitar '+Math.floor(i.left/86400000)+' hari lagi. Tanggal pasti menunggu sidang isbat pemerintah.'+srcGrid('Ramadhan 1448 H');
+      if(i.phase==='during') return 'Saat ini <b style="color:#e8c46a">Ramadhan '+i.h+' hari ke-'+i.day+'</b>. Semoga ibadah kita diterima.'+srcGrid('Ramadhan');
+      return 'Ramadhan '+i.h+' telah berlalu. Ramadhan berikutnya akan dihitung otomatis oleh aplikasi.'; } },
+    {k:['tarawih','qiyam','sholat malam ramadhan'], a:()=>'Sholat tarawih adalah sholat malam yang dikerjakan setelah Isya pada bulan Ramadhan. Jumlah rakaatnya fleksibel: 8 rakaat plus 3 witir, atau 20 rakaat plus 3 witir. Masjid Al-Barkah biasanya mengumumkan jadwalnya menjelang Ramadhan.'+srcGrid('Sholat tarawih')},
+    {k:['zakat fitrah','fitrah','zakat'], a:()=>'Zakat fitrah wajib bagi setiap muslim yang mampu, sebesar 1 sha’ makanan pokok, di Indonesia umumnya 2,5 kg beras atau setara nilainya, ditunaikan sebelum sholat Idul Fitri.'+srcGrid('Zakat fitrah')},
+    {k:['sahur','imsak'], a:()=>'Sahur adalah makan sebelum fajar. Imsak dalam jadwal adalah pengingat berhenti makan beberapa menit sebelum Subuh. Di layar ini, Imsak dihitung dari jadwal setempat.'+jadwalNow()+srcGrid('Sahur')},
+    {k:['doa buka','berbuka','doa puasa'], a:()=>'Doa berbuka: “Allahumma laka shumtu wa bika amantu wa ‘ala rizqika afthartu.” Artinya: Ya Allah, untuk-Mu aku berpuasa, kepada-Mu aku beriman, dan dengan rezeki-Mu aku berbuka.'+srcGrid('Doa berbuka puasa')},
+    {k:['kiblat','arah sholat','qiblat'], a:()=>{ const d=bearing(MASJID.lat,MASJID.lng,KAABA.lat,KAABA.lng);
+      return 'Arah kiblat dari '+MASJID.city+' adalah <b style="color:#e8c46a">'+d.toFixed(1)+'°</b> dari utara sejati (searah jarum jam). Buka tombol KIBLAT untuk melihat jarum kompasnya.'+srcGrid('Arah kiblat'); } },
+    {k:['jadwal','waktu sholat','jam sholat','subuh','dzuhur','ashar','maghrib','isya'], a:()=>'Jadwal hari ini ('+tglIndo()+')'+jadwalNow()+srcGrid('Jadwal sholat hari ini')},
+    {k:['adzan','azan','iqomah','iqamah'], a:()=>'Adzan dikumandangkan saat masuk waktu sholat. Iqomah adalah seruan tanda sholat berjamaah segera dimulai, biasanya 5–10 menit setelah adzan. Layar ini menampilkan hitung mundur ke waktu sholat berikutnya.'+srcGrid('Adzan dan iqomah')},
+    {k:['hijriah','hijriyah','kalender islam'], a:()=>'Kalender Hijriah lebih pendek sekitar 11 hari dari Masehi, karena itu Ramadhan bergeser tiap tahun. Aplikasi ini menghitung Ramadhan dari tabel resmi Kemenag dan menyesuaikannya otomatis.'+srcGrid('Kalender Hijriah')},
+    {k:['doa','doa quran','doa al-qur\'an','doa apa','doa apa saja'], a:()=>'Di tengah layar ada panel DOA DARI AL-QUR\'AN yang menampilkan 14 doa pilihan secara bergantian setiap 12 detik, lengkap dengan tulisan Arab, transliterasi latin, terjemahan Indonesia, dan nama surah serta ayatnya (misalnya QS. Al-Baqarah 2:201). Tekan tombol \u2039 \u203A atau ketuk titik di bawah kartu untuk pindah doa; pergantian otomatis berhenti sementara saat kursor berada di atas kartu.'},
+    {k:['latar','background','gambar masjid','foto'], a:()=>'Buka tombol <b>LATAR</b>, tempel tautan gambar masjid dari internet, lalu tekan TERAPKAN LINK. Bisa juga unggah file dari galeri dan mengatur kecerahannya supaya angka jadwal tetap terbaca.'},
+    {k:['screensaver','layar','hemat'], a:()=>'Screensaver aktif sendiri setelah 4 menit tanpa sentuhan: bumi berputar, jam besar, dan kutipan doa, kata bijak, serta motivasi bergilir tiap 8 detik. Sentuh layar atau tekan Esc untuk kembali.'},
+    {k:['fitur','bantuan','cara pakai'], a:()=>'Fitur tersedia: jadwal sholat otomatis, hitung mundur, penanda Ramadhan, latar gambar dari tautan, kiblat, koreksi waktu, screensaver, direktori 61 aplikasi, dan asisten ini.'},
+    {k:['jam','pukul','sekarang'], a:()=>'Sekarang pukul <b style="color:#e8c46a">'+nowJam()+' WIB</b>, '+tglIndo()+'.'+jadwalNow()},
+    {k:['tanggal','hari ini'], a:()=>'Hari ini '+tglIndo()+'.'}
+  ];
+  async function wiki(q){
+    try{
+      const s=await fetch('https://id.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&format=json&origin=*&srlimit=1');
+      const sd=await s.json(); const hit=sd?.query?.search?.[0]; if(!hit) return null;
+      const title=hit.title;
+      const r=await fetch('https://id.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_')));
+      if(!r.ok) return null; const j=await r.json();
+      return {title:j.title||title, ext:(j.extract||'').slice(0,700)};
+    }catch(_){ return null; }
+  }
+  window.msbAsk=async function(text){
+    const q=(text||'').trim(); if(!q) return;
+    const inp=$('msbChatInput'); if(inp) inp.value='';
+    msbSay('user',q.replace(/</g,'&lt;'));
+    const low=q.toLowerCase();
+    const hit=KB.find(x=>x.k.some(k=>low.includes(k)));
+    if(hit){ msbSay('bot',hit.a()); return; }
+    const think=msbSay('bot','<span style="color:#8fc7b6">Mencari jawaban…</span>');
+    const w=await wiki(q);
+    if(w && w.ext){
+      think.innerHTML='<b class="h">'+w.title+'</b>'+w.ext.replace(/</g,'&lt;')+srcGrid(w.title);
+    } else {
+      think.innerHTML='Saya belum menemukan jawaban yang pas. Coba kata kunci lain, misalnya Ramadhan, tarawih, zakat, kiblat, jadwal, atau doa. Berikut sumber yang bisa dibuka:'+srcGrid(q);
+    }
+  };
+
+  /* ---------------- MY APPS ---------------- */
+  window.msbRenderApps=function(q){
+    const box=$('msbAppsGrid'); if(!box) return;
+    q=(q||'').toLowerCase();
+    const list=(window.MY_APPS_61||[]).filter(a=>!q||a.n.toLowerCase().includes(q)||a.cat.toLowerCase().includes(q));
+    box.innerHTML=list.map(a=>'<a href="'+a.u+'" target="_blank" rel="noopener"><b>'+a.n+'</b><span>'+a.cat+'</span></a>').join('') || '<p class="sm">Tidak ada yang cocok.</p>';
+  };
+  window.msbApps=function(){ msbOpen('msbAppsModal'); msbRenderApps(''); };
+
+  /* ---------------- HELP ---------------- */
+  const HELP=[
+    ['Jadwal otomatis','Waktu sholat diambil dari API Aladhan sesuai kota, dengan koreksi menit per waktu di menu Pengaturan.'],
+    ['Doa Al-Qur\'an','Panel di tengah layar menampilkan 14 doa pilihan dari Al-Qur\'an bergantian tiap 12 detik: tulisan Arab, latin, arti, dan nama surah. Geser dengan tombol \u2039 \u203A atau ketuk titik navigasi.'] ,
+    ['Hitung mundur','Angka besar menunjukkan sisa waktu ke sholat berikutnya, diperbarui setiap detik.'],
+    ['Penanda Ramadhan','Banner atas menampilkan sisa hari ke Ramadhan, lalu otomatis berganti menjadi Hari ke-n saat Ramadhan tiba.'],
+    ['Latar masjid','Tempel tautan gambar dari internet atau unggah file, atur kecerahannya, dan simpan permanen di perangkat.'],
+    ['Screensaver','Aktif setelah 4 menit diam: bumi berputar, jam, dan kutipan bergilir. Sentuh layar untuk kembali.'],
+    ['Asisten digital','Tombol robot menjawab pertanyaan jadwal, Ramadhan, zakat, doa, kiblat, dan mencari Wikipedia bila perlu.'],
+    ['Kiblat','Menghitung bearing sebenarnya ke Ka’bah dari koordinat masjid, ditampilkan sebagai jarum kompas.'],
+    ['My Aplikasi','Direktori 61 aplikasi digital karya Ir. Mohamad Hartadi.']
+  ];
+  function renderHelp(){
+    const box=$('msbHelpList'); if(!box) return;
+    box.innerHTML=HELP.map(h=>'<div style="background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);border-radius:11px;padding:9px 11px"><b style="color:#8ff0c2;font-size:11px">'+h[0]+'</b><div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">'+h[1]+'</div></div>').join('');
+  }
+
+  /* ---------------- INIT ---------------- */
+  function init(){
+    makeEarth('msbEarthWrap',260);
+    bootTick(); restoreSettings(); restoreBg(); renderHelp();
+    ramadhanTick(); setInterval(ramadhanTick,1000);
+    setTimeout(()=>msbLoadTimes(),1200);
+    setInterval(()=>msbLoadTimes(),30*60*1000);
+    idleArm();
+    const go=$('msbBootGo'); if(go) go.addEventListener('click',()=>msbBootDone());
+    // buka cepat bila boot tidak disentuh
+    setTimeout(()=>{ if(!bootDone) msbBootDone(); },9000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+
+<!-- ===== v3.3 MODAL PENGATURAN TAMPILAN ===== -->
+
+
+<script>
+/* ================= v3.3 PENGATURAN LENGKAP ================= */
+(function(){
+  const $ = id => document.getElementById(id);
+  const KEY = 'msb_set_v3';
+  /* v3.4: latar bawaan = foto masjid */
+  const DEFBG='https://media.base44.com/images/public/6a48d0b8744792061258ff83/543208d38_masjid_terang.jpg';
+  window.MSB_DEF_BG=DEFBG;
+  const DEF = {
+    name:'MASJID AL HUDA',
+    running:'🕌 Ust. Adi Masjid Al-Huda – “Persiapan Menuju Bulan Suci Ramadhan” | Jadwal Sholat Kota Kudus, Jawa Tengah',
+    corr:{subuh:0,dzuhur:0,ashar:0,maghrib:0,isya:0,syuruq:0},
+    theme:'nabawi', city:'Kudus', country:'Indonesia', gps:false,
+    clock24:true, seconds:true, showRamadhan:true, scale:100, ssIdle:4,
+    bg:DEFBG, dim:50, lat:-6.786862, lng:110.8498833, addr:'Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326', mapMode:'photo'
+  };
+  window.MSBS = JSON.parse(JSON.stringify(DEF));
+  let DRAFT = null;            // salinan saat modal dibuka
+  let RAW = null;              // timings mentah dari API
+
+  function load(){
+    try{ const s=JSON.parse(localStorage.getItem(KEY)||'{}'); Object.assign(MSBS,s);
+      MSBS.corr=Object.assign({},DEF.corr,s.corr||{});
+    }catch(e){}
+    // v3.4: sekali saat pembaruan, latar dikembalikan ke foto masjid bawaan
+    try{
+      const ver=localStorage.getItem('msb_defv');
+      if(ver!=='34'){
+        if(!MSBS.bg) MSBS.bg=DEFBG;
+        if(!MSBS.mapMode || MSBS.mapMode==='sat' || MSBS.mapMode==='street') MSBS.mapMode='photo';
+        localStorage.setItem('msb_defv','34');
+        save();
+      }
+    }catch(e){}
+  }
+  function save(){ MSBS.updated=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(MSBS)); }
+
+  /* ---------- terapkan ke tampilan ---------- */
+  window.msbApplyAll = function(){
+    document.body.setAttribute('data-msbtheme', MSBS.theme||'nabawi');
+    // nama masjid
+    const h1=document.querySelector('.header-left h1');
+    if(h1 && MSBS.name){ h1.textContent=MSBS.name; document.title=MSBS.name+' — Jadwal Sholat'; }
+    // running text
+    const mq=document.querySelector('.footer marquee');
+    if(mq && MSBS.running) mq.textContent=MSBS.running;
+    // jam & layar
+    document.body.style.zoom=(Number(MSBS.scale)||100)/100;
+    const bar=$('ramadhanBar'); if(bar) bar.style.display=MSBS.showRamadhan?'':'none';
+    // tombol aktif
+    document.querySelectorAll('#msbThemes button').forEach(b=>b.classList.toggle('on',b.dataset.th===MSBS.theme));
+    ['msbTog24','msbTogSec','msbTogRam'].forEach((id,i)=>{
+      const el=$(id); if(el) el.classList.toggle('on', [MSBS.clock24,MSBS.seconds,MSBS.showRamadhan][i]);
+    });
+    document.querySelectorAll('#msbSetModal [data-sc]').forEach(b=>b.classList.toggle('on',Number(b.dataset.sc)===Number(MSBS.scale)));
+    document.querySelectorAll('#msbSetModal [data-ss]').forEach(b=>b.classList.toggle('on',Number(b.dataset.ss)===Number(MSBS.ssIdle)));
+    const g=$('msbTogGps'); if(g) g.classList.toggle('on',!!MSBS.gps);
+    // galeri
+    document.querySelectorAll('#msbGallery button').forEach(b=>b.classList.toggle('on',b.dataset.bg===MSBS.bg));
+  };
+
+  /* ---------- jam ---------- */
+  function tickClock(){
+    const el=$('clock'); if(!el) return;
+    const n=new Date(); let h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ap='';
+    if(!MSBS.clock24){ ap=h>=12?' PM':' AM'; h=h%12||12; }
+    const p=x=>String(x).padStart(2,'0');
+    el.textContent=p(h)+':'+p(m)+(MSBS.seconds?':'+p(s):'')+ap;
+  }
+  setInterval(tickClock,1000); tickClock();
+
+  /* ---------- jadwal + koreksi ---------- */
+  function addMin(t,mins){
+    const mt=String(t||'').trim().match(/^(\d{1,2}):(\d{2})/); if(!mt) return t||'--:--';
+    let tot=+mt[1]*60+ +mt[2]+(Number(mins)||0); tot=((tot%1440)+1440)%1440;
+    const p=x=>String(x).padStart(2,'0');
+    return p(Math.floor(tot/60))+':'+p(tot%60);
+  }
+  function render(){
+    if(!RAW) return;
+    const map={Fajr:'subuh',Dhuhr:'dzuhur',Asr:'ashar',Maghrib:'maghrib',Isha:'isya',Sunrise:'syuruq'};
+    Object.keys(map).forEach(k=>{
+      const el=$(k); if(!el) return;
+      el.textContent=addMin(RAW[k], MSBS.corr[map[k]]);
+    });
+    // hitung mundur ikut terkoreksi
+    try{
+      const pt={};
+      Object.keys(RAW).forEach(k=>{ pt[k]=addMin(RAW[k], (MSBS.corr[map[k]]||0))+' (WIB)'; });
+      prayerTimes=pt;
+    }catch(e){}
+  }
+  window.msbFetchTimes = function(){
+    const done=d=>{ RAW=d; render(); };
+    if(MSBS.gps && MSBS.lat && MSBS.lng){
+      fetch('https://api.aladhan.com/v1/timings?latitude='+MSBS.lat+'&longitude='+MSBS.lng+'&method=20')
+        .then(r=>r.json()).then(j=>done(j.data.timings)).catch(()=>{});
+      return;
+    }
+    const city=MSBS.city||'Kudus', country=MSBS.country||'Indonesia';
+    fetch('https://api.aladhan.com/v1/timingsByCity?city='+encodeURIComponent(city)+'&country='+encodeURIComponent(country)+'&method=20')
+      .then(r=>r.json()).then(j=>done(j.data.timings)).catch(()=>{});
+  };
+
+  /* ---------- draft saat modal dibuka ---------- */
+  const _open = window.msbOpen;
+  window.msbOpen = function(id){
+    if(typeof _open==='function') _open(id);
+    if(id==='msbSetModal') fillForm();
+  };
+  function fillForm(){
+    DRAFT=JSON.parse(JSON.stringify(MSBS));
+    const n=$('msbName'); if(n) n.value=MSBS.name;
+    const r=$('msbRun'); if(r) r.value=MSBS.running;
+    const c=$('msbCity3'); if(c) c.value=MSBS.city||'';
+    Object.keys(DEF.corr).forEach(k=>{ const el=$('corr'+k.charAt(0).toUpperCase()+k.slice(1)); if(el) el.textContent=MSBS.corr[k]||0; });
+    const u=$('msbBgUrl3'); if(u) u.value=(MSBS.bg||'').startsWith('data:')?'':(MSBS.bg||'');
+    const d=$('msbBgDim3'), dv=$('msbDimVal3');
+    if(d) d.value=MSBS.dim||58; if(dv) dv.textContent=(MSBS.dim||58)+'%';
+    msbApplyAll();
+  }
+  window.msbCorrStep=function(k,d){
+    MSBS.corr[k]=(Number(MSBS.corr[k])||0)+d;
+    if(MSBS.corr[k]>60) MSBS.corr[k]=60; if(MSBS.corr[k]<-60) MSBS.corr[k]=-60;
+    const el=$('corr'+k.charAt(0).toUpperCase()+k.slice(1)); if(el) el.textContent=MSBS.corr[k];
+    render();
+  };
+  window.msbPickTheme=function(t){ MSBS.theme=t; msbApplyAll(); };
+  window.msbToggle=function(k){ MSBS[k]=!MSBS[k]; msbApplyAll(); };
+  window.msbSetScale=function(v){ MSBS.scale=v; msbApplyAll(); };
+  window.msbSetSs=function(v){ MSBS.ssIdle=v; msbApplyAll(); };
+  window.msbToggleGps=function(){
+    MSBS.gps=!MSBS.gps; msbApplyAll();
+    const note=$('msbGpsNote');
+    if(MSBS.gps){
+      if(note) note.textContent='Meminta izin lokasi…';
+      navigator.geolocation.getCurrentPosition(pos=>{
+        MSBS.lat=+pos.coords.latitude.toFixed(4); MSBS.lng=+pos.coords.longitude.toFixed(4);
+        if(note) note.textContent='Lokasi terdeteksi: '+MSBS.lat+', '+MSBS.lng+' (jadwal mengikuti koordinat ini).';
+        msbFetchTimes();
+      },err=>{
+        if(note) note.textContent='Izin lokasi tidak diberikan. Jadwal tetap memakai nama kota.';
+        MSBS.gps=false; msbApplyAll();
+      },{timeout:8000,maximumAge:600000});
+    } else {
+      if(note) note.textContent='Bila GPS aktif, jadwal dihitung dari koordinat perangkat, bukan nama kota.';
+      msbFetchTimes();
+    }
+  };
+
+  /* ---------- latar ---------- */
+  function setBg(src){
+    const img=$('bgMedia'); if(!img) return;
+    MSBS.bg=src;
+    if(!src){ img.style.display='none'; img.removeAttribute('src'); return; }
+    img.onload=()=>{ img.style.display='block'; };
+    img.onerror=()=>{ alert('Gambar tidak bisa dimuat. Pastikan tautan langsung ke file gambar (jpg/png/webp).'); };
+    img.src=src;
+  }
+  window.msbPickPreset=function(i){
+    const b=document.querySelectorAll('#msbGallery button')[i]; if(!b) return;
+    setBg(b.dataset.bg); msbSetDim(MSBS.dim||58); msbApplyAll();
+  };
+  window.msbPickFile=function(inp){
+    const f=inp.files && inp.files[0]; if(!f) return;
+    if(f.size>4.5*1024*1024){ if(!confirm('Foto ini '+ (f.size/1048576).toFixed(1) +' MB, cukup besar. Tetap dipakai? (mungkin tidak tersimpan permanen)')) return; }
+    const r=new FileReader();
+    r.onload=()=>{ setBg(r.result); msbSetDim(MSBS.dim||58); msbApplyAll(); };
+    r.readAsDataURL(f);
+  };
+  window.msbApplyUrl3=function(){
+    const v=($('msbBgUrl3')||{}).value||''; const u=v.trim();
+    if(!u) return alert('Tempel dulu tautan gambar masjid.');
+    setBg(u); msbSetDim(MSBS.dim||58); msbApplyAll();
+  };
+  window.msbSetDim=function(v){
+    MSBS.dim=v;
+    const sh=$('bgShade'); if(sh) sh.style.background='rgba(3,10,9,'+(v/100)+')';
+    const l1=$('msbDimVal3'); if(l1) l1.textContent=v+'%';
+    const l2=$('msbDimVal2'); if(l2) l2.textContent=v+'%';
+    const l3=$('msbDimVal'); if(l3) l3.textContent=v+'%';
+  };
+  window.msbBgReset=function(){ setBg(''); msbApplyAll(); };
+
+  /* ---------- simpan / batal ---------- */
+  window.msbSaveSet=function(){
+    const n=$('msbName'), r=$('msbRun'), c=$('msbCity3');
+    if(n && n.value.trim()) MSBS.name=n.value.trim();
+    if(r) MSBS.running=r.value.trim();
+    if(c) MSBS.city=c.value.trim()||MSBS.city;
+    save(); msbApplyAll(); msbFetchTimes();
+    msbClose('msbSetModal');
+    try{ msbSay('bot','Pengaturan tersimpan. Nama masjid, running text, tema, koreksi waktu, dan latar sudah diperbarui.'); }catch(e){}
+  };
+  window.msbCancelSet=function(){
+    if(DRAFT) Object.assign(MSBS, DRAFT);
+    msbApplyAll(); msbClose('msbSetModal');
+  };
+
+  /* ---------- init ---------- */
+  load();
+  window.msbApplyAll();
+  setTimeout(()=>msbFetchTimes(),1300);
+  setInterval(()=>msbFetchTimes(),30*60*1000);
+  const _bgApply=window.applyBg;
+  if(typeof _bgApply==='function'){
+    window.applyBg=function(u){ _bgApply.apply(null,arguments); MSBS.bg=u; save(); };
+  }
+  // pulihkan latar dari penyimpanan lama (msb_bg) bila baru
+  if(!MSBS.bg){
+    try{ const old=JSON.parse(localStorage.getItem('msb_bg')||'{}'); if(old.src){ MSBS.bg=old.src; MSBS.dim=old.dim||58; } }catch(e){}
+  }
+  if(MSBS.bg) setBg(MSBS.bg);
+  if(MSBS.dim) msbSetDim(MSBS.dim);
+})();
+</script>
+
+<style id="msbV32Css">
+/* ===== v3.3 PETA MASJID SEBAGAI LATAR ===== */
+#msbMap{position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none;display:none;
+  background:radial-gradient(circle at 50% 40%,#0b2a24,#04100d 70%)}
+#msbMapTiles{position:absolute;left:50%;top:50%;width:0;height:0;transform-origin:0 0;will-change:transform}
+#msbMapTiles img{position:absolute;width:256px;height:256px;display:block;image-rendering:auto}
+#msbPin{position:fixed;left:50%;top:50%;transform:translate(-50%,-100%);z-index:3;display:none;
+  pointer-events:none;text-align:center;filter:drop-shadow(0 10px 16px rgba(0,0,0,.55))}
+#msbPin .pin{font-size:36px;line-height:1}
+#msbPin .lbl{margin-top:3px;background:rgba(4,20,16,.88);border:1px solid rgba(232,196,106,.60);
+  color:#ffe6ab;font:800 10px/1.45 'Segoe UI';letter-spacing:.05em;padding:3px 9px;border-radius:10px;
+  white-space:nowrap;max-width:60vw;overflow:hidden;text-overflow:ellipsis}
+#msbMapAttr{position:fixed;right:8px;bottom:6px;z-index:3;display:none;
+  font:600 8.5px/1 'Segoe UI';color:rgba(255,255,255,.55);background:rgba(0,0,0,.35);padding:3px 6px;border-radius:6px}
+
+/* tombol mode peta di pengaturan */
+.msbModes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 4px}
+.msbModes button{border-radius:10px;border:1px solid var(--panelBd);background:rgba(0,0,0,.3);
+  color:var(--txt);font:800 9.5px/1.3 'Segoe UI';letter-spacing:.03em;padding:8px 4px;cursor:pointer}
+.msbModes button.on{background:color-mix(in srgb,var(--a1) 40%,transparent);border-color:var(--a2);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--a2) 22%,transparent)}
+body[data-msbtheme="marmer"] .msbModes button{background:#fff;color:#0b1f1a}
+</style>
+<script>
+/* ================= v3.3 MASJID AL HUDA + LATAR PETA ================= */
+(function(){
+  const $=i=>document.getElementById(i);
+  const DEF2={ addr:'Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326',
+               lat:-6.786862, lng:110.8498833, mapMode:'sat' };
+  const OLD_NAMES=['Masjid Al-Barkah','MASJID AL-BARKAH','MASJID AL-BARKAH CILEUNGSI','Masjid Al-Barkah Cileungsi'];
+
+  function state(){ return window.MSBS || null; }
+  function persist(){ try{ localStorage.setItem('msb_set_v3', JSON.stringify(window.MSBS)); }catch(e){} }
+
+  /* --- migrasi nama/alamat/koordinat ke Masjid Al Huda --- */
+  function migrate(){
+    const s=state(); if(!s) return;
+    if(OLD_NAMES.indexOf(String(s.name||'').trim())>=0 || !s.name) s.name='MASJID AL HUDA';
+    if(!s.addr || /Cileungsi|Cibubur/i.test(String(s.addr))) s.addr=DEF2.addr;
+    if(!s.lat || !s.lng){ s.lat=DEF2.lat; s.lng=DEF2.lng; }
+    if(!s.city || /Jonggol|Cileungsi/i.test(String(s.city))) s.city='Kudus';
+    if(!s.mapMode) s.mapMode=DEF2.mapMode;
+    persist();
+  }
+
+  /* --- konversi koordinat ke piksel dunia --- */
+  function px(lat,lng,z){
+    const n=Math.pow(2,z)*256;
+    const x=(lng+180)/360*n;
+    const s=Math.sin(lat*Math.PI/180)*(lat>85?85:lat<-85?-85:1);
+    const y=(0.5-Math.log((1+s)/(1-s))/(4*Math.PI))*n;
+    return {x:x,y:y};
+  }
+
+  const TILE={
+    sat:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    street:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+  };
+
+  window.msbShowMap=function(mode,z){
+    const s=state(); if(!s) return;
+    mode = mode || s.mapMode || 'sat';
+    z = z || 18;
+    const wrap=$('msbMap'), box=$('msbMapTiles'), pin=$('msbPin'), attr=$('msbMapAttr');
+    if(!wrap||!box) return;
+    if(mode!=='sat' && mode!=='street'){ wrap.style.display='none'; if(pin)pin.style.display='none'; if(attr)attr.style.display='none'; return; }
+    const lat=Number(s.lat), lng=Number(s.lng);
+    if(!isFinite(lat)||!isFinite(lng)) return;
+    const p=px(lat,lng,z);
+    const cols=5, rows=4, t=256;
+    const x0=Math.floor((p.x-cols*t/2)/t), y0=Math.floor((p.y-rows*t/2)/t);
+    box.innerHTML='';
+    let loaded=0;
+    for(let j=0;j<rows;j++){
+      for(let i=0;i<cols;i++){
+        const tx=x0+i, ty=y0+j;
+        const im=document.createElement('img');
+        im.alt=''; im.loading='eager'; im.referrerPolicy='no-referrer';
+        im.onload=()=>{loaded++; if(loaded===1){ wrap.style.display='block'; } };
+        im.onerror=()=>{ im.style.visibility='hidden'; };
+        im.src=TILE[mode].replace('{z}',z).replace('{y}',ty).replace('{x}',tx);
+        im.style.left=(tx*t-p.x)+'px';
+        im.style.top =(ty*t-p.y)+'px';
+        box.appendChild(im);
+      }
+    }
+    function fit(){
+      const sc=Math.max(innerWidth/(cols*t), innerHeight/(rows*t))*1.06;
+      box.style.transform='scale('+sc+')';
+    }
+    fit();
+    window.__msbMapFit=fit;
+    wrap.style.display='block';
+    // peta dibuat lebih terang agar citra masjid jelas terlihat
+    const sh0=document.getElementById('bgShade');
+    if(sh0) sh0.style.background='rgba(3,10,9,'+(((Number(s.dim)||46)/100)*0.5).toFixed(3)+')';
+    if(pin){ pin.style.display='block'; const l=pin.querySelector('.lbl'); if(l) l.textContent=(s.name||'MASJID')+' · '+(mode==='sat'?'SATELIT':'PETA'); }
+    if(attr){ attr.style.display='block'; attr.textContent='Imagery © Esri, Maxar, Earthstar Geographics'; }
+  };
+
+  /* --- terapkan tampilan: nama, alamat, latar --- */
+  const _apply=window.msbApplyAll;
+  window.msbApplyAll=function(){
+    if(typeof _apply==='function') _apply();
+    const s=state(); if(!s) return;
+    // nama + alamat
+    const h1=document.querySelector('.header-left h1');
+    if(h1 && s.name) h1.textContent=s.name;
+    const p=document.querySelector('.header-left p');
+    if(p && s.addr) p.textContent=s.addr;
+    const bootSub=document.querySelector('#msbBoot .bsub');
+    if(bootSub && s.name) bootSub.textContent=s.name+' · '+(s.city||'');
+    document.title=(s.name||'Masjid')+' — Jadwal Sholat';
+    // tombol mode aktif
+    document.querySelectorAll('#msbSetModal [data-mode]').forEach(b=>b.classList.toggle('on', b.dataset.mode===(s.mapMode||'sat')));
+    // latar
+    const photo=$('bgMedia');
+    if(s.mapMode==='sat' || s.mapMode==='street'){
+      if(photo){ photo.style.display='none'; }
+      window.msbShowMap(s.mapMode);
+    } else {
+      const mp=$('msbMap'), pin=$('msbPin'), attr=$('msbMapAttr');
+      if(mp) mp.style.display='none'; if(pin)pin.style.display='none'; if(attr)attr.style.display='none';
+      if(photo && s.bg){ photo.src=s.bg; photo.style.display='block'; }
+      else if(photo && !s.bg){ photo.style.display='none'; }
+      const sh1=document.getElementById('bgShade');
+      if(sh1) sh1.style.background='rgba(3,10,9,'+((Number(s.dim)||46)/100).toFixed(3)+')';
+    }
+  };
+
+  /* --- interaksi pengaturan --- */
+  window.msbSetMode=function(mode){
+    const s=state(); if(!s) return;
+    s.mapMode=mode; persist();
+    window.msbApplyAll();
+    const note=$('msbMapNote');
+    if(note) note.textContent = (mode==='sat') ? 'Latar memakai citra satelit masjid dari koordinat di atas.'
+      : (mode==='street') ? 'Latar memakai peta jalan sekitar masjid.'
+      : 'Latar memakai foto masjid (tautan, unggahan, atau galeri).';
+  };
+  window.msbPickCoord=function(){
+    const s=state(); if(!s) return;
+    const la=$('msbLatVal'), ln=$('msbLngVal');
+    const lat=parseFloat((la&&la.value)||s.lat), lng=parseFloat((ln&&ln.value)||s.lng);
+    if(!isFinite(lat)||!isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180){ alert('Koordinat belum benar. Tulis lintang (mis. -6.786862) dan bujur (mis. 110.8498833).'); return; }
+    s.lat=lat; s.lng=lng; persist(); window.msbApplyAll();
+    const note=$('msbMapNote'); if(note) note.textContent='Peta diperbarui ke '+lat.toFixed(6)+', '+lng.toFixed(6)+'.';
+  };
+  window.msbGpsToMap=function(){
+    const s=state(); if(!s) return;
+    if(!navigator.geolocation) return alert('Perangkat ini tidak mendukung GPS.');
+    navigator.geolocation.getCurrentPosition(function(pos){
+      s.lat=+pos.coords.latitude.toFixed(6); s.lng=+pos.coords.longitude.toFixed(6); s.mapMode='sat'; persist();
+      const la=$('msbLatVal'), ln=$('msbLngVal'); if(la)la.value=s.lat; if(ln)ln.value=s.lng;
+      window.msbApplyAll();
+      const note=$('msbMapNote'); if(note) note.textContent='Koordinat dari GPS perangkat: '+s.lat+', '+s.lng+'.';
+    },function(){ alert('Izin lokasi ditolak. Isi koordinat manual saja.'); },{timeout:9000});
+  };
+
+  /* --- tambahan saat menyimpan --- */
+  const _save=window.msbSaveSet;
+  window.msbSaveSet=function(){
+    const s=state(); if(!s) return (_save&&_save());
+    const a=$('msbAddr'); if(a && a.value.trim()) s.addr=a.value.trim();
+    const la=$('msbLatVal'), ln=$('msbLngVal');
+    if(la && la.value.trim()){ const v=parseFloat(la.value); if(isFinite(v)) s.lat=v; }
+    if(ln && ln.value.trim()){ const v=parseFloat(ln.value); if(isFinite(v)) s.lng=v; }
+    persist();
+    const r=_save?_save():null;
+    setTimeout(function(){ window.msbApplyAll(); },120);
+    return r;
+  };
+
+  /* --- isi form saat modal dibuka --- */
+  setInterval(function(){
+    const s=state(); if(!s) return;
+    const a=$('msbAddr'), la=$('msbLatVal'), ln=$('msbLngVal');
+    const open=document.getElementById('msbSetModal');
+    if(!open || !open.classList.contains('on')) return;
+    if(a && document.activeElement!==a && !a.dataset.touched){ a.value=s.addr||''; }
+    if(la && document.activeElement!==la && !la.dataset.touched){ la.value=s.lat; }
+    if(ln && document.activeElement!==ln && !ln.dataset.touched){ ln.value=s.lng; }
+    const note=$('msbMapNote');
+    if(note && !note.dataset.set){
+      note.dataset.set='1';
+      note.textContent=(s.mapMode==='sat')?'Latar memakai citra satelit masjid dari koordinat di atas.'
+        :(s.mapMode==='street')?'Latar memakai peta jalan sekitar masjid.'
+        :'Latar memakai foto masjid (tautan, unggahan, atau galeri).';
+    }
+  },700);
+
+  /* --- init --- */
+  function boot(){
+    migrate();
+    window.msbApplyAll();
+    // pastikan peta ikut menyesuaikan ukuran layar
+    window.addEventListener('resize',function(){ if(window.__msbMapFit) window.__msbMapFit(); });
+    // jaring pengaman: kalau setelah 6 detik latar belum ada gambar sama sekali, paksa peta
+    setTimeout(function(){
+      const s=state(); if(!s) return;
+      const w=$('msbMap'), ph=$('bgMedia');
+      const mapOn = w && getComputedStyle(w).display!=='none';
+      const hasPhoto = ph && ph.style.display!=='none' && ph.naturalWidth>0;
+      if(!mapOn && !hasPhoto){
+        s.mapMode = 'photo';
+        if(!s.bg && window.MSB_DEF_BG) s.bg = window.MSB_DEF_BG;
+        window.msbApplyAll();
+        setTimeout(function(){
+          const ph2=$('bgMedia');
+          const okPhoto = ph2 && ph2.style.display!=='none' && ph2.naturalWidth>0;
+          if(!okPhoto){
+            s.mapMode = (isFinite(Number(s.lat))&&isFinite(Number(s.lng)))?'sat':'photo';
+            window.msbApplyAll();
+          }
+        },3500);
+      }
+    },6000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+  window.addEventListener('load',function(){ setTimeout(function(){ if(window.__msbMapFit) window.__msbMapFit(); },600); });
+})();
+</script>
+
+<style id="msbV33Css">
+/* ===== v3.3 TOMBOL MELAYANG MY APLIKASI ===== */
+#msbAppsFab{position:fixed;right:16px;bottom:84px;z-index:11900;display:inline-flex;align-items:center;gap:8px;
+  padding:11px 15px;border-radius:15px;cursor:pointer;border:1px solid rgba(52,211,153,.55);
+  background:linear-gradient(135deg,rgba(11,74,58,.97),rgba(5,26,22,.97));color:#c7f9e5;
+  font:800 11px/1 'Segoe UI',sans-serif;letter-spacing:.06em;
+  box-shadow:0 12px 28px rgba(0,0,0,.5),0 0 0 3px rgba(52,211,153,.10);transition:transform .18s}
+#msbAppsFab:hover{transform:translateY(-2px)}
+#msbAppsFab .g{font-size:15px}
+#msbAppsFab .cnt{background:rgba(52,211,153,.2);border:1px solid rgba(52,211,153,.45);border-radius:999px;
+  padding:2px 7px;font-size:9px;color:#6ee7b7}
+body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.45)}
+
+#msbAppsWrap{position:fixed;inset:0;z-index:13100;display:none;align-items:center;justify-content:center;
+  background:rgba(2,8,7,.78);backdrop-filter:blur(7px);padding:14px}
+#msbAppsWrap.on{display:flex}
+#msbAppsCard{width:min(920px,100%);max-height:min(88vh,820px);display:flex;flex-direction:column;
+  border-radius:18px;border:1px solid rgba(52,211,153,.35);
+  background:linear-gradient(165deg,rgba(6,28,24,.99),rgba(3,14,12,.99));
+  box-shadow:0 26px 60px rgba(0,0,0,.65);overflow:hidden}
+#msbAppsHead{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(52,211,153,.22)}
+#msbAppsHead h3{margin:0;font:900 13px/1.2 'Segoe UI';letter-spacing:.08em;color:#a7f3d0;text-transform:uppercase}
+#msbAppsHead .sub{font-size:9.5px;color:#7ea79a;letter-spacing:.05em}
+#msbAppsHead button{margin-left:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+  color:#d7f3e7;border-radius:9px;padding:6px 10px;cursor:pointer;font-size:12px}
+#msbAppsTools{padding:10px 16px 6px;display:flex;flex-direction:column;gap:8px}
+#msbAppsQ{width:100%;background:#04120f;border:1px solid rgba(52,211,153,.32);color:#e9fff7;border-radius:10px;
+  padding:9px 11px;font:600 12px/1 'Segoe UI';outline:none}
+#msbAppsQ:focus{border-color:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.14)}
+#msbAppsCats{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+#msbAppsCats::-webkit-scrollbar{display:none}
+#msbAppsCats button{flex:0 0 auto;background:rgba(255,255,255,.05);border:1px solid rgba(52,211,153,.22);
+  color:#a9d8c8;border-radius:999px;padding:5px 9px;font:700 9px/1 'Segoe UI';cursor:pointer;white-space:nowrap}
+#msbAppsCats button.on{background:linear-gradient(135deg,#059669,#0d9488);color:#03130f;border-color:#6ee7b7}
+#msbAppsList{overflow-y:auto;padding:10px 16px 16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#msbAppsList a{display:flex;align-items:center;gap:9px;text-decoration:none;padding:9px 11px;border-radius:11px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(52,211,153,.16);transition:.15s;min-width:0}
+#msbAppsList a:hover{background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.5);transform:translateY(-1px)}
+#msbAppsList .no{font:800 9px/1 'JetBrains Mono',monospace;color:#4ade80;background:rgba(74,222,128,.10);
+  border:1px solid rgba(74,222,128,.28);border-radius:7px;padding:4px 5px;min-width:24px;text-align:center}
+#msbAppsList .nm{font:800 10.5px/1.35 'Segoe UI';color:#e8fff7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#msbAppsList .ct{font:600 8.5px/1.3 'Segoe UI';color:#7fd1b4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#msbAppsList .arw{margin-left:auto;color:#34d399;font-size:10px;flex:0 0 auto}
+#msbAppsEmpty{padding:24px;text-align:center;color:#7ea79a;font-size:11px;grid-column:1/-1}
+#msbAppsFoot{padding:8px 16px 12px;border-top:1px solid rgba(52,211,153,.18);display:flex;gap:8px;
+  align-items:center;font:600 9px/1.4 'Segoe UI';color:#7ea79a}
+#msbAppsFoot b{color:#a7f3d0}
+@media(max-width:700px){
+  #msbAppsFab{right:12px;bottom:80px;padding:10px 12px;font-size:10px}
+  #msbAppsList{grid-template-columns:1fr}
+  #msbAppsCard{max-height:90vh}
+  #msbAppsHead h3{font-size:11.5px}
+}
+</style>
+<script>
+/* ================= v3.3 MY APLIKASI (61 KARYA) ================= */
+(function(){
+  const $=i=>document.getElementById(i);
+
+  const APPS=[
+    ["https://adikds.github.io/jarvis-ai/","JARVIS AI","AI & Agent"],
+    ["https://adikds.github.io/-Doa-Digital-Pro/","Doa Digital Pro","Religi & Islami"],
+    ["https://adikds.github.io/Al-Quran-Karim/","Al-Quran Karim","Religi & Islami"],
+    ["https://adikds.github.io/ai-meeting-assistant/","AI Meeting Pro","AI & Produktivitas"],
+    ["https://adikds.github.io/NEXUS-PAGE-AGENT-VER.1.0/","Nexus Page Agent","AI & Agent"],
+    ["https://adikds.github.io/APEX-Foundations-v3.1-Geotechnical-AI-/","Apex Foundations","Geoteknik & Sipil"],
+    ["https://adikds.github.io/ANALISIS-PONDASI-TELAPAK-/","Analisis Pondasi","Geoteknik & Sipil"],
+    ["https://adikds.github.io/AASHTO-SOIL-CLASSIFIER/","AASHTO Soil","Geoteknik & Sipil"],
+    ["https://adikds.github.io/ATLAS-GEOTEKNIK/","Atlas Geoteknik","Geoteknik & Sipil"],
+    ["https://adikds.github.io/GeoStructPro-15-Essential-Geotechnical-Formulas/","GeoStructPro 15","Geoteknik & Sipil"],
+    ["https://adikds.github.io/GEOSTRUCT-PRO-20-FORMULA-GEOTECHNICAL/","GeoStruct Pro 20","Geoteknik & Sipil"],
+    ["https://adikds.github.io/UNIFIED-SOIL-CLASSIFICATION-SYSTEM/","USCS Soil","Geoteknik & Sipil"],
+    ["https://adikds.github.io/WAY-APU-DAM/","Way Apu Dam","Bendungan & Hidrologi"],
+    ["https://adikds.github.io/INTEGRATED-DAM-ANALYTICS-ASSESSMENT-SYSTEM/","Dam Analytics","Bendungan & Hidrologi"],
+    ["https://adikds.github.io/SISTEM-MONITORING-SEISMIK-PERINGATAN-TSUNAMI/","Monitoring Seismik","Seismik & Mitigasi"],
+    ["https://adikds.github.io/MONITORING-PREDIKSI-STATUS-EI-NI-O-LA-NI-A/","El Nino La Nina","Klimatologi & Cuaca"],
+    ["https://adikds.github.io/MONITORING-PREDIKSI-ANGIN-MUSON-INDONESIA/","Monitoring Cuaca","Klimatologi & Cuaca"],
+    ["https://adikds.github.io/AERORADAR-PRO/","AeroRadar Pro","Radar & Navigasi"],
+    ["https://adikds.github.io/HYDRACANAL-PRO-GEOMETRIC-DESIGN/","HydraCanal Pro","Geoteknik & Sipil"],
+    ["https://adikds.github.io/EVENT-DRIVEN-ARCHITECTURE-FOR-AI-AGENTS/","EDA AI Agents","AI & Agent"],
+    ["https://adikds.github.io/edu-market-pro/","EduMarket Pro","Edukasi & Pasar"],
+    ["https://adikds.github.io/iptv-terminal/","IPTV Terminal","Media & Streaming"],
+    ["https://adikds.github.io/TV-streaming-live/","TV Streaming Live","Media & Streaming"],
+    ["https://adikds.github.io/pos-system/","POS Terminal Pro","Bisnis & Kasir"],
+    ["https://adikds.github.io/Aplikasi_Point_of_Sale_-POS-_atau_sistem_kasir/","POS Kasir","Bisnis & Kasir"],
+    ["https://adikds.github.io/business-suite/","Business Suite","Bisnis & Manajemen"],
+    ["https://adikds.github.io/stock-manager/","Stock Manager","Bisnis & Manajemen"],
+    ["https://adikds.github.io/financial-planner/","Financial Planner","Keuangan & Finansial"],
+    ["https://adikds.github.io/KEUANGANKU/","Keuanganku","Keuangan & Finansial"],
+    ["https://adikds.github.io/DOKTER-AI/","DOKTER AI EXPERT","Medis & Kesehatan"],
+    ["https://adikds.github.io/DARUSSYIFA-MEDIKA/","DARUSSYIFA V.5.0","Medis & Kesehatan"],
+    ["https://adikds.github.io/DARUSSYIFA_MEDIKA/","DARUSSYIFA V.2.0","Medis & Kesehatan"],
+    ["https://adikds.github.io/SMILE-SYIFA-AI/","SMILE SYIFA AI","Medis & Kesehatan"],
+    ["https://adikds.github.io/SKIN_SYIFA_AI/","SKIN SYIFA AI","Medis & Kesehatan"],
+    ["https://adikds.github.io/NEURO-PSYCH_AI/","NEURO-PSYCH AI","Medis & Kesehatan"],
+    ["https://adikds.github.io/-MEGA-ATLAS-FKG/","Mega Atlas FKG","Medis & Kesehatan"],
+    ["https://adikds.github.io/Mega-Atlas-Kedokteran-Neurologi-Bedah-Syaraf/","Neurology Atlas","Medis & Kesehatan"],
+    ["https://adikds.github.io/STATISTICS_for_ENGINEERS-/","Statistics Engineers","Teknik & Sains"],
+    ["https://adikds.github.io/AI-VIDEO-EDITOR/","AI Video Editor","Multimedia & AI"],
+    ["https://adikds.github.io/SIMULASI-DAN-JADWAL-SERTA-SCOR-WORLD-CUP-2026/","World Cup 2026","Olahraga & Hiburan"],
+    ["https://adikds.github.io/FREE-CLAUDE-CODE/","Free Claude Code","AI & Developer"],
+    ["https://adikds.github.io/konstruksi-ai/","KONAI Pro","Geoteknik & Sipil"],
+    ["https://adikds.github.io/pabrik-ai/","Pabrik AI Pro","AI & Industri"],
+    ["https://adikds.github.io/gudang-bulog/","Gudang Bulog FEM","Geoteknik & Sipil"],
+    ["https://adikds.github.io/Adi_Newbie/","ADI NEWBIE","Personal & Portofolio"],
+    ["https://famelack.com/radio/id","Famelack Radio ID","Media & Streaming"],
+    ["https://famelack.com/tv/id","Famelack TV ID","Media & Streaming"],
+    ["https://www.f15library.com/","F15 Library","Edukasi & Perpustakaan"],
+    ["https://adikds-byte.github.io/InaTEWS-Pro-v45/","InaTEWS Pro Tsunami","Seismik & Mitigasi"],
+    ["https://adikds-byte.github.io/Seismic_Site_Report_Pro/","Seismic Site Report Pro","Seismik & Mitigasi"],
+    ["https://adikds-byte.github.io/DSS-Sedimen-Pro-v4.81-Pro/","DSS Sedimen Pro","Pesisir & Sedimen"],
+    ["https://adikds-byte.github.io/COASTAL-SWI-ENGINE-PRO/","Coastal SWI Engine","Pesisir & Coastal SWI"],
+    ["https://adikds-byte.github.io/Indonesia_Dams_DSS/","Indonesia Dams DSS","Bendungan & Energy"],
+    ["https://adikds-byte.github.io/GeoStruct_Pro_Master_Edition/","GeoStruct Pro Master","Geoteknik & Sipil"],
+    ["https://adikds-byte.github.io/SoilLabKit-Pro-Master-Edition-V7.0/","SoilLabKit Pro","Geoteknik & Sipil"],
+    ["https://adikds-byte.github.io/kalkulator_budget_rumah_pro_v2.7/","Kalkulator Budget Rumah","Budget & Home"],
+    ["https://adikds-byte.github.io/GeoTestKit-PRO-V1.0/","GeoTestKit-PRO","Geoteknik & Sipil"],
+    ["https://adikds-byte.github.io/AL-FALAK-RAMADAN-SIKLUS-33-TAHUN/","AL FALAK RAMADAN","Religi & Islami"],
+    ["https://adikds-byte.github.io/BENDUNGAN-TAILING-COMMAND-CENTRE/","Tailing Dam Command Centre","Geoteknik & Sipil"],
+    ["https://adikds-byte.github.io/DCPKit-Pro/","DCPKit Pro","Geoteknik & Sipil"],
+    ["https://newbieonline7.blogspot.com/","My Blog Engineering & AI","Blog Artikel & AI"]
+  ];
+
+  let cat='SEMUA';
+
+  function cats(){
+    const set=['SEMUA'];
+    APPS.forEach(a=>{ if(set.indexOf(a[2])<0) set.push(a[2]); });
+    return set;
+  }
+
+  window.msbAppsOpen=function(){
+    const w=$('msbAppsWrap'); if(!w) return;
+    w.classList.add('on');
+    const q=$('msbAppsQ'); if(q){ q.value=''; }
+    cat='SEMUA';
+    window.msbAppsRender();
+    setTimeout(()=>{ if(q&&innerWidth>700) q.focus(); },180);
+  };
+  window.msbAppsClose=function(){ const w=$('msbAppsWrap'); if(w) w.classList.remove('on'); };
+  window.msbAppsCat=function(c){ cat=c; window.msbAppsRender(); };
+
+  window.msbAppsRender=function(){
+    const q=($('msbAppsQ')&&$('msbAppsQ').value||'').toLowerCase().trim();
+    const list=APPS.filter(a=>{
+      const okCat = (cat==='SEMUA') || a[2]===cat;
+      const okQ = !q || a[1].toLowerCase().includes(q) || a[2].toLowerCase().includes(q);
+      return okCat && okQ;
+    });
+    const box=$('msbAppsList'); if(!box) return;
+    box.innerHTML = list.length ? list.map((a,i)=>{
+      const idx=APPS.indexOf(a)+1;
+      return '<a href="'+a[0]+'" target="_blank" rel="noopener noreferrer">'
+        +'<span class="no">'+String(idx).padStart(2,'0')+'</span>'
+        +'<span style="min-width:0"><span class="nm">'+a[1]+'</span><br><span class="ct">'+a[2]+'</span></span>'
+        +'<span class="arw">↗</span></a>';
+    }).join('') : '<div id="msbAppsEmpty">Tidak ada aplikasi yang cocok.</div>';
+    const cc=$('msbAppsCats');
+    if(cc && cc.dataset.built!=='1'){
+      cc.dataset.built='1';
+      cc.innerHTML=cats().map(c=>'<button data-c="'+c+'" onclick="msbAppsCat(\''+c+'\')">'+c+'</button>').join('');
+    }
+    if(cc) [...cc.querySelectorAll('button')].forEach(b=>b.classList.toggle('on', b.dataset.c===cat));
+    const lab=$('msbAppsCount');
+    if(lab) lab.textContent='Menampilkan '+list.length+' dari '+APPS.length+' aplikasi';
+  };
+
+  function build(){
+    if($('msbAppsFab')) return;
+    const fab=document.createElement('button');
+    fab.id='msbAppsFab'; fab.type='button'; fab.title='Daftar 61 aplikasi karya Ir. Mohamad Hartadi';
+    fab.innerHTML='<span class="g">📱</span><span>MY APLIKASI</span><span class="cnt">'+APPS.length+'</span>';
+    fab.onclick=window.msbAppsOpen;
+    document.body.appendChild(fab);
+
+    const wrap=document.createElement('div');
+    wrap.id='msbAppsWrap';
+    wrap.innerHTML=''
+      +'<div id="msbAppsCard" role="dialog" aria-label="My Aplikasi">'
+      +'  <div id="msbAppsHead">'
+      +'    <div><h3>📱 My Aplikasi</h3><div class="sub">Karya Ir. Mohamad Hartadi · newbieonline7.blogspot.com</div></div>'
+      +'    <button type="button" onclick="msbAppsClose()">✕ Tutup</button>'
+      +'  </div>'
+      +'  <div id="msbAppsTools">'
+      +'    <input id="msbAppsQ" type="search" placeholder="Cari aplikasi atau kategori…" oninput="msbAppsRender()">'
+      +'    <div id="msbAppsCats"></div>'
+      +'  </div>'
+      +'  <div id="msbAppsList"></div>'
+      +'  <div id="msbAppsFoot"><span id="msbAppsCount">—</span><span style="margin-left:auto">FB <b>m.hartadi</b> · WA <b>0822-3103-6047</b></span></div>'
+      +'</div>';
+    document.body.appendChild(wrap);
+    wrap.addEventListener('click',e=>{ if(e.target===wrap) window.msbAppsClose(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') window.msbAppsClose(); });
+  }
+
+  /* teks berjalan + kota Kudus */
+  function fixText(){
+    const s=window.MSBS; if(!s) return;
+    const want='Ust. Adi Masjid Al-Huda';
+    if(!s.running || /Ust\. Fikri|Al-Huda Kudus|Jadwal Kajian Senin/i.test(String(s.running))){
+      s.running='🕌 '+want+' · Jadwal Sholat Kota Kudus, Jawa Tengah';
+      try{ localStorage.setItem('msb_set_v3', JSON.stringify(s)); }catch(e){}
+      if(typeof window.msbApplyAll==='function') window.msbApplyAll();
+    }
+    if(String(s.city||'').toLowerCase()!=='kudus' && /jonggol|cileungsi/i.test(String(s.city||''))){
+      s.city='Kudus'; s.country='Indonesia';
+      try{ localStorage.setItem('msb_set_v3', JSON.stringify(s)); }catch(e){}
+      if(typeof window.msbApplyAll==='function') window.msbApplyAll();
+    }
+  }
+
+  function init(){
+    build(); fixText();
+    if($('msbAppsList')) window.msbAppsRender();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+  setTimeout(init,1500);
+})();
+</script>
+
+
+<script>
+/* ================= v3.4 — LATAR BAWAAN MASJID + TOMBOL RESET DEFAULT ================= */
+(function(){
+  const $ = id => document.getElementById(id);
+  const DEFBG = window.MSB_DEF_BG || 'https://media.base44.com/images/public/6a48d0b8744792061258ff83/543208d38_masjid_terang.jpg';
+  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv'];
+
+  function st(){ return window.MSBS || null; }
+  function persist(){ try{ localStorage.setItem('msb_set_v3', JSON.stringify(window.MSBS)); }catch(e){} }
+
+  /* ---- notifikasi kecil ---- */
+  window.msbToast = function(msg, type){
+    let t = document.getElementById('msbToast');
+    if(!t){
+      t = document.createElement('div'); t.id = 'msbToast';
+      t.style.cssText = 'position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:14000;'
+        + 'max-width:min(90vw,460px);padding:11px 16px;border-radius:12px;font:700 11.5px/1.5 "Segoe UI",sans-serif;'
+        + 'letter-spacing:.02em;text-align:center;backdrop-filter:blur(8px);box-shadow:0 14px 34px rgba(0,0,0,.55);'
+        + 'transition:opacity .25s,transform .25s;opacity:0;pointer-events:none';
+      document.body.appendChild(t);
+    }
+    const ok = type !== 'warn';
+    t.style.background = ok ? 'linear-gradient(135deg,rgba(16,185,129,.94),rgba(13,148,136,.94))' : 'linear-gradient(135deg,rgba(190,24,93,.94),rgba(120,20,50,.94))';
+    t.style.color = ok ? '#03130f' : '#ffe3ea';
+    t.style.border = ok ? '1px solid rgba(232,196,106,.55)' : '1px solid rgba(244,63,94,.55)';
+    t.textContent = msg;
+    t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(t._to);
+    t._to = setTimeout(function(){ t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(8px)'; }, 3200);
+  };
+
+  /* ---- pastikan selalu ada gambar bawaan saat mode foto ---- */
+  function ensureDefaultBg(){
+    const s = st(); if(!s) return;
+    let changed = false;
+    if(!s.bg){ s.bg = DEFBG; changed = true; }
+    if(!s.mapMode){ s.mapMode = 'photo'; changed = true; }
+    if(changed) persist();
+  }
+
+  /* ---- bungkus applyAll terakhir ---- */
+  const _apply = window.msbApplyAll;
+  window.msbApplyAll = function(){
+    ensureDefaultBg();
+    if(typeof _apply === 'function'){ _apply(); }
+    const s = st() || {};
+    const ph = $('bgMedia');
+    if(s.mapMode === 'photo' && ph){
+      const src = s.bg || DEFBG;
+      if(ph.getAttribute('src') !== src){ ph.src = src; }
+      ph.style.display = 'block';
+      const mp = $('msbMap'), pin = $('msbPin'), attr = $('msbMapAttr');
+      if(mp) mp.style.display = 'none';
+      if(pin) pin.style.display = 'none';
+      if(attr) attr.style.display = 'none';
+      const sh = $('bgShade');
+      if(sh) sh.style.background = 'rgba(3,10,9,' + ((Number(s.dim) || 50) / 100).toFixed(3) + ')';
+    }
+  };
+
+  /* ---- kembalikan hanya latar ke foto masjid bawaan ---- */
+  window.msbBgDefault = function(){
+    const s = st(); if(!s) return;
+    s.bg = DEFBG;
+    s.mapMode = 'photo';
+    if(s.dim === undefined || s.dim === null) s.dim = 50;
+    persist();
+    try{ localStorage.removeItem('msb_bg'); }catch(e){}
+    const ph = $('bgMedia');
+    if(ph){ ph.onload = function(){ ph.style.display = 'block'; }; ph.src = DEFBG; ph.style.display = 'block'; }
+    if(typeof window.msbSetDim === 'function'){ window.msbSetDim(s.dim); }
+    if(typeof window.msbApplyAll === 'function'){ window.msbApplyAll(); }
+    const u3 = $('msbBgUrl3'); if(u3) u3.value = DEFBG;
+    const u1 = $('msbBgUrl'); if(u1) u1.value = '';
+    window.msbToast('Latar dikembalikan ke foto masjid bawaan.');
+  };
+
+  /* ---- RESET DEFAULT: semua pengaturan tampilan kembali ke awal ---- */
+  window.msbResetDefault = function(){
+    const pesan = 'RESET KE BAWAAN\n\n'
+      + 'Semua pengaturan tampilan akan dikembalikan ke kondisi awal:\n'
+      + '• Latar belakang = foto masjid bawaan\n'
+      + '• Nama masjid, running text, tema warna\n'
+      + '• Koreksi waktu sholat, koordinat & alamat\n'
+      + '• Ukuran teks, kecerahan, jam & screensaver\n\n'
+      + 'Lanjutkan?';
+    if(!confirm(pesan)) return;
+    try{ KEYS.forEach(function(k){ try{ localStorage.removeItem(k); }catch(_){}});}catch(e){}
+    try{ sessionStorage.clear(); }catch(e){}
+    window.msbToast('Mengembalikan aplikasi ke pengaturan bawaan…');
+    setTimeout(function(){ location.reload(); }, 380);
+  };
+
+  /* ---- tombol lama "HAPUS LATAR" / reset latar ikut memakai foto bawaan ---- */
+  const _clear = window.msbClearBg;
+  window.msbClearBg = function(){
+    try{ if(typeof _clear === 'function') _clear(); }catch(e){}
+    window.msbBgDefault();
+    if(typeof window.msbClose === 'function') window.msbClose('msbBgModal');
+  };
+  const _bgReset = window.msbBgReset;
+  window.msbBgReset = function(){
+    try{ if(typeof _bgReset === 'function') _bgReset(); }catch(e){}
+    window.msbBgDefault();
+  };
+
+  /* ---- galeri: tandai bila sedang memakai latar bawaan ---- */
+  function markGallery(){
+    const s = st(); if(!s) return;
+    const g = $('msbGallery');
+    if(g) g.dataset.def = (s.bg === DEFBG) ? '1' : '0';
+  }
+  setInterval(markGallery, 1500);
+
+  /* ---- init ---- */
+  function boot(){
+    ensureDefaultBg();
+    if(typeof window.msbApplyAll === 'function') window.msbApplyAll();
+    // bila gambar bawaan belum tampil padahal mode foto, paksa sekali lagi
+    setTimeout(function(){
+      const s = st() || {}; const ph = $('bgMedia');
+      if(s.mapMode === 'photo' && ph && (!ph.naturalWidth || ph.style.display === 'none')){
+        ph.src = DEFBG; ph.style.display = 'block';
+      }
+    }, 1600);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  window.addEventListener('load', boot);
+})();
+</script>
+
+<script>
+/* ================= v3.5 DOA-DOA PILIHAN DARI AL-QUR'AN ================= */
+(function(){
+  const $ = id => document.getElementById(id);
+  const DOA = [ { "ar": "رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْءَاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ", "tr": "Rabbanaa aatinaa fid-dunyaa hasanah, wa fil-aakhirati hasanah, wa qinaa 'adzaaban-naar", "id": "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, serta lindungilah kami dari azab neraka.", "ref": "Al-Baqarah · 2:201", "ayat": "2:201" }, { "ar": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ ٱلْوَهَّابُ", "tr": "Rabbanaa laa tuzigh quluubanaa ba'da idz hadaitanaa wa hab lanaa mil ladunka rahmah, innaka antal wahhaab", "id": "Ya Tuhan kami, jangan Engkau jadikan hati kami condong kepada kesesatan setelah Engkau beri petunjuk, dan karuniakanlah rahmat dari sisi-Mu. Sungguh, Engkaulah Yang Maha Pemberi.", "ref": "Ali 'Imran · 3:8", "ayat": "3:8" }, { "ar": "رَبَّنَا ٱغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِىٓ أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ", "tr": "Rabbanaghfir lanaa dzunuubanaa wa israafanaa fii amrinaa wa tsabbit aqdaamanaa wanshurnaa 'alal qaumil kaafiriin", "id": "Ya Tuhan kami, ampunilah dosa-dosa kami dan tindakan kami yang berlebihan, tetapkanlah pendirian kami, dan tolonglah kami menghadapi kaum yang kafir.", "ref": "Ali 'Imran · 3:147", "ayat": "3:147" }, { "ar": "رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَٰسِرِينَ", "tr": "Rabbanaa zhalamnaa anfusanaa wa illam taghfir lanaa wa tarhamnaa lanakuunanna minal khaasiriin", "id": "Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni dan memberi rahmat kepada kami, pastilah kami termasuk orang yang merugi.", "ref": "Al-A'raf · 7:23", "ayat": "7:23" }, { "ar": "رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى رَبَّنَا وَتَقَبَّلْ دُعَآءِ", "tr": "Rabbij-'alnii muqiimash-shalaati wa min dzurriyyatii, rabbanaa wa taqabbal du'aa'", "id": "Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap mendirikan shalat. Ya Tuhan kami, perkenankanlah doaku.", "ref": "Ibrahim · 14:40", "ayat": "14:40" }, { "ar": "رَبَّنَا ٱغْفِرْ لِى وَلِوَٰلِدَىَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ ٱلْحِسَابُ", "tr": "Rabbanaghfir lii wa liwaalidayya wa lil-mu'miniina yauma yaquumul hisaab", "id": "Ya Tuhan kami, ampunilah aku, kedua orang tuaku, dan seluruh orang mukmin pada hari terjadinya hisab.", "ref": "Ibrahim · 14:41", "ayat": "14:41" }, { "ar": "رَبَّنَآ ءَاتِنَا مِن لَّدُنكَ رَحْمَةًۭ وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًۭا", "tr": "Rabbanaa aatinaa mil ladunka rahmatan wa hayyi' lanaa min amrinaa rasyadaa", "id": "Wahai Tuhan kami, berikanlah rahmat kepada kami dari sisi-Mu dan sempurnakanlah petunjuk yang lurus bagi kami dalam urusan kami.", "ref": "Al-Kahf · 18:10", "ayat": "18:10" }, { "ar": "رَّبِّ زِدْنِى عِلْمًۭا", "tr": "Rabbi zidnii 'ilmaa", "id": "Ya Tuhanku, tambahkanlah ilmu pengetahuan kepadaku.", "ref": "Thaha · 20:114", "ayat": "20:114" }, { "ar": "أَنِّى مَسَّنِىَ ٱلضُّرُّ وَأَنتَ أَرْحَمُ ٱلرَّٰحِمِينَ", "tr": "Annii massaniyadh-dhurru wa anta arhamur-raahimiin", "id": "Sesungguhnya aku telah ditimpa penyakit, dan Engkau adalah Yang Maha Penyayang di antara para penyayang.", "ref": "Al-Anbiya · 21:83", "ayat": "21:83" }, { "ar": "لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبْحَٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّٰلِمِينَ", "tr": "Laa ilaaha illaa anta subhaanaka innii kuntu minazh-zhaalimiin", "id": "Tidak ada tuhan selain Engkau. Mahasuci Engkau. Sesungguhnya aku termasuk orang-orang yang zalim.", "ref": "Al-Anbiya · 21:87", "ayat": "21:87" }, { "ar": "رَّبِّ ٱغْفِرْ وَٱرْحَمْ وَأَنتَ خَيْرُ ٱلرَّٰحِمِينَ", "tr": "Rabbighfir warham wa anta khairur-raahimiin", "id": "Ya Tuhanku, berilah ampunan dan rahmat. Engkaulah Pemberi rahmat yang paling baik.", "ref": "Al-Mu'minun · 23:118", "ayat": "23:118" }, { "ar": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَٰجِنَا وَذُرِّيَّٰتِنَا قُرَّةَ أَعْيُنٍۢ وَٱجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا", "tr": "Rabbanaa hab lanaa min azwaajinaa wa dzurriyyaatinaa qurrata a'yun, waj-'alnaa lil-muttaqiina imaamaa", "id": "Ya Tuhan kami, anugerahkanlah kepada kami pasangan dan keturunan yang menyenangkan hati, dan jadikanlah kami imam bagi orang-orang yang bertakwa.", "ref": "Al-Furqan · 25:74", "ayat": "25:74" }, { "ar": "رَبِّ هَبْ لِى حُكْمًۭا وَأَلْحِقْنِى بِٱلصَّٰلِحِينَ", "tr": "Rabbi hab lii hukman wa alhiqnii bish-shaalihiin", "id": "Ya Tuhanku, berikanlah kepadaku hikmah dan masukkanlah aku ke dalam golongan orang-orang yang saleh.", "ref": "Asy-Syu'ara · 26:83", "ayat": "26:83" }, { "ar": "رَبَّنَا ٱغْفِرْ لَنَا وَلِإِخْوَٰنِنَا ٱلَّذِينَ سَبَقُونَا بِٱلْإِيمَٰنِ وَلَا تَجْعَلْ فِى قُلُوبِنَا غِلًّۭا لِّلَّذِينَ ءَامَنُوا۟ رَبَّنَآ إِنَّكَ رَءُوفٌۭ رَّحِيمٌ", "tr": "Rabbanaghfir lanaa wa li-ikhwaaninal-ladziina sabaquunaa bil-iimaan, wa laa taj'al fii quluubinaa ghillal lil-ladziina aamanuu, rabbanaa innaka ra'uufur rahiim", "id": "Ya Tuhan kami, ampunilah kami dan saudara-saudara kami yang lebih dahulu beriman, dan jangan biarkan kedengkian dalam hati kami terhadap orang-orang yang beriman. Ya Tuhan kami, sungguh Engkau Maha Penyantun lagi Maha Penyayang.", "ref": "Al-Hasyr · 59:10", "ayat": "59:10" } ];
+  const CYCLE = 12000;
+  let idx = 0, timer = null, paused = false, busy = false;
+
+  function dots(){
+    const box = $('doaDots'); if(!box) return;
+    box.innerHTML = DOA.map(function(_,i){
+      return '<span class="doaDot'+(i===idx?' on':'')+'" data-i="'+i+'" role="button" title="Doa '+(i+1)+'"></span>';
+    }).join('');
+    box.querySelectorAll('.doaDot').forEach(function(el){
+      el.onclick = function(){ goTo(Number(el.dataset.i)); };
+    });
+  }
+  function goTo(i){
+    if(busy || i === idx) return;
+    idx = (i + DOA.length) % DOA.length;
+    show();
+    if(timer){ clearInterval(timer); timer = null; start(); }
+  }
+  window.msbDoaGo = goTo;
+
+  function fit(){
+    const body = $('doaBody'), ar = $('doaAr'); if(!body || !ar) return;
+    ar.style.fontSize = '';
+    let size = parseFloat(getComputedStyle(ar).fontSize) || 20, guard = 0;
+    while(body.scrollHeight > body.clientHeight + 1 && size > 12 && guard++ < 90){
+      size -= 0.5; ar.style.fontSize = size + 'px';
+    }
+  }
+
+  function sparks(){
+    const card = $('doaCard'); if(!card) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for(let i=0;i<10;i++){
+      const sp = document.createElement('span');
+      sp.className = 'doaSpark';
+      sp.style.left = (8 + Math.random()*84).toFixed(1) + '%';
+      sp.style.bottom = (6 + Math.random()*34).toFixed(1) + '%';
+      sp.style.animationDelay = (Math.random()*0.35).toFixed(2) + 's';
+      sp.style.opacity = '0';
+      card.appendChild(sp);
+      (function(node){ setTimeout(function(){ node.remove(); }, 2100); })(sp);
+    }
+  }
+
+  function restartProg(){
+    const p = $('doaProg'); if(!p) return;
+    p.style.transition = 'none'; p.style.width = '0%';
+    void p.offsetWidth;
+    p.style.transition = 'width ' + (CYCLE/1000) + 's linear';
+    p.style.width = '100%';
+  }
+
+  function paint(){
+    const d = DOA[idx];
+    $('doaAr').textContent = d.ar;
+    $('doaLatin').textContent = d.tr;
+    $('doaId').textContent = '\u201C' + d.id + '\u201D';
+    $('doaRef').textContent = d.ref;
+    $('doaCount').textContent = (idx+1) + ' / ' + DOA.length;
+    dots(); fit();
+  }
+
+  function show(){
+    const body = $('doaBody'); if(!body){ return; }
+    body.classList.remove('doaIn');
+    body.classList.add('doaOut');
+    busy = true;
+    setTimeout(function(){
+      paint();
+      body.classList.remove('doaOut');
+      void body.offsetWidth;
+      body.classList.add('doaIn');
+      sparks(); restartProg();
+      busy = false;
+    }, 290);
+  }
+
+  function go(dir){
+    if(busy) return;
+    idx = (idx + dir + DOA.length) % DOA.length;
+    show();
+  }
+  window.msbDoaNext = function(){ go(1); };
+  window.msbDoaPrev = function(){ go(-1); };
+  window.msbDoaReload = function(){ paint(); };
+  window.msbDoaData = DOA;
+
+  function start(){
+    if(timer) clearInterval(timer);
+    timer = setInterval(function(){
+      if(paused || document.hidden) return;
+      go(1);
+    }, CYCLE);
+  }
+
+  function boot(){
+    if(!$('doaBody')) return;
+    paint(); sparks(); restartProg(); start();
+    const wrap = $('doaWrap');
+    if(wrap){
+      wrap.addEventListener('mouseenter', function(){ paused = true; });
+      wrap.addEventListener('mouseleave', function(){ paused = false; restartProg(); });
+    }
+    window.addEventListener('resize', function(){ setTimeout(fit, 260); });
+    window.addEventListener('load', function(){ setTimeout(fit, 400); });
+    setTimeout(fit, 1200); setTimeout(fit, 3000);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
