@@ -659,16 +659,9 @@ body[data-msbtheme="marmer"] .doaAr{text-shadow:0 0 18px rgba(15,118,110,.18)}
   box-shadow:0 10px 26px rgba(16,185,129,.45)}
 #msbDock .dk.chat::after{content:'';position:absolute;inset:-4px;border-radius:19px;border:2px solid rgba(16,185,129,.45);animation:ping 2.4s ease-out infinite}
 #msbDock .dk.chat svg{stroke-width:2}
-#msbDockToggle{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;cursor:pointer;padding:0;
-  border:1px dashed color-mix(in srgb,var(--a2) 60%,transparent);background:rgba(3,16,13,.88);color:#ffe6ab;
-  font:800 14px/1 'Segoe UI',sans-serif;box-shadow:0 8px 18px rgba(0,0,0,.42);transition:.22s}
-#msbDockToggle:hover{background:color-mix(in srgb,var(--a2) 24%,rgba(3,16,13,.92))}
-#msbDock.min .dk{display:none}
-#msbDock.min .dk.chat::after{display:none}
 body[data-msbtheme="marmer"] #msbDock .dk{background:linear-gradient(135deg,#ffffff,#e7f2ef);color:#0f766e;border-color:rgba(15,118,110,.42);box-shadow:0 10px 24px rgba(6,50,40,.18)}
 body[data-msbtheme="marmer"] #msbDock .dk.chat{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#ffffff}
 body[data-msbtheme="marmer"] #msbDock .dk .lbl{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.4)}
-body[data-msbtheme="marmer"] #msbDockToggle{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.45)}
 body[data-msbtheme="ottoman"] #msbDock .dk{background:linear-gradient(135deg,rgba(74,14,22,.97),rgba(28,6,10,.97))}
 body[data-msbtheme="safir"] #msbDock .dk{background:linear-gradient(135deg,rgba(12,32,88,.97),rgba(5,12,36,.97))}
 body[data-msbtheme="kiswah"] #msbDock .dk{background:linear-gradient(135deg,rgba(24,22,14,.98),rgba(6,6,7,.98))}
@@ -750,14 +743,12 @@ body[data-msbtheme="marmer"] .hsStat b{color:#0f766e}
   #msbDock{gap:7px}
   #msbDock .dk{width:42px;height:42px;border-radius:13px}
   #msbDock .dk svg{width:20px;height:20px}
-  #msbDockToggle{width:31px;height:31px}
   #msbDock .dk .lbl{display:none}
 }
 @media (max-height:760px){
   #msbDock{gap:6px;margin-top:5px}
   #msbDock .dk{width:38px;height:38px;border-radius:12px}
   #msbDock .dk svg{width:18px;height:18px}
-  #msbDockToggle{width:30px;height:30px;font-size:12px}
 }
 
 /* mode pengumuman pada panel doa */
@@ -810,6 +801,13 @@ html,body{overflow-x:hidden;max-width:100%}
 #msbVoiceModal input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;
   background:#eafff6;border:2px solid #38bdf8;box-shadow:0 2px 8px rgba(0,0,0,.55);cursor:pointer}
 #msbVoiceModal .msbRow b{color:#8ff0c2;font-size:10px}
+#msbVoiceModal #msbVoiceTabs{width:100%}
+#msbVoiceModal #msbVoiceTabs button{flex:1;font-size:10.5px;padding:9px 8px}
+#msbVoiceModal .mapGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+#msbVoiceModal .mapGrid label{display:block;font:800 9.5px/1 'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8ff0c2;margin-bottom:4px}
+@media(max-width:430px){#msbVoiceModal .mapGrid{grid-template-columns:1fr}}
+#msbVoiceModal .vTab{display:none}
+#msbVoiceModal .vTab.on{display:block}
 body[data-msbtheme="marmer"] #msbVoiceModal input[type=text],body[data-msbtheme="marmer"] #msbVoiceModal textarea,
 body[data-msbtheme="marmer"] #msbVoiceModal select{background:#fff;color:#0b1f1a}
 body[data-msbtheme="marmer"] #msbVoiceModal .siriOrb em{color:#0f766e}
@@ -829,7 +827,7 @@ body[data-msbtheme="marmer"] #msbVoiceModal .siriOrb em{color:#0f766e}
 
     <div>
         <h1>MASJID AL HUDA</h1>
-        <p>Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326</p>
+        <p>Jl. Sosrokartono, Panjang, Bae, Kudus Regency, Central Java 59326</p>
     </div>
 </div>
 
@@ -1126,7 +1124,6 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
 
 <!-- ===== v3.6 DOCK TOMBOL MELAYANG ===== -->
 <div id="msbDock">
-  <button id="msbDockToggle" type="button" onclick="msbDockToggle()" title="Sembunyikan / tampilkan tombol melayang">&raquo;</button>
   <button class="dk" id="msbDockDoa" type="button" onclick="msbDoaToggle()" title="Tampilkan / sembunyikan panel doa">
     <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19"/><path d="M9 8h6"/></svg>
     <span class="lbl">DOA / PENGUMUMAN</span>
@@ -1154,7 +1151,12 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
 <div class="msbModal" id="msbVoiceModal">
   <div class="msbCard">
     <h3>🔊 Suara Siri &amp; Adzan</h3>
-    <p class="sm">Atur suara asisten Siri, aktif/nonaktif adzan otomatis, dan ganti suara adzan.</p>
+    <p class="sm">Atur suara Siri, rekaman adzan untuk tiap waktu sholat, doa sesudah adzan, dan pengingat sebelum adzan.</p>
+    <div class="msbSeg" id="msbVoiceTabs" style="margin:2px 0 10px">
+      <button data-t="adzan" onclick="msbVoiceTab('adzan')">🕌 ADZAN &amp; DOA</button>
+      <button data-t="siri" onclick="msbVoiceTab('siri')">🎙️ SUARA SIRI</button>
+    </div>
+    <div class="vTab" id="msbTabSiri">
 
     <div id="msbSiriOrb" class="siriOrb"><i></i><b></b><em id="msbSiriLabel">SIAP</em></div>
 
@@ -1169,27 +1171,73 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
       <button class="msbBtn warn" onclick="msbVoiceStop()">■ STOP</button>
     </div>
 
-    <h4>2. Suara Adzan</h4>
+    </div>
+    <div class="vTab" id="msbTabAdzan">
+    <h4>2. Suara Adzan (menyesuaikan tiap sholat)</h4>
     <div class="msbRow"><label>Adzan otomatis</label><div class="msbTog on" id="msbTogAdzan" onclick="msbVoiceTog('adzan')"></div></div>
-    <div class="msbRow"><label>Pilih suara adzan</label><select id="msbAdzanVoice" onchange="msbVoicePick('adzan',this.value)"></select></div>
+    <div class="msbRow"><label>Sumber suara</label>
+      <div class="msbSeg" id="msbAdzMode">
+        <button data-m="audio" onclick="msbVoiceMode('audio')">REKAMAN</button>
+        <button data-m="tts" onclick="msbVoiceMode('tts')">SUARA SINTETIS</button>
+        <button data-m="url" onclick="msbVoiceMode('url')">TAUTAN SENDIRI</button>
+      </div>
+    </div>
+
+    <div id="msbAdzMap">
+      <div class="msbHint">Pilih rekaman untuk tiap waktu sholat. Subuh memakai adzan khusus yang memuat "Ash-shalatu khairum minan naum".</div>
+      <div class="mapGrid">
+        <div><label>Subuh</label><select id="msbMapSubuh" data-p="Subuh" onchange="msbVoiceMap('Subuh',this.value)"></select></div>
+        <div><label>Dzuhur</label><select id="msbMapDzuhur" data-p="Dzuhur" onchange="msbVoiceMap('Dzuhur',this.value)"></select></div>
+        <div><label>Ashar</label><select id="msbMapAshar" data-p="Ashar" onchange="msbVoiceMap('Ashar',this.value)"></select></div>
+        <div><label>Maghrib</label><select id="msbMapMaghrib" data-p="Maghrib" onchange="msbVoiceMap('Maghrib',this.value)"></select></div>
+        <div><label>Isya</label><select id="msbMapIsya" data-p="Isya" onchange="msbVoiceMap('Isya',this.value)"></select></div>
+      </div>
+    </div>
+
+    <div class="msbRow"><label>Pilih suara sintetis</label><select id="msbAdzanVoice" onchange="msbVoicePick('adzan',this.value)"></select></div>
     <div class="msbRow"><label>Kecepatan <b id="msbAdzanRateVal">0.92×</b></label>
       <input type="range" id="msbAdzanRate" min="0.6" max="1.3" step="0.02" oninput="msbVoiceRate('adzan',this.value)"></div>
     <div class="msbRow"><label>Volume <b id="msbAdzanVolVal">95%</b></label>
       <input type="range" id="msbAdzanVol" min="0" max="1" step="0.05" oninput="msbVoiceRate('vol',this.value)"></div>
+
+    <div id="msbAdzUrlWrap">
+      <input type="text" id="msbAdzanUrl" placeholder="https://contoh.com/adzan-masjid.mp3">
+      <div class="msbHint">Tautan MP3 sendiri dipakai untuk semua waktu sholat.</div>
+    </div>
+
     <div class="msbRow">
       <button class="msbBtn pri" onclick="msbVoiceTest('adzan')">▶ TES ADZAN</button>
       <button class="msbBtn" onclick="msbVoiceTest('adzan',1)">🔔 BUNYIKAN SEKARANG</button>
+      <button class="msbBtn warn" onclick="msbVoiceStop()">■ STOP</button>
     </div>
-    <div class="msbHint">Adzan otomatis berbunyi tepat saat masuk waktu sholat (Subuh, Dzuhur, Ashar, Maghrib, Isya) mengikuti jadwal dan koreksi waktu yang aktif.</div>
+    <div class="msbHint">Adzan berbunyi otomatis tepat saat masuk waktu sholat mengikuti jadwal dan koreksi waktu yang aktif. Rekaman dari <b>Islami-fork/adzan-audio</b> (lisensi MIT).</div>
 
-    <h4>3. Rekaman Adzan MP3 (opsional)</h4>
-    <input type="text" id="msbAdzanUrl" placeholder="https://contoh.com/adzan-masjid.mp3">
-    <div class="msbHint">Bila diisi, adzan diputar dari rekaman MP3 ini (paling merdu). Bila kosong, adzan dibacakan dengan suara sintetis pilihan di atas.</div>
-    <div class="msbRow"><button class="msbBtn" onclick="msbVoiceTest('url')">▶ TES REKAMAN</button></div>
+    <h4>3. Doa Sesudah Adzan</h4>
+    <div class="msbRow"><label>Putar doa setelah adzan</label><div class="msbTog on" id="msbTogDoa" onclick="msbVoiceTog('doa')"></div></div>
+    <div class="msbRow"><label>Sumber doa</label><select id="msbDoaSrc" onchange="msbVoiceDoaSrc(this.value)">
+      <option value="audio">Rekaman doa sesudah adzan</option>
+      <option value="tts">Suara sintetis (dibacakan)</option>
+    </select></div>
+    <div class="msbRow"><button class="msbBtn pri" onclick="msbVoiceTest('doa')">▶ TES DOA</button></div>
+    <div class="msbHint">Doa diputar otomatis begitu adzan selesai: "Allahumma Rabba haadzihid da'watit taammah, wa ash shalaatil qaaimah, aati Muhammadanil wasiilata wal fadhiilah, wab'ats-hu maqaamam mahmuudanil ladzii wa'adtah."</div>
 
-    <h4>4. Teks Adzan (untuk suara sintetis)</h4>
+    <h4>4. Notifikasi Sebelum Adzan</h4>
+    <div class="msbRow"><label>Pengingat sebelum adzan</label><div class="msbTog" id="msbTogNotif" onclick="msbVoiceTog('notif')"></div></div>
+    <div class="msbRow"><label>Waktu pengingat</label>
+      <div class="msbSeg" id="msbNotifMin">
+        <button data-n="3" onclick="msbVoiceNotifMin(3)">3 mnt</button>
+        <button data-n="5" onclick="msbVoiceNotifMin(5)">5 mnt</button>
+        <button data-n="10" onclick="msbVoiceNotifMin(10)">10 mnt</button>
+        <button data-n="15" onclick="msbVoiceNotifMin(15)">15 mnt</button>
+      </div>
+    </div>
+    <div class="msbRow"><button class="msbBtn" onclick="msbVoiceTest('notif')">▶ TES PENGINGAT</button></div>
+
+    <h4>5. Teks Adzan (bila memakai suara sintetis)</h4>
     <textarea id="msbAdzanText" spellcheck="false"></textarea>
+    <div class="msbHint">Untuk Subuh, kalimat "Ash-shalatu khairum minan naum" ditambahkan otomatis setelah "Hayya 'alal falaah".</div>
 
+    </div>
     <div class="msbFoot">
       <button class="msbBtn" onclick="msbClose('msbVoiceModal')">Tutup</button>
       <button class="msbBtn pri" onclick="msbVoiceSave()">Simpan</button>
@@ -1267,7 +1315,7 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     <div class="msbHint" id="msbGpsNote">Bila GPS aktif, jadwal dihitung dari koordinat perangkat, bukan nama kota.</div>
 
     <h4>6. Alamat, Koordinat &amp; Latar Masjid</h4>
-    <div class="msbRow"><label>Alamat masjid</label><input type="text" id="msbAddr" placeholder="Jl. Sosrokartono, Bacin, Bae, Kudus"></div>
+    <div class="msbRow"><label>Alamat masjid</label><input type="text" id="msbAddr" placeholder="Jl. Sosrokartono, Panjang, Bae, Kudus"></div>
     <div class="msbRow"><label>Lintang</label><input type="text" id="msbLatVal" placeholder="-6.786862" inputmode="decimal"></div>
     <div class="msbRow"><label>Bujur</label><input type="text" id="msbLngVal" placeholder="110.8498833" inputmode="decimal"></div>
     <div class="msbModes">
@@ -1329,7 +1377,7 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
       <button class="msbBtn pri" onclick="msbVoiceOpen()">🔊 BUKA PENGATURAN SUARA</button>
       <button class="msbBtn" onclick="msbVoiceQuick()">ADZAN: <b id="msbAdzanState">—</b></button>
     </div>
-    <div class="msbHint">Di dalamnya: tombol suara Siri, aktif/nonaktifkan adzan otomatis, ganti suara adzan (wanita/pria/berbagai suara perangkat), kecepatan, volume, tes suara, dan tautan rekaman adzan MP3.</div>
+    <div class="msbHint">Di dalamnya: suara Siri, aktif/nonaktifkan adzan otomatis, rekaman adzan berbeda untuk tiap waktu sholat (Subuh memakai adzan khusus), doa sesudah adzan otomatis, pengingat sebelum adzan, volume, dan tes suara.</div>
 
     <div class="msbFoot">
       <button class="msbBtn warn" onclick="msbResetDefault()" title="Kembalikan semua ke bawaan">↺ RESET BAWAAN</button>
@@ -1777,7 +1825,7 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     corr:{subuh:0,dzuhur:0,ashar:0,maghrib:0,isya:0,syuruq:0},
     theme:'nabawi', city:'Kudus', country:'Indonesia', gps:false,
     clock24:true, seconds:true, showRamadhan:true, scale:100, ssIdle:4,
-    bg:DEFBG, dim:50, lat:-6.786862, lng:110.8498833, addr:'Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326', mapMode:'photo'
+    bg:DEFBG, dim:50, lat:-6.786862, lng:110.8498833, addr:'Jl. Sosrokartono, Panjang, Bae, Kudus Regency, Central Java 59326', mapMode:'photo'
   };
   window.MSBS = JSON.parse(JSON.stringify(DEF));
   let DRAFT = null;            // salinan saat modal dibuka
@@ -2006,7 +2054,7 @@ body[data-msbtheme="marmer"] .msbModes button{background:#fff;color:#0b1f1a}
 /* ================= v3.3 MASJID AL HUDA + LATAR PETA ================= */
 (function(){
   const $=i=>document.getElementById(i);
-  const DEF2={ addr:'Jl. Sosrokartono, Bacin, Bae, Kudus Regency, Central Java 59326',
+  const DEF2={ addr:'Jl. Sosrokartono, Panjang, Bae, Kudus Regency, Central Java 59326',
                lat:-6.786862, lng:110.8498833, mapMode:'sat' };
   const OLD_NAMES=['Masjid Al-Barkah','MASJID AL-BARKAH','MASJID AL-BARKAH CILEUNGSI','Masjid Al-Barkah Cileungsi'];
 
@@ -2425,7 +2473,7 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 (function(){
   const $ = id => document.getElementById(id);
   const DEFBG = window.MSB_DEF_BG || 'https://media.base44.com/images/public/6a48d0b8744792061258ff83/543208d38_masjid_terang.jpg';
-  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv','msb_dock_min','msb_doa_vis','msb_voice_v1','msb_adzan_played'];
+  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv','msb_doa_vis','msb_voice_v1','msb_adzan_played'];
 
   function st(){ return window.MSBS || null; }
   function persist(){ try{ localStorage.setItem('msb_set_v3', JSON.stringify(window.MSBS)); }catch(e){} }
@@ -2727,27 +2775,13 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 /* ================= v3.6 DOCK MELAYANG, PROGRAMMER, HELP SYSTEM ================= */
 (function(){
   const $ = id => document.getElementById(id);
-  const DOCK_KEY = 'msb_dock_min';
-
-  function applyDock(){
-    const dock = $('msbDock'), t = $('msbDockToggle');
-    let min = false;
-    try{ min = localStorage.getItem(DOCK_KEY) === '1'; }catch(e){}
-    if(dock) dock.classList.toggle('min', min);
-    if(t){
-      t.innerHTML = min ? '\u00AB' : '\u00BB';
-      t.title = min ? 'Tampilkan tombol melayang' : 'Sembunyikan tombol melayang';
-      t.setAttribute('aria-expanded', min ? 'false' : 'true');
-    }
-  }
-  window.msbDockToggle = function(){
-    const dock = $('msbDock'); if(!dock) return;
-    const min = !dock.classList.contains('min');
-    dock.classList.toggle('min', min);
-    try{ localStorage.setItem(DOCK_KEY, min ? '1' : '0'); }catch(e){}
-    applyDock();
-  };
-  applyDock();
+  /* v4.1: tombol sembunyikan/tampilkan (>> / <<) dihapus karena memicu getaran tata letak.
+     Dock kini selalu tampil lengkap; sisa status lama dibersihkan sekali. */
+  (function(){
+    try{ localStorage.removeItem('msb_dock_min'); }catch(e){}
+    const dock = $('msbDock');
+    if(dock) dock.classList.remove('min','hidden');
+  })();
 
 
   function pushCard(html){
@@ -2886,7 +2920,7 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 </script>
 
 <script>
-/* ================= v4.0 SUARA SIRI & SUARA ADZAN ================= */
+/* ================= v4.2 SUARA SIRI & SUARA ADZAN PER SHOLAT ================= */
 (function(){
   const $ = id => document.getElementById(id);
   const KEY='msb_voice_v1';
@@ -2895,53 +2929,69 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     + "Asyhadu anna Muhammadar rasuulullah. Asyhadu anna Muhammadar rasuulullah. "
     + "Hayya 'alash shalaah. Hayya 'alash shalaah. Hayya 'alal falaah. Hayya 'alal falaah. "
     + "Allahu Akbar, Allahu Akbar. Laa ilaaha illallah.";
+  const FAJR_LINE = "Ash-shalatu khairum minan naum. Ash-shalatu khairum minan naum. ";
+  const DOA_TEXT = "Allahumma Rabba haadzihid da'watit taammah, wa ash shalaatil qaaimah, "
+    + "aati Muhammadanil wasiilata wal fadhiilah, wab'ats-hu maqaamam mahmuudanil ladzii wa'adtah. "
+    + "Rabbanaa aatinaa fid dunyaa hasanah wa fil aakhirati hasanah wa qinaa 'adzaaban naar.";
   const SIRI_DEMO = "Assalamu'alaikum warahmatullah. Saya Siri, asisten suara Masjid Al Huda. "
     + "Saya siap membacakan jadwal sholat, pengumuman takmir, dan jawaban chat untuk jamaah.";
 
+  /* rekaman adzan: Islami-fork/adzan-audio (MIT) */
+  const AUDIO_BASE = ['https://raw.githubusercontent.com/Islami-fork/adzan-audio/HEAD/',
+                      'https://cdn.jsdelivr.net/gh/Islami-fork/adzan-audio@HEAD/'];
+  const LIB = [
+    ['adzan-subuh.mp3',  'Adzan Subuh (Assalatu khairum minan naum)'],
+    ['adzan-subuh2.mp3', 'Adzan Subuh versi 2'],
+    ['adzan-mekah.mp3',  'Adzan Masjidil Haram, Mekah'],
+    ['Adzan-al-Aqsa.mp3','Adzan Masjidil Aqsa']
+  ];
+  const DEFAULT_MAP = { Subuh:'adzan-subuh.mp3', Dzuhur:'adzan-mekah.mp3', Ashar:'adzan-mekah.mp3',
+                        Maghrib:'adzan-mekah.mp3', Isya:'adzan-mekah.mp3' };
+
   const DEF = { siri:true, read:true, siriVoice:'', siriRate:1,
-                adzan:true, adzanVoice:'', adzanRate:0.92, adzanVol:0.95,
+                adzan:true, adzanMode:'audio', map:Object.assign({},DEFAULT_MAP),
+                adzanVoice:'', adzanRate:0.92, adzanVol:0.95,
+                doaOn:true, doaSrc:'audio', notifOn:false, notifMin:5,
                 adzanUrl:'', adzanText:ADZAN_TEXT };
-  let V = Object.assign({}, DEF);
+  let V = JSON.parse(JSON.stringify(DEF));
 
   function load(){
-    try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); if(o&&typeof o==='object') V=Object.assign(V,o); } }catch(e){}
+    try{
+      const raw=localStorage.getItem(KEY);
+      if(raw){ const o=JSON.parse(raw); if(o&&typeof o==='object'){
+        V=Object.assign(V,o);
+        V.map=Object.assign({}, DEFAULT_MAP, (o&&o.map)||{});
+      } }
+    }catch(e){}
   }
-  function save(){
-    try{ localStorage.setItem(KEY, JSON.stringify(V)); }catch(e){}
-    syncLabels();
-  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(V)); }catch(e){} syncLabels(); }
 
   /* ---------- daftar suara perangkat ---------- */
   function allVoices(){
     try{ return (window.speechSynthesis && speechSynthesis.getVoices()) || []; }catch(e){ return []; }
   }
   function voiceList(){
-    const vs = allVoices().filter(v => /^(id|ms|en)/i.test(v.lang||''));   // Indonesia + Melayu + Inggris
-    const rest = allVoices().filter(v => !/^(id|ms|en)/i.test(v.lang||''));
-    const all = vs.concat(rest);
-    all.sort((a,b)=>{
-      const rank = v => /^id/i.test(v.lang||'') ? 0 : (/^ms/i.test(v.lang||'') ? 1 : (/^en/i.test(v.lang||'') ? 2 : 3));
-      return rank(a)-rank(b) || String(a.name).localeCompare(String(b.name));
-    });
+    const all = allVoices().slice();
+    const rank = v => /^id/i.test(v.lang||'') ? 0 : (/^ms/i.test(v.lang||'') ? 1 : (/^en/i.test(v.lang||'') ? 2 : 3));
+    all.sort((a,b)=> rank(a)-rank(b) || String(a.name).localeCompare(String(b.name)));
     return all;
   }
   function fillSelect(sel, current){
-    if(!sel) return;
+    if(!sel) return current;
     const vs = voiceList();
     sel.innerHTML='';
     if(!vs.length){
       const o=document.createElement('option'); o.value=''; o.textContent='Suara bawaan perangkat'; sel.appendChild(o);
-      return;
+      return current||'';
     }
     vs.forEach((v,i)=>{
       const o=document.createElement('option');
       const lang=(v.lang||'').replace('_','-');
-      const tag=/^id/i.test(lang)?' 🇮🇩':(/^ms/i.test(lang)?' 🇲🇾':(/^en/i.test(lang)?' 🇬🇧':''));
+      const tag=/^id/i.test(lang)?' &#127470;&#127465;':(/^ms/i.test(lang)?' &#127474;&#127486;':(/^en/i.test(lang)?' &#127468;&#127463;':''));
       o.value=v.voiceURI||v.name||String(i);
-      o.textContent=v.name+' · '+lang+tag+(v.localService?' (offline)':'');
+      o.textContent=v.name+' \u00b7 '+lang+(v.localService?' (offline)':'');
       sel.appendChild(o);
     });
-    // pilih yang tersimpan, atau suara Indonesia pertama
     let want = current;
     if(!want || ![...sel.options].some(o=>o.value===want)){
       const idv = vs.find(v=>/^id/i.test(v.lang||''));
@@ -2957,21 +3007,20 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   }
 
   /* ---------- orb & status ---------- */
-  let orbTimer=null;
   function orb(state){
     const o=$('msbSiriOrb'), lbl=$('msbSiriLabel'), dockBtn=document.querySelector('#msbDock .dk.voice');
     if(!o) return;
-    clearTimeout(orbTimer);
     if(state==='talk'){
-      o.classList.add('talk'); if(lbl) lbl.textContent='BERBICARA…';
+      o.classList.add('talk'); if(lbl) lbl.textContent='BERBICARA\u2026';
       if(dockBtn) dockBtn.classList.add('on-air');
     }else{
       o.classList.remove('talk'); if(lbl) lbl.textContent=(state||'SIAP');
       if(dockBtn) dockBtn.classList.remove('on-air');
     }
   }
+  function toast(msg){ if(typeof window.msbToast==='function') window.msbToast(msg); }
 
-  /* ---------- bicara ---------- */
+  /* ---------- pembicaraan & pemutar audio ---------- */
   let audioEl=null;
   function stopAll(){
     try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
@@ -2980,8 +3029,8 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   }
   function speak(text, opts){
     opts=opts||{};
-    if(!('speechSynthesis' in window)){ toast('Perangkat ini tidak mendukung suara sintetis.'); return false; }
-    stopAll();
+    if(!('speechSynthesis' in window)){ toast('Perangkat ini tidak mendukung suara sintetis.'); if(opts.onend) opts.onend(); return false; }
+    stopSpeech();
     const u = new SpeechSynthesisUtterance(String(text||''));
     const v = pickVoice(opts.voice || V.siriVoice);
     try{ if(v) u.voice=v; }catch(e){}
@@ -2992,45 +3041,113 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     u.onstart = ()=>orb('talk');
     u.onend = ()=>{ orb('SIAP'); if(typeof opts.onend==='function') opts.onend(); };
     u.onerror = ()=>orb('SIAP');
-    try{ speechSynthesis.speak(u); }catch(e){ toast('Suara gagal diputar: '+e.message); return false; }
+    try{ speechSynthesis.speak(u); }catch(e){ toast('Suara gagal diputar.'); return false; }
     return true;
   }
-  function toast(msg){ if(typeof window.msbToast==='function') window.msbToast(msg); }
+  function stopSpeech(){ try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){} }
 
-  /* ---------- adzan ---------- */
-  function playAdzan(label){
-    const url=String(V.adzanUrl||'').trim();
-    if(url){
-      try{
-        audioEl = new Audio(url);
-        audioEl.volume = Number(V.adzanVol==null?1:V.adzanVol);
-        audioEl.onplay = ()=>orb('talk');
-        audioEl.onended = ()=>{ orb('SIAP'); audioEl=null; };
-        audioEl.onerror = ()=>{ orb('SIAP'); toast('Rekaman adzan gagal dimuat, memakai suara sintetis.'); speak(V.adzanText,{voice:V.adzanVoice, rate:V.adzanRate, volume:V.adzanVol}); };
-        const p=audioEl.play();
-        if(p && p.catch) p.catch(()=>{ orb('SIAP'); toast('Ketuk layar sekali agar suara adzan diizinkan browser.'); });
-      }catch(e){ speak(V.adzanText,{voice:V.adzanVoice, rate:V.adzanRate, volume:V.adzanVol}); }
-    }else{
-      speak(V.adzanText,{voice:V.adzanVoice, rate:V.adzanRate, volume:V.adzanVol});
+  function playUrls(urls, opts){
+    opts=opts||{};
+    let i=0;
+    const vol = Number(opts.volume==null ? V.adzanVol : opts.volume);
+    (function attempt(){
+      if(i>=urls.length){ orb('SIAP'); if(opts.onfail) opts.onfail(); return; }
+      const a=new Audio(urls[i++]);
+      a.preload='auto';
+      a.volume=Math.max(0,Math.min(1,isNaN(vol)?0.95:vol));
+      audioEl=a;
+      a.onplay=()=>orb('talk');
+      a.onended=()=>{ orb('SIAP'); if(audioEl===a) audioEl=null; if(opts.onend) opts.onend(); };
+      a.onerror=()=>{ if(audioEl===a) audioEl=null; attempt(); };
+      const pr=a.play();
+      if(pr && pr.catch) pr.catch(()=>{
+        setTimeout(()=>{ if(a.error){ if(audioEl===a) audioEl=null; attempt(); }
+                         else { orb('SIAP'); toast('Ketuk layar sekali agar suara diizinkan browser.'); } }, 1200);
+      });
+    })();
+  }
+  function playLib(name, opts){ playUrls(AUDIO_BASE.map(b=>b+name), opts); }
+
+  /* ---------- teks adzan, termasuk Subuh ---------- */
+  function adzanTextFor(name){
+    const base = String(V.adzanText||ADZAN_TEXT).trim();
+    if(name!=='Subuh') return base;
+    if(/khairum minan naum/i.test(base)) return base;
+    if(/hayya 'alal falaah\./i.test(base)){
+      return base.replace(/hayya 'alal falaah\./i, "Hayya 'alal falaah. "+FAJR_LINE);
     }
-    if(label) toast('🔔 Waktu '+label+' telah tiba. Adzan berkumandang.');
+    return base+' '+FAJR_LINE;
+  }
+  function adzanFileFor(name){ return (V.map && V.map[name]) || DEFAULT_MAP[name] || 'adzan-mekah.mp3'; }
+  function libLabel(file){ const f=LIB.find(x=>x[0]===file); return f?f[1]:file; }
+
+  function playDoa(){
+    const tts = ()=>speak(DOA_TEXT, {voice:V.adzanVoice, rate:Math.min(1, Number(V.adzanRate)||0.95), volume:V.adzanVol});
+    if((V.doaSrc||'audio')==='tts'){ tts(); return; }
+    stopSpeech();
+    playLib('doa-sesudah-adzan.mp3', {onfail:tts});
   }
 
-  /* ---------- label di modal Pengaturan ---------- */
+  function playAdzan(name){
+    name = name || 'Dzuhur';
+    stopSpeech();
+    const afterDoa = ()=>{ if(V.doaOn) setTimeout(playDoa, 800); };
+    const tts = ()=>speak(adzanTextFor(name), {voice:V.adzanVoice, rate:V.adzanRate, volume:V.adzanVol, onend:afterDoa});
+    const mode = V.adzanMode || 'audio';
+    if(mode==='tts'){ tts(); return; }
+    if(mode==='url'){
+      const url=String(V.adzanUrl||'').trim();
+      if(!url){ tts(); return; }
+      playUrls([url], {onend:afterDoa, onfail:tts});
+      return;
+    }
+    playLib(adzanFileFor(name), {onend:afterDoa, onfail:tts});
+  }
+
+  /* ---------- sinkronisasi tampilan modal ---------- */
+  function fillMapSelects(){
+    ['Subuh','Dzuhur','Ashar','Maghrib','Isya'].forEach(p=>{
+      const sel=$('msbMap'+p); if(!sel) return;
+      if(!sel.options.length){
+        LIB.forEach(([file,label])=>{
+          const o=document.createElement('option'); o.value=file; o.textContent=label; sel.appendChild(o);
+        });
+        const o=document.createElement('option'); o.value='AllahuAkbar-notif.mp3'; o.textContent='Notifikasi Allahu Akbar (pendek)'; sel.appendChild(o);
+      }
+      sel.value = (V.map && V.map[p]) || DEFAULT_MAP[p] || 'adzan-mekah.mp3';
+    });
+  }
+  function segOn(id, attr, val){
+    const box=$(id); if(!box) return;
+    [...box.querySelectorAll('button')].forEach(b=>b.classList.toggle('on', b.getAttribute(attr)===String(val)));
+  }
   function syncLabels(){
-    const el=$('msbAdzanState'); if(el) el.textContent = V.adzan ? 'AKTIF' : 'NONAKTIF';
-    const t1=$('msbTogSiri'), t2=$('msbTogRead'), t3=$('msbTogAdzan');
+    const t1=$('msbTogSiri'), t2=$('msbTogRead'), t3=$('msbTogAdzan'), t4=$('msbTogDoa'), t5=$('msbTogNotif');
     if(t1) t1.classList.toggle('on', !!V.siri);
     if(t2) t2.classList.toggle('on', !!V.read);
     if(t3) t3.classList.toggle('on', !!V.adzan);
+    if(t4) t4.classList.toggle('on', !!V.doaOn);
+    if(t5) t5.classList.toggle('on', !!V.notifOn);
+    const el=$('msbAdzanState'); if(el) el.textContent = V.adzan ? 'AKTIF' : 'NONAKTIF';
+
     const r1=$('msbSiriRate'), l1=$('msbSiriRateVal');
-    if(r1) r1.value=V.siriRate; if(l1) l1.textContent=Number(V.siriRate).toFixed(2)+'×';
+    if(r1) r1.value=V.siriRate; if(l1) l1.textContent=Number(V.siriRate).toFixed(2)+'\u00d7';
     const r2=$('msbAdzanRate'), l2=$('msbAdzanRateVal');
-    if(r2) r2.value=V.adzanRate; if(l2) l2.textContent=Number(V.adzanRate).toFixed(2)+'×';
+    if(r2) r2.value=V.adzanRate; if(l2) l2.textContent=Number(V.adzanRate).toFixed(2)+'\u00d7';
     const r3=$('msbAdzanVol'), l3=$('msbAdzanVolVal');
     if(r3) r3.value=V.adzanVol; if(l3) l3.textContent=Math.round(Number(V.adzanVol)*100)+'%';
+
     const u=$('msbAdzanUrl'); if(u && document.activeElement!==u) u.value=V.adzanUrl||'';
     const tx=$('msbAdzanText'); if(tx && document.activeElement!==tx) tx.value=V.adzanText||ADZAN_TEXT;
+    const ds=$('msbDoaSrc'); if(ds) ds.value=V.doaSrc||'audio';
+
+    segOn('msbAdzMode','data-m', V.adzanMode||'audio');
+    segOn('msbNotifMin','data-n', V.notifMin||5);
+
+    const mapBox=$('msbAdzMap'), urlBox=$('msbAdzUrlWrap');
+    if(mapBox) mapBox.style.display = (V.adzanMode==='audio') ? '' : 'none';
+    if(urlBox) urlBox.style.display = (V.adzanMode==='url') ? '' : 'none';
+    fillMapSelects();
   }
 
   /* ---------- pembuka ---------- */
@@ -3039,13 +3156,24 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     if($('msbSiriVoice')) V.siriVoice = fillSelect($('msbSiriVoice'), V.siriVoice) || V.siriVoice;
     if($('msbAdzanVoice')) V.adzanVoice = fillSelect($('msbAdzanVoice'), V.adzanVoice) || V.adzanVoice;
     syncLabels();
+    let tab='adzan';
+    try{ tab = sessionStorage.getItem('msb_voice_tab') || 'adzan'; }catch(e){}
+    window.msbVoiceTab(tab);
     if(typeof window.msbOpen==='function') window.msbOpen('msbVoiceModal');
     if(!allVoices().length && window.speechSynthesis){
-      speechSynthesis.onvoiceschanged = function(){
+      speechSynthesis.onvoiceschanged=function(){
         fillSelect($('msbSiriVoice'), V.siriVoice);
         fillSelect($('msbAdzanVoice'), V.adzanVoice);
       };
     }
+  };
+  window.msbVoiceTab=function(t){
+    const siri=$('msbTabSiri'), adz=$('msbTabAdzan');
+    if(siri) siri.classList.toggle('on', t==='siri');
+    if(adz) adz.classList.toggle('on', t!=='siri');
+    const box=$('msbVoiceTabs');
+    if(box) [...box.querySelectorAll('button')].forEach(b=>b.classList.toggle('on', b.getAttribute('data-t')===(t==='siri'?'siri':'adzan')));
+    try{ sessionStorage.setItem('msb_voice_tab', t); }catch(e){}
   };
   window.msbVoiceQuick=function(){
     V.adzan=!V.adzan; save();
@@ -3056,6 +3184,8 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     if(which==='siri'){ V.siri=!V.siri; if(!V.siri) stopAll(); }
     else if(which==='read'){ V.read=!V.read; }
     else if(which==='adzan'){ V.adzan=!V.adzan; if(!V.adzan) stopAll(); }
+    else if(which==='doa'){ V.doaOn=!V.doaOn; }
+    else if(which==='notif'){ V.notifOn=!V.notifOn; }
     save();
   };
   window.msbVoicePick=function(kind,val){
@@ -3071,14 +3201,31 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     else V.adzanVol=n;
     save();
   };
+  window.msbVoiceMode=function(m){
+    V.adzanMode=m; save();
+    if(m==='tts') speak('Adzan dibacakan dengan suara sintetis.', {voice:V.adzanVoice, rate:V.adzanRate, volume:V.adzanVol});
+  };
+  window.msbVoiceMap=function(prayer,file){
+    V.map=V.map||{}; V.map[prayer]=file; save();
+    toast('Adzan '+prayer+': '+libLabel(file));
+    stopAll(); playLib(file,{});
+  };
+  window.msbVoiceDoaSrc=function(v){ V.doaSrc=v; save(); };
+  window.msbVoiceNotifMin=function(n){ V.notifMin=Number(n)||5; save(); };
   window.msbVoiceTest=function(kind, now){
     load();
     if(kind==='siri'){ speak(SIRI_DEMO, {voice:V.siriVoice, rate:V.siriRate, volume:1}); }
-    else if(kind==='adzan'){ playAdzan(now? 'sekarang':''); }
+    else if(kind==='adzan'){
+      const name = (document.querySelector('#msbMapSubuh')&&now!==1) ? 'Subuh' : 'Dzuhur';
+      playAdzan(name);
+      if(now) toast('\U0001f514 Simulasi adzan: '+(V.adzanMode==='tts'?'suara sintetis':libLabel(adzanFileFor(name))));
+    }
+    else if(kind==='doa'){ playDoa(); }
+    else if(kind==='notif'){ stopSpeech(); playLib('AllahuAkbar-notif.mp3',{}); toast('\U0001f514 Pengingat '+V.notifMin+' menit sebelum adzan.'); }
     else if(kind==='url'){
       const u=$('msbAdzanUrl'); V.adzanUrl=(u&&u.value||'').trim(); save();
       if(!V.adzanUrl){ toast('Isi dulu tautan rekaman MP3-nya.'); return; }
-      playAdzan('uji rekaman');
+      playUrls([V.adzanUrl],{});
     }
   };
   window.msbVoiceStop=function(){ stopAll(); };
@@ -3088,72 +3235,93 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
     if(tx && tx.value.trim()) V.adzanText=tx.value.trim();
     if($('msbSiriVoice') && $('msbSiriVoice').value) V.siriVoice=$('msbSiriVoice').value;
     if($('msbAdzanVoice') && $('msbAdzanVoice').value) V.adzanVoice=$('msbAdzanVoice').value;
+    ['Subuh','Dzuhur','Ashar','Maghrib','Isya'].forEach(p=>{
+      const sel=$('msbMap'+p); if(sel && sel.value){ V.map[p]=sel.value; }
+    });
     save();
     toast('Pengaturan suara Siri & adzan disimpan.');
     if(typeof window.msbClose==='function') window.msbClose('msbVoiceModal');
   };
 
-  /* ---------- jadwal adzan otomatis ---------- */
+  /* ---------- penjadwal adzan & pengingat ---------- */
   const TIMES = [['Subuh','Fajr'],['Dzuhur','Dhuhr'],['Ashar','Asr'],['Maghrib','Maghrib'],['Isya','Isha']];
   function playedData(){
     try{ const o=JSON.parse(localStorage.getItem('msb_adzan_played')||'{}'); return o&&typeof o==='object'?o:{}; }catch(e){ return {}; }
   }
   function savePlayed(o){ try{ localStorage.setItem('msb_adzan_played', JSON.stringify(o)); }catch(e){} }
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function timeOf(id){
+    const el=$(id); if(!el) return null;
+    const raw=String(el.textContent||'');
+    const m=raw.match(/(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i); if(!m) return null;
+    let hh=parseInt(m[1],10); const mm=parseInt(m[2],10); const ap=(m[3]||'').toUpperCase();
+    if(ap==='PM' && hh<12) hh+=12;
+    if(ap==='AM' && hh===12) hh=0;
+    if(hh>23||mm>59) return null;
+    return hh*60+mm;
+  }
+  function prayerPlan(){
+    const out=[];
+    TIMES.forEach(([name,id])=>{
+      const t=timeOf(id); if(t==null) return;
+      out.push({name, min:t, label:pad2(Math.floor(t/60))+':'+pad2(t%60)});
+    });
+    return out;
+  }
   window.msbAdzanCheck=function(){
-    if(!V.adzan) return null;
     const now=new Date();
-    const cur=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-    const today=now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+    const curMin = now.getHours()*60 + now.getMinutes();
+    const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
     let p=playedData();
-    if(p.date!==today) p={date:today, done:{}};
+    if(p.date!==today) p={date:today, done:{}, notif:{}};
     if(!p.done) p.done={};
-    for(const [name,id] of TIMES){
-      const el=$(id); if(!el) continue;
-      const raw=String(el.textContent||'');
-      const m=raw.match(/(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i); if(!m) continue;
-      let hh=parseInt(m[1],10); const mm=m[2]; const ap=(m[3]||'').toUpperCase();
-      if(ap==='PM' && hh<12) hh+=12;
-      if(ap==='AM' && hh===12) hh=0;
-      const t=String(hh).padStart(2,'0')+':'+mm;
-      if(t===cur && !p.done[name]){
-        p.done[name]=1; savePlayed(p);
-        playAdzan(name);
-        return name;
+    if(!p.notif) p.notif={};
+    const plan=prayerPlan();
+    let fired=null;
+    plan.forEach(it=>{
+      if(V.adzan && it.min===curMin && !p.done[it.name]){
+        p.done[it.name]=1; savePlayed(p);
+        playAdzan(it.name);
+        toast('\U0001f54c Waktu '+it.name+' telah tiba ('+it.label+').');
+        fired=it.name;
+        return;
       }
-    }
+      if(V.notifOn){
+        const tMin=(it.min - (Number(V.notifMin)||5) + 1440) % 1440;
+        if(tMin===curMin && !p.notif[it.name]){
+          p.notif[it.name]=1; savePlayed(p);
+          stopSpeech(); playLib('AllahuAkbar-notif.mp3',{});
+          toast('\u23f0 '+(Number(V.notifMin)||5)+' menit lagi '+it.name+' ('+it.label+').');
+        }
+      }
+    });
     savePlayed(p);
-    return null;
+    return fired;
   };
 
-  /* ---------- bacakan jawaban chat (Siri) ---------- */
+  /* ---------- bacakan jawaban chat ---------- */
   function hookChat(){
     const body=$('msbChatBody'); if(!body || body._ttsHooked) return;
     body._ttsHooked=1;
     const seen=new WeakSet();
     const obs=new MutationObserver(list=>{
-      list.forEach(mu=>{
-        mu.addedNodes.forEach(n=>{
-          if(!n || n.nodeType!==1 || seen.has(n)) return;
-          seen.add(n);
-          if(!n.classList.contains('b')) return;
-          if(!V.siri || !V.read) return;
-          const txt=(n.textContent||'').replace(/ASISTEN MASJID/i,'').replace(/\s+/g,' ').trim();
-          if(txt.length>4 && !/mencari jawaban/i.test(txt)) speak(txt.slice(0,320), {voice:V.siriVoice, rate:V.siriRate, volume:1});
-        });
-      });
+      list.forEach(mu=>mu.addedNodes.forEach(n=>{
+        if(!n || n.nodeType!==1 || seen.has(n)) return;
+        seen.add(n);
+        if(!n.classList.contains('b')) return;
+        if(!V.siri || !V.read) return;
+        const txt=(n.textContent||'').replace(/ASISTEN MASJID/i,'').replace(/\s+/g,' ').trim();
+        if(txt.length>4 && !/mencari jawaban/i.test(txt)) speak(txt.slice(0,320), {voice:V.siriVoice, rate:V.siriRate, volume:1});
+      }));
     });
     obs.observe(body, {childList:true});
   }
 
-  /* ---------- init ---------- */
   function boot(){
     load(); syncLabels(); hookChat();
     setInterval(function(){ try{ window.msbAdzanCheck(); }catch(e){} }, 15000);
     setTimeout(function(){ try{ window.msbAdzanCheck(); }catch(e){} }, 3000);
-    // buka kunci audio pada interaksi pertama
-    const unlock=function(){ try{ if(window.speechSynthesis) speechSynthesis.getVoices(); }catch(e){} };
-    document.addEventListener('pointerdown', unlock, {once:true});
-    // segarkan label saat modal pengaturan dibuka
+    document.addEventListener('pointerdown', function(){ try{ if(window.speechSynthesis) speechSynthesis.getVoices(); }catch(e){} }, {once:true});
     const _open=window.msbOpen;
     if(typeof _open==='function'){
       window.msbOpen=function(id){
