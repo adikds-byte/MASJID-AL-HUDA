@@ -632,6 +632,140 @@ body[data-msbtheme="marmer"] .doaAr{text-shadow:0 0 18px rgba(15,118,110,.18)}
   .doaSpark{display:none}
 }
 </style>
+
+<style id="msbDockCss">
+/* ===== v3.6 DOCK TOMBOL MELAYANG (chat, apps, pengaturan, doa) ===== */
+#msbFab{display:none!important}
+#msbGear{display:none!important}
+#msbAppsFab{display:none!important}
+#msbDock{position:relative;margin:8px auto 2px;z-index:12000;display:flex;flex-direction:row;flex-wrap:wrap;
+  align-items:center;justify-content:center;gap:8px;width:max-content;max-width:96vw}
+#msbDock.hidden{display:none}
+#msbDock .dk{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;cursor:pointer;padding:0;
+  border:1px solid color-mix(in srgb,var(--a2) 55%,transparent);color:#ffe6ab;
+  background:linear-gradient(135deg,rgba(12,52,40,.96),rgba(5,22,18,.96));
+  box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 0 3px rgba(232,196,106,.08);
+  transition:transform .22s cubic-bezier(.22,1,.36,1),opacity .28s,box-shadow .28s,background .3s}
+#msbDock .dk svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#msbDock .dk:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 14px 30px rgba(0,0,0,.55),0 0 0 4px color-mix(in srgb,var(--a2) 22%,transparent)}
+#msbDock .dk .lbl{position:absolute;left:50%;bottom:calc(100% + 7px);white-space:nowrap;font:800 9.5px/1 'Segoe UI',sans-serif;
+  letter-spacing:.10em;padding:6px 9px;border-radius:8px;color:#ffe6ab;background:rgba(3,16,13,.96);
+  border:1px solid color-mix(in srgb,var(--a2) 45%,transparent);box-shadow:0 8px 18px rgba(0,0,0,.5);
+  opacity:0;pointer-events:none;transform:translateX(-50%) translateY(4px);transition:.22s}
+#msbDock .dk:hover .lbl{opacity:1;transform:translateX(-50%) translateY(0)}
+#msbDock .dk.off{opacity:.52}
+#msbDock .dk.off svg{stroke:#9fd8c4}
+#msbDock .dk.chat{background:linear-gradient(135deg,#10b981,#0e7490);color:#04120f;border-color:transparent;
+  box-shadow:0 10px 26px rgba(16,185,129,.45)}
+#msbDock .dk.chat::after{content:'';position:absolute;inset:-4px;border-radius:19px;border:2px solid rgba(16,185,129,.45);animation:ping 2.4s ease-out infinite}
+#msbDock .dk.chat svg{stroke-width:2}
+#msbDockToggle{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;cursor:pointer;padding:0;
+  border:1px dashed color-mix(in srgb,var(--a2) 60%,transparent);background:rgba(3,16,13,.88);color:#ffe6ab;
+  font:800 14px/1 'Segoe UI',sans-serif;box-shadow:0 8px 18px rgba(0,0,0,.42);transition:.22s}
+#msbDockToggle:hover{background:color-mix(in srgb,var(--a2) 24%,rgba(3,16,13,.92))}
+#msbDock.min .dk{display:none}
+#msbDock.min .dk.chat::after{display:none}
+body[data-msbtheme="marmer"] #msbDock .dk{background:linear-gradient(135deg,#ffffff,#e7f2ef);color:#0f766e;border-color:rgba(15,118,110,.42);box-shadow:0 10px 24px rgba(6,50,40,.18)}
+body[data-msbtheme="marmer"] #msbDock .dk.chat{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#ffffff}
+body[data-msbtheme="marmer"] #msbDock .dk .lbl{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.4)}
+body[data-msbtheme="marmer"] #msbDockToggle{background:#fff;color:#0f766e;border-color:rgba(15,118,110,.45)}
+body[data-msbtheme="ottoman"] #msbDock .dk{background:linear-gradient(135deg,rgba(74,14,22,.97),rgba(28,6,10,.97))}
+body[data-msbtheme="safir"] #msbDock .dk{background:linear-gradient(135deg,rgba(12,32,88,.97),rgba(5,12,36,.97))}
+body[data-msbtheme="kiswah"] #msbDock .dk{background:linear-gradient(135deg,rgba(24,22,14,.98),rgba(6,6,7,.98))}
+
+/* panel doa bisa disembunyikan */
+#doaWrap.off{display:none!important}
+.bottom-content{padding-bottom:4px!important}
+
+/* baris tombol di dalam chat */
+#msbChatTools{display:flex;gap:6px;padding:7px 10px;background:linear-gradient(90deg,rgba(16,185,129,.10),rgba(232,196,106,.08));
+  border-bottom:1px solid rgba(16,185,129,.22)}
+#msbChatTools button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;
+  font:800 9.5px/1 'Segoe UI',sans-serif;letter-spacing:.06em;padding:7px 8px;border-radius:9px;color:#d6fbea;
+  border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.10);transition:.2s}
+#msbChatTools button:hover{background:rgba(16,185,129,.24);transform:translateY(-1px)}
+#msbChatTools button.prog{border-color:rgba(232,196,106,.45);background:rgba(232,196,106,.10);color:#ffe6ab}
+
+/* kartu programmer */
+.msbPanelCard{padding:0!important;background:transparent!important;border:0!important;max-width:99%!important}
+.pcCard{position:relative;overflow:hidden;border-radius:16px;padding:13px;color:#eafff6;
+  border:1px solid rgba(232,196,106,.5);
+  background:linear-gradient(150deg,rgba(9,44,34,.98),rgba(5,16,24,.98));
+  animation:pcIn .65s cubic-bezier(.22,1,.36,1) both}
+@keyframes pcIn{from{opacity:0;transform:translateY(14px) scale(.96);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+.pcCard::before{content:'';position:absolute;inset:-40%;z-index:0;opacity:.55;
+  background:conic-gradient(from 0deg,transparent,rgba(232,196,106,.55),transparent 35%,rgba(16,185,129,.5),transparent 70%);
+  animation:doaSpin 8s linear infinite}
+.pcCard::after{content:'';position:absolute;top:0;left:0;width:45%;height:100%;pointer-events:none;z-index:1;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);
+  transform:translateX(-160%) rotate(6deg);animation:doaSweep 6s ease-in-out infinite}
+.pcInner{position:relative;z-index:2}
+.pcTop{display:flex;align-items:center;gap:10px}
+.pcAva{position:relative;width:44px;height:44px;flex:0 0 auto;border-radius:14px;display:grid;place-items:center;
+  font:900 15px/1 'Segoe UI',sans-serif;color:#04120f;background:linear-gradient(135deg,#e8c46a,#7cf0c4);
+  box-shadow:0 6px 16px rgba(232,196,106,.45)}
+.pcAva::after{content:'';position:absolute;inset:-4px;border-radius:18px;border:1px solid rgba(232,196,106,.55);animation:pcPulse 2.6s ease-out infinite}
+@keyframes pcPulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.pcTop b{display:block;font:800 13px/1.25 'Segoe UI',sans-serif;letter-spacing:.02em;color:#fff8e6}
+.pcTop span{display:block;font:600 9.5px/1.3 'Segoe UI',sans-serif;letter-spacing:.10em;text-transform:uppercase;color:#8ff0c2;margin-top:3px}
+.pcLinks{display:grid;gap:6px;margin-top:11px}
+.pcBtn{display:flex;align-items:center;gap:8px;text-decoration:none;padding:8px 10px;border-radius:10px;
+  font:800 10.5px/1 'Segoe UI',sans-serif;letter-spacing:.04em;color:#04120f;
+  transform:translateX(-6px);opacity:0;animation:pcLinkIn .5s cubic-bezier(.22,1,.36,1) forwards;transition:.2s}
+.pcBtn i{font-style:normal;width:18px;height:18px;display:grid;place-items:center;border-radius:6px;background:rgba(0,0,0,.18);font-size:11px}
+.pcBtn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.pcBtn.fb{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#f4f8ff}
+.pcBtn.blog{background:linear-gradient(135deg,#10b981,#0e7490);color:#03130f}
+.pcBtn.wa{background:linear-gradient(135deg,#25d366,#128c4b);color:#04150c}
+@keyframes pcLinkIn{to{opacity:1;transform:translateX(0)}}
+.pcMeta{margin-top:9px;font:600 9px/1.5 'Segoe UI',sans-serif;color:#9fd8c4;letter-spacing:.03em;text-align:center}
+
+/* kartu help system */
+.hsCard{position:relative;overflow:hidden;border-radius:16px;padding:13px;color:#eafff6;
+  border:1px solid rgba(96,165,250,.45);background:linear-gradient(150deg,rgba(8,28,44,.98),rgba(6,14,26,.98));
+  animation:pcIn .65s cubic-bezier(.22,1,.36,1) both}
+.hsCard::before{content:'';position:absolute;inset:-40%;z-index:0;opacity:.45;
+  background:conic-gradient(from 90deg,transparent,rgba(96,165,250,.5),transparent 40%,rgba(232,196,106,.45),transparent 72%);
+  animation:doaSpin 10s linear infinite}
+.hsInner{position:relative;z-index:2}
+.hsHead{display:flex;align-items:center;gap:7px;font:800 11px/1 'Segoe UI',sans-serif;letter-spacing:.13em;color:#bfdbfe;text-transform:uppercase}
+.hsHead b{font-size:14px}
+.hsGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.hsStat{background:rgba(255,255,255,.06);border:1px solid rgba(96,165,250,.28);border-radius:10px;padding:7px 5px;text-align:center;
+  animation:pcLinkIn .5s ease both}
+.hsStat b{display:block;font:900 16px/1 'Segoe UI',sans-serif;color:#8ff0c2}
+.hsStat span{display:block;font:700 7.6px/1.25 'Segoe UI',sans-serif;letter-spacing:.06em;color:#a9c4f5;margin-top:3px;text-transform:uppercase}
+.hsList{margin-top:10px;display:grid;gap:5px}
+.hsList div{font:600 9.8px/1.5 'Segoe UI',sans-serif;color:#dbeafe;padding-left:14px;position:relative}
+.hsList div::before{content:'▸';position:absolute;left:0;color:#e8c46a}
+.hsList b{color:#fff8e6}
+.hsFoot{margin-top:9px;font:700 8.6px/1.5 'Segoe UI',sans-serif;color:#9fd8c4;letter-spacing:.04em;text-align:center}
+body[data-msbtheme="marmer"] .pcCard{background:linear-gradient(150deg,#ffffff,#eaf4f1);color:#0b1f1a;border-color:rgba(15,118,110,.4)}
+body[data-msbtheme="marmer"] .pcTop b{color:#0b1f1a}
+body[data-msbtheme="marmer"] .hsCard{background:linear-gradient(150deg,#ffffff,#eaf4f1);color:#0b1f1a;border-color:rgba(15,118,110,.4)}
+body[data-msbtheme="marmer"] .hsList div{color:#0b1f1a}
+body[data-msbtheme="marmer"] .hsStat{background:#fff;border-color:rgba(15,118,110,.25)}
+body[data-msbtheme="marmer"] .hsStat b{color:#0f766e}
+@media (max-width:760px){
+  #msbDock{gap:7px}
+  #msbDock .dk{width:42px;height:42px;border-radius:13px}
+  #msbDock .dk svg{width:20px;height:20px}
+  #msbDockToggle{width:31px;height:31px}
+  #msbDock .dk .lbl{display:none}
+}
+@media (max-height:760px){
+  #msbDock{gap:6px;margin-top:5px}
+  #msbDock .dk{width:38px;height:38px;border-radius:12px}
+  #msbDock .dk svg{width:18px;height:18px}
+  #msbDockToggle{width:30px;height:30px;font-size:12px}
+}
+
+/* mode pengumuman pada panel doa */
+#doaCard.ann .doaAr,#doaCard.ann .doaLatin,#doaCard.ann .doaOrn{display:none}
+#doaCard.ann .doaId{font:800 clamp(13px,1.05vw + 9px,23px)/1.5 'Segoe UI',sans-serif;color:var(--txt);white-space:pre-line;
+  text-shadow:0 0 22px color-mix(in srgb,var(--a2) 45%,transparent),0 2px 12px rgba(0,0,0,.5)}
+#doaCard.ann .doaChip{color:color-mix(in srgb,#ffd98a 88%,var(--txt));border-color:rgba(255,217,138,.55);background:rgba(255,217,138,.14)}
+</style>
 </head>
 <link rel="stylesheet"
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -661,7 +795,7 @@ body[data-msbtheme="marmer"] .doaAr{text-shadow:0 0 18px rgba(15,118,110,.18)}
     <div id="doaWrap" aria-live="polite">
       <div id="doaCard">
         <div class="doaTop">
-          <span class="doaChip"><b>۞</b> DOA DARI AL-QUR'AN</span>
+          <span class="doaChip" id="doaChip"><b>۞</b> DOA DARI AL-QUR'AN</span>
           <span class="doaCount" id="doaCount">1 / 14</span>
         </div>
         <div id="doaBody">
@@ -892,8 +1026,6 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
 <div id="msbBar">
   <button class="msb-btn gold" onclick="msbOpen('msbSetModal');setTimeout(()=>{const g=document.getElementById('msbGallery');if(g)g.scrollIntoView({behavior:'smooth',block:'center'});},250)">🖼️ LATAR</button>
   <button class="msb-btn" onclick="msbQibla()">🧭 KIBLAT</button>
-  <button class="msb-btn" onclick="msbApps()">📱 MY APPS</button>
-  <button class="msb-btn" onclick="msbOpen('msbSetModal')">⚙️ PENGATURAN</button>
   <button class="msb-btn red" id="msbResetBtn" onclick="msbResetDefault()" title="Kembalikan latar foto masjid & semua pengaturan ke kondisi awal">🔄 RESET DEFAULT</button>
   <button class="msb-btn" onclick="msbSsOn()">🌙 SCREENSAVER</button>
   <button class="msb-btn" onclick="msbOpen('msbHelpModal')">❓ BANTUAN</button>
@@ -916,7 +1048,15 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
 <!-- CHAT -->
 <button id="msbFab" onclick="msbChatToggle()">🤖</button>
 <div id="msbChat">
-  <div id="msbChatHead"><span style="font-size:18px">🤖</span><b>ASISTEN MASJID AL HUDA</b><button class="msbBtn" style="margin-left:auto;padding:5px 9px" onclick="msbChatToggle(false)">✕</button></div>
+  <div id="msbChatHead">
+    <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#8ff0c2;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 9 9 0 0 1-3.8-.8L3 21l1.9-5.1A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/><circle cx="9" cy="11.5" r=".9" fill="#8ff0c2" stroke="none"/><circle cx="12.5" cy="11.5" r=".9" fill="#8ff0c2" stroke="none"/><circle cx="16" cy="11.5" r=".9" fill="#8ff0c2" stroke="none"/></svg>
+    <b>ASISTEN MASJID AL HUDA</b>
+    <button class="msbBtn" style="margin-left:auto;padding:5px 9px" onclick="msbChatToggle(false)">✕</button>
+  </div>
+  <div id="msbChatTools">
+    <button class="prog" onclick="msbChatProgrammer()">👨‍💻 PROGRAMMER</button>
+    <button onclick="msbChatHelp()">❓ HELP SYSTEM</button>
+  </div>
   <div id="msbChatBody"></div>
   <div id="msbChips">
     <button onclick="msbAsk('Kapan Ramadhan tahun ini?')">Ramadhan</button>
@@ -930,6 +1070,27 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     <input id="msbChatInput" placeholder="Tanya apa saja…" autocomplete="off">
     <button type="submit">➤</button>
   </form>
+</div>
+
+<!-- ===== v3.6 DOCK TOMBOL MELAYANG ===== -->
+<div id="msbDock">
+  <button id="msbDockToggle" type="button" onclick="msbDockToggle()" title="Sembunyikan / tampilkan tombol melayang">&raquo;</button>
+  <button class="dk" id="msbDockDoa" type="button" onclick="msbDoaToggle()" title="Tampilkan / sembunyikan panel doa">
+    <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19"/><path d="M9 8h6"/></svg>
+    <span class="lbl">DOA / PENGUMUMAN</span>
+  </button>
+  <button class="dk" type="button" onclick="msbOpen('msbSetModal')" title="Pengaturan tampilan">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+    <span class="lbl">PENGATURAN</span>
+  </button>
+  <button class="dk" type="button" onclick="msbAppsOpen()" title="My Aplikasi">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+    <span class="lbl">MY APLIKASI</span>
+  </button>
+  <button class="dk chat" type="button" onclick="msbChatToggle()" title="Chat asisten masjid">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 9 9 0 0 1-3.8-.8L3 21l1.9-5.1A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/><circle cx="9" cy="11.5" r=".9" fill="currentColor" stroke="none"/><circle cx="12.5" cy="11.5" r=".9" fill="currentColor" stroke="none"/><circle cx="16" cy="11.5" r=".9" fill="currentColor" stroke="none"/></svg>
+    <span class="lbl">CHAT</span>
+  </button>
 </div>
 
 <!-- MODAL LATAR -->
@@ -1049,6 +1210,14 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
         <button data-ss="4" onclick="msbSetSs(4)">4 mnt</button>
         <button data-ss="10" onclick="msbSetSs(10)">10 mnt</button>
       </div>
+    </div>
+
+    <h4>8. Pengumuman Takmir (menggantikan doa Al-Qur'an)</h4>
+    <textarea id="msbPengumuman" placeholder="Contoh: Kajian rutin setiap Ahad pagi 06.00 bersama Ust. Adi di aula masjid. Jamaah diharapkan hadir."></textarea>
+    <div class="msbHint">Bila kolom ini diisi, panel di tengah layar menampilkan pengumuman masjid sebagai ganti doa Al-Qur'an. Setiap baris baru menjadi satu pengumuman dan tampil bergantian. Kosongkan untuk kembali ke doa Al-Qur'an.</div>
+    <div class="msbRow">
+      <button class="msbBtn" onclick="msbFillPengumumanContoh()">ISI CONTOH</button>
+      <button class="msbBtn warn" onclick="msbClearPengumuman()">KOSONGKAN</button>
     </div>
 
     <div class="msbFoot">
@@ -1404,7 +1573,8 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     {k:['jadwal','waktu sholat','jam sholat','subuh','dzuhur','ashar','maghrib','isya'], a:()=>'Jadwal hari ini ('+tglIndo()+')'+jadwalNow()+srcGrid('Jadwal sholat hari ini')},
     {k:['adzan','azan','iqomah','iqamah'], a:()=>'Adzan dikumandangkan saat masuk waktu sholat. Iqomah adalah seruan tanda sholat berjamaah segera dimulai, biasanya 5–10 menit setelah adzan. Layar ini menampilkan hitung mundur ke waktu sholat berikutnya.'+srcGrid('Adzan dan iqomah')},
     {k:['hijriah','hijriyah','kalender islam'], a:()=>'Kalender Hijriah lebih pendek sekitar 11 hari dari Masehi, karena itu Ramadhan bergeser tiap tahun. Aplikasi ini menghitung Ramadhan dari tabel resmi Kemenag dan menyesuaikannya otomatis.'+srcGrid('Kalender Hijriah')},
-    {k:['doa','doa quran','doa al-qur\'an','doa apa','doa apa saja'], a:()=>'Di tengah layar ada panel DOA DARI AL-QUR\'AN yang menampilkan 14 doa pilihan secara bergantian setiap 12 detik, lengkap dengan tulisan Arab, transliterasi latin, terjemahan Indonesia, dan nama surah serta ayatnya (misalnya QS. Al-Baqarah 2:201). Tekan tombol \u2039 \u203A atau ketuk titik di bawah kartu untuk pindah doa; pergantian otomatis berhenti sementara saat kursor berada di atas kartu.'},
+    {k:['pengumuman','pengumuman takmir','ganti doa','takmir','teks pengumuman'], a:()=>'Buka tombol <b>PENGATURAN</b> (ikon roda gigi di kanan bawah), lalu isi bagian <b>8. Pengumuman Takmir</b>. Teks yang ditulis akan menggantikan doa Al-Qur\'an di panel tengah layar; setiap baris baru menjadi satu pengumuman yang tampil bergantian. Kosongkan kolomnya bila ingin kembali ke doa Al-Qur\'an.'},
+    {k:['doa','doa quran','doa al-qur\'an','doa apa','doa apa saja'], a:()=>'Di tengah layar ada panel DOA DARI AL-QUR\'AN yang menampilkan 14 doa pilihan secara bergantian setiap 12 detik, lengkap dengan tulisan Arab, transliterasi latin, terjemahan Indonesia, dan nama surah serta ayatnya (misalnya QS. Al-Baqarah 2:201). Tekan tombol \u2039 \u203A atau ketuk titik di bawah kartu untuk pindah doa; pergantian otomatis berhenti sementara saat kursor berada di atas kartu. Panel ini juga bisa diganti pengumuman takmir lewat menu Pengaturan bagian 8.'},
     {k:['latar','background','gambar masjid','foto'], a:()=>'Buka tombol <b>LATAR</b>, tempel tautan gambar masjid dari internet, lalu tekan TERAPKAN LINK. Bisa juga unggah file dari galeri dan mengatur kecerahannya supaya angka jadwal tetap terbaca.'},
     {k:['screensaver','layar','hemat'], a:()=>'Screensaver aktif sendiri setelah 4 menit tanpa sentuhan: bumi berputar, jam besar, dan kutipan doa, kata bijak, serta motivasi bergilir tiap 8 detik. Sentuh layar atau tekan Esc untuk kembali.'},
     {k:['fitur','bantuan','cara pakai'], a:()=>'Fitur tersedia: jadwal sholat otomatis, hitung mundur, penanda Ramadhan, latar gambar dari tautan, kiblat, koreksi waktu, screensaver, direktori 61 aplikasi, dan asisten ini.'},
@@ -2090,12 +2260,9 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   };
 
   function build(){
-    if($('msbAppsFab')) return;
-    const fab=document.createElement('button');
-    fab.id='msbAppsFab'; fab.type='button'; fab.title='Daftar 61 aplikasi karya Ir. Mohamad Hartadi';
-    fab.innerHTML='<span class="g">📱</span><span>MY APLIKASI</span><span class="cnt">'+APPS.length+'</span>';
-    fab.onclick=window.msbAppsOpen;
-    document.body.appendChild(fab);
+    /* v3.7: tombol melayang MY APLIKASI dihapus — sudah pindah ke dock ikon kanan bawah */
+    const lama=document.getElementById('msbAppsFab'); if(lama) lama.remove();
+    if($('msbAppsWrap')) return;
 
     const wrap=document.createElement('div');
     wrap.id='msbAppsWrap';
@@ -2148,7 +2315,7 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 (function(){
   const $ = id => document.getElementById(id);
   const DEFBG = window.MSB_DEF_BG || 'https://media.base44.com/images/public/6a48d0b8744792061258ff83/543208d38_masjid_terang.jpg';
-  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv'];
+  const KEYS = ['msb_set_v3','msb_bg','msb_corr','msb_city','msb_view','msb_scale','msb_theme','msb_apps_cat','msb_ss','msb_defv','msb_dock_min','msb_doa_vis'];
 
   function st(){ return window.MSBS || null; }
   function persist(){ try{ localStorage.setItem('msb_set_v3', JSON.stringify(window.MSBS)); }catch(e){} }
@@ -2276,36 +2443,48 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 </script>
 
 <script>
-/* ================= v3.5 DOA-DOA PILIHAN DARI AL-QUR'AN ================= */
+/* ================= v3.6 DOA AL-QUR'AN + PENGUMUMAN TAKMIR ================= */
 (function(){
   const $ = id => document.getElementById(id);
   const DOA = [ { "ar": "رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْءَاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ", "tr": "Rabbanaa aatinaa fid-dunyaa hasanah, wa fil-aakhirati hasanah, wa qinaa 'adzaaban-naar", "id": "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, serta lindungilah kami dari azab neraka.", "ref": "Al-Baqarah · 2:201", "ayat": "2:201" }, { "ar": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ ٱلْوَهَّابُ", "tr": "Rabbanaa laa tuzigh quluubanaa ba'da idz hadaitanaa wa hab lanaa mil ladunka rahmah, innaka antal wahhaab", "id": "Ya Tuhan kami, jangan Engkau jadikan hati kami condong kepada kesesatan setelah Engkau beri petunjuk, dan karuniakanlah rahmat dari sisi-Mu. Sungguh, Engkaulah Yang Maha Pemberi.", "ref": "Ali 'Imran · 3:8", "ayat": "3:8" }, { "ar": "رَبَّنَا ٱغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِىٓ أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ", "tr": "Rabbanaghfir lanaa dzunuubanaa wa israafanaa fii amrinaa wa tsabbit aqdaamanaa wanshurnaa 'alal qaumil kaafiriin", "id": "Ya Tuhan kami, ampunilah dosa-dosa kami dan tindakan kami yang berlebihan, tetapkanlah pendirian kami, dan tolonglah kami menghadapi kaum yang kafir.", "ref": "Ali 'Imran · 3:147", "ayat": "3:147" }, { "ar": "رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَٰسِرِينَ", "tr": "Rabbanaa zhalamnaa anfusanaa wa illam taghfir lanaa wa tarhamnaa lanakuunanna minal khaasiriin", "id": "Ya Tuhan kami, kami telah menzalimi diri kami sendiri. Jika Engkau tidak mengampuni dan memberi rahmat kepada kami, pastilah kami termasuk orang yang merugi.", "ref": "Al-A'raf · 7:23", "ayat": "7:23" }, { "ar": "رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى رَبَّنَا وَتَقَبَّلْ دُعَآءِ", "tr": "Rabbij-'alnii muqiimash-shalaati wa min dzurriyyatii, rabbanaa wa taqabbal du'aa'", "id": "Ya Tuhanku, jadikanlah aku dan anak cucuku orang yang tetap mendirikan shalat. Ya Tuhan kami, perkenankanlah doaku.", "ref": "Ibrahim · 14:40", "ayat": "14:40" }, { "ar": "رَبَّنَا ٱغْفِرْ لِى وَلِوَٰلِدَىَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ ٱلْحِسَابُ", "tr": "Rabbanaghfir lii wa liwaalidayya wa lil-mu'miniina yauma yaquumul hisaab", "id": "Ya Tuhan kami, ampunilah aku, kedua orang tuaku, dan seluruh orang mukmin pada hari terjadinya hisab.", "ref": "Ibrahim · 14:41", "ayat": "14:41" }, { "ar": "رَبَّنَآ ءَاتِنَا مِن لَّدُنكَ رَحْمَةًۭ وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًۭا", "tr": "Rabbanaa aatinaa mil ladunka rahmatan wa hayyi' lanaa min amrinaa rasyadaa", "id": "Wahai Tuhan kami, berikanlah rahmat kepada kami dari sisi-Mu dan sempurnakanlah petunjuk yang lurus bagi kami dalam urusan kami.", "ref": "Al-Kahf · 18:10", "ayat": "18:10" }, { "ar": "رَّبِّ زِدْنِى عِلْمًۭا", "tr": "Rabbi zidnii 'ilmaa", "id": "Ya Tuhanku, tambahkanlah ilmu pengetahuan kepadaku.", "ref": "Thaha · 20:114", "ayat": "20:114" }, { "ar": "أَنِّى مَسَّنِىَ ٱلضُّرُّ وَأَنتَ أَرْحَمُ ٱلرَّٰحِمِينَ", "tr": "Annii massaniyadh-dhurru wa anta arhamur-raahimiin", "id": "Sesungguhnya aku telah ditimpa penyakit, dan Engkau adalah Yang Maha Penyayang di antara para penyayang.", "ref": "Al-Anbiya · 21:83", "ayat": "21:83" }, { "ar": "لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبْحَٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّٰلِمِينَ", "tr": "Laa ilaaha illaa anta subhaanaka innii kuntu minazh-zhaalimiin", "id": "Tidak ada tuhan selain Engkau. Mahasuci Engkau. Sesungguhnya aku termasuk orang-orang yang zalim.", "ref": "Al-Anbiya · 21:87", "ayat": "21:87" }, { "ar": "رَّبِّ ٱغْفِرْ وَٱرْحَمْ وَأَنتَ خَيْرُ ٱلرَّٰحِمِينَ", "tr": "Rabbighfir warham wa anta khairur-raahimiin", "id": "Ya Tuhanku, berilah ampunan dan rahmat. Engkaulah Pemberi rahmat yang paling baik.", "ref": "Al-Mu'minun · 23:118", "ayat": "23:118" }, { "ar": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَٰجِنَا وَذُرِّيَّٰتِنَا قُرَّةَ أَعْيُنٍۢ وَٱجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا", "tr": "Rabbanaa hab lanaa min azwaajinaa wa dzurriyyaatinaa qurrata a'yun, waj-'alnaa lil-muttaqiina imaamaa", "id": "Ya Tuhan kami, anugerahkanlah kepada kami pasangan dan keturunan yang menyenangkan hati, dan jadikanlah kami imam bagi orang-orang yang bertakwa.", "ref": "Al-Furqan · 25:74", "ayat": "25:74" }, { "ar": "رَبِّ هَبْ لِى حُكْمًۭا وَأَلْحِقْنِى بِٱلصَّٰلِحِينَ", "tr": "Rabbi hab lii hukman wa alhiqnii bish-shaalihiin", "id": "Ya Tuhanku, berikanlah kepadaku hikmah dan masukkanlah aku ke dalam golongan orang-orang yang saleh.", "ref": "Asy-Syu'ara · 26:83", "ayat": "26:83" }, { "ar": "رَبَّنَا ٱغْفِرْ لَنَا وَلِإِخْوَٰنِنَا ٱلَّذِينَ سَبَقُونَا بِٱلْإِيمَٰنِ وَلَا تَجْعَلْ فِى قُلُوبِنَا غِلًّۭا لِّلَّذِينَ ءَامَنُوا۟ رَبَّنَآ إِنَّكَ رَءُوفٌۭ رَّحِيمٌ", "tr": "Rabbanaghfir lanaa wa li-ikhwaaninal-ladziina sabaquunaa bil-iimaan, wa laa taj'al fii quluubinaa ghillal lil-ladziina aamanuu, rabbanaa innaka ra'uufur rahiim", "id": "Ya Tuhan kami, ampunilah kami dan saudara-saudara kami yang lebih dahulu beriman, dan jangan biarkan kedengkian dalam hati kami terhadap orang-orang yang beriman. Ya Tuhan kami, sungguh Engkau Maha Penyantun lagi Maha Penyayang.", "ref": "Al-Hasyr · 59:10", "ayat": "59:10" } ];
   const CYCLE = 12000;
+  const VIS_KEY = 'msb_doa_vis';
   let idx = 0, timer = null, paused = false, busy = false;
+
+  function annList(){
+    const raw = (window.MSBS && window.MSBS.pengumuman) ? String(window.MSBS.pengumuman) : '';
+    return raw.split(/\r?\n/).map(function(t){ return t.trim(); }).filter(Boolean);
+  }
+  function isAnn(){ return annList().length > 0; }
+  function list(){ return isAnn() ? annList() : DOA; }
 
   function dots(){
     const box = $('doaDots'); if(!box) return;
-    box.innerHTML = DOA.map(function(_,i){
-      return '<span class="doaDot'+(i===idx?' on':'')+'" data-i="'+i+'" role="button" title="Doa '+(i+1)+'"></span>';
+    const n = list().length;
+    if(n < 2){ box.innerHTML = ''; return; }
+    const ann = isAnn();
+    box.innerHTML = Array.from({length:n}).map(function(_,i){
+      return '<span class="doaDot' + (i === idx % n ? ' on' : '') + '" data-i="' + i + '" title="' +
+             (ann ? 'Pengumuman ' : 'Doa ') + (i+1) + '"></span>';
     }).join('');
     box.querySelectorAll('.doaDot').forEach(function(el){
       el.onclick = function(){ goTo(Number(el.dataset.i)); };
     });
   }
-  function goTo(i){
-    if(busy || i === idx) return;
-    idx = (i + DOA.length) % DOA.length;
-    show();
-    if(timer){ clearInterval(timer); timer = null; start(); }
-  }
-  window.msbDoaGo = goTo;
 
   function fit(){
-    const body = $('doaBody'), ar = $('doaAr'); if(!body || !ar) return;
-    ar.style.fontSize = '';
-    let size = parseFloat(getComputedStyle(ar).fontSize) || 20, guard = 0;
-    while(body.scrollHeight > body.clientHeight + 1 && size > 12 && guard++ < 90){
-      size -= 0.5; ar.style.fontSize = size + 'px';
+    const body = $('doaBody'), ar = $('doaAr'), id = $('doaId');
+    if(!body) return;
+    if(ar) ar.style.fontSize = '';
+    if(id) id.style.fontSize = '';
+    if(isAnn()){
+      if(!id) return;
+      let size = parseFloat(getComputedStyle(id).fontSize) || 18, guard = 0;
+      while(body.scrollHeight > body.clientHeight + 1 && size > 11 && guard++ < 90){ size -= 0.5; id.style.fontSize = size + 'px'; }
+    } else {
+      if(!ar) return;
+      let size = parseFloat(getComputedStyle(ar).fontSize) || 20, guard = 0;
+      while(body.scrollHeight > body.clientHeight + 1 && size > 12 && guard++ < 90){ size -= 0.5; ar.style.fontSize = size + 'px'; }
     }
   }
 
@@ -2333,17 +2512,32 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   }
 
   function paint(){
-    const d = DOA[idx];
-    $('doaAr').textContent = d.ar;
-    $('doaLatin').textContent = d.tr;
-    $('doaId').textContent = '\u201C' + d.id + '\u201D';
-    $('doaRef').textContent = d.ref;
-    $('doaCount').textContent = (idx+1) + ' / ' + DOA.length;
+    const L = list(); if(!L.length) return;
+    idx = ((idx % L.length) + L.length) % L.length;
+    const ann = isAnn();
+    const card = $('doaCard'); if(card) card.classList.toggle('ann', ann);
+    const chip = $('doaChip');
+    if(ann){
+      if(chip) chip.innerHTML = '<b>\uD83D\uDCE2</b> PENGUMUMAN TAKMIR';
+      if($('doaAr')) $('doaAr').textContent = '';
+      if($('doaLatin')) $('doaLatin').textContent = '';
+      const id = $('doaId'); if(id) id.textContent = L[idx];
+      const rf = $('doaRef'); if(rf) rf.textContent = 'Masjid ' + ((window.MSBS && MSBS.name) ? MSBS.name : 'Al Huda');
+    } else {
+      const d = L[idx];
+      if(chip) chip.innerHTML = '<b>\u06DE</b> DOA DARI AL-QUR\'AN';
+      if($('doaAr')) $('doaAr').textContent = d.ar;
+      if($('doaLatin')) $('doaLatin').textContent = d.tr;
+      const id = $('doaId'); if(id) id.textContent = '\u201C' + d.id + '\u201D';
+      const rf = $('doaRef'); if(rf) rf.textContent = d.ref;
+    }
+    const cnt = $('doaCount');
+    if(cnt) cnt.textContent = L.length > 1 ? ((idx+1) + ' / ' + L.length) : '';
     dots(); fit();
   }
 
   function show(){
-    const body = $('doaBody'); if(!body){ return; }
+    const body = $('doaBody'); if(!body) return;
     body.classList.remove('doaIn');
     body.classList.add('doaOut');
     busy = true;
@@ -2359,24 +2553,51 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
 
   function go(dir){
     if(busy) return;
-    idx = (idx + dir + DOA.length) % DOA.length;
+    const n = list().length; if(!n) return;
+    idx = (idx + dir + n) % n;
     show();
+  }
+  function goTo(i){
+    if(busy || i === idx) return;
+    const n = list().length; if(!n) return;
+    idx = (i + n) % n;
+    show();
+    if(timer){ clearInterval(timer); timer = null; }
+    start();
   }
   window.msbDoaNext = function(){ go(1); };
   window.msbDoaPrev = function(){ go(-1); };
+  window.msbDoaGo = goTo;
   window.msbDoaReload = function(){ paint(); };
+  window.msbDoaRefresh = function(){ idx = 0; paint(); restartProg(); };
   window.msbDoaData = DOA;
+
+  function applyVis(){
+    const w = $('doaWrap'); if(!w) return;
+    let on = true;
+    try{ on = localStorage.getItem(VIS_KEY) !== '0'; }catch(e){}
+    w.classList.toggle('off', !on);
+    const btn = $('msbDockDoa'); if(btn) btn.classList.toggle('off', !on);
+  }
+  window.msbDoaVisible = function(){ const w = $('doaWrap'); return !!w && !w.classList.contains('off'); };
+  window.msbDoaShow = function(on){
+    try{ localStorage.setItem(VIS_KEY, on ? '1' : '0'); }catch(e){}
+    applyVis();
+  };
+  window.msbDoaToggle = function(){ window.msbDoaShow(!window.msbDoaVisible()); };
 
   function start(){
     if(timer) clearInterval(timer);
     timer = setInterval(function(){
       if(paused || document.hidden) return;
+      if(!window.msbDoaVisible()) return;
       go(1);
     }, CYCLE);
   }
 
   function boot(){
     if(!$('doaBody')) return;
+    applyVis();
     paint(); sparks(); restartProg(); start();
     const wrap = $('doaWrap');
     if(wrap){
@@ -2389,6 +2610,133 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
+})();
+</script>
+
+<script>
+/* ================= v3.6 DOCK MELAYANG, PROGRAMMER, HELP SYSTEM ================= */
+(function(){
+  const $ = id => document.getElementById(id);
+  const DOCK_KEY = 'msb_dock_min';
+
+  function applyDock(){
+    const dock = $('msbDock'), t = $('msbDockToggle');
+    let min = false;
+    try{ min = localStorage.getItem(DOCK_KEY) === '1'; }catch(e){}
+    if(dock) dock.classList.toggle('min', min);
+    if(t){
+      t.innerHTML = min ? '\u00AB' : '\u00BB';
+      t.title = min ? 'Tampilkan tombol melayang' : 'Sembunyikan tombol melayang';
+      t.setAttribute('aria-expanded', min ? 'false' : 'true');
+    }
+  }
+  window.msbDockToggle = function(){
+    const dock = $('msbDock'); if(!dock) return;
+    const min = !dock.classList.contains('min');
+    dock.classList.toggle('min', min);
+    try{ localStorage.setItem(DOCK_KEY, min ? '1' : '0'); }catch(e){}
+    applyDock();
+  };
+  applyDock();
+
+
+  function pushCard(html){
+    const box = $('msbChatBody'); if(!box) return null;
+    const d = document.createElement('div');
+    d.className = 'msbMsg b msbPanelCard';
+    d.innerHTML = html;
+    box.appendChild(d);
+    box.scrollTop = box.scrollHeight;
+    return d;
+  }
+
+  window.msbChatProgrammer = function(){
+    window.msbChatToggle(true);
+    pushCard('<div class="pcCard"><div class="pcInner">' +
+      '<div class="pcTop"><div class="pcAva">MH</div><div><b>Ir. Mohamad Hartadi</b>' +
+      '<span>Programmer &amp; Pengembang Aplikasi</span></div></div>' +
+      '<div class="pcLinks">' +
+        '<a class="pcBtn fb" style="animation-delay:.06s" href="https://facebook.com/m.hartadi" target="_blank" rel="noopener"><i>f</i> Facebook &middot; m.hartadi</a>' +
+        '<a class="pcBtn blog" style="animation-delay:.16s" href="https://newbieonline7.blogspot.com" target="_blank" rel="noopener"><i>&#9998;</i> Blog &middot; newbieonline7.blogspot.com</a>' +
+        '<a class="pcBtn wa" style="animation-delay:.26s" href="https://wa.me/6282231036047" target="_blank" rel="noopener"><i>&#9990;</i> WhatsApp &middot; 0822-3103-6047</a>' +
+      '</div>' +
+      '<div class="pcMeta">Terima kasih telah memakai aplikasi ini. Kritik dan saran sangat kami harapkan.</div>' +
+    '</div></div>');
+    setTimeout(function(){
+      const box = $('msbChatBody'); if(box) box.scrollTop = box.scrollHeight;
+    }, 120);
+  };
+
+  const METRICS = [[14,'DOA AL-QUR\'AN'],[61,'APLIKASI'],[5,'TEMA WARNA'],[6,'WAKTU SHOLAT'],[9,'TOPIK BANTUAN'],[12,'DETIK JEDA']];
+  window.msbChatHelp = function(){
+    window.msbChatToggle(true);
+    const grid = METRICS.map(function(m,i){
+      return '<div class="hsStat" style="animation-delay:' + (0.05*i).toFixed(2) + 's"><b data-n="' + m[0] + '">0</b><span>' + m[1] + '</span></div>';
+    }).join('');
+    pushCard('<div class="hsCard"><div class="hsInner">' +
+      '<div class="hsHead"><b>\uD83D\uDCCA</b> HELP SYSTEM &middot; METRIK PROGRAM</div>' +
+      '<div class="hsGrid">' + grid + '</div>' +
+      '<div class="hsList">' +
+        '<div><b>Jadwal sholat</b> otomatis dari API Aladhan (metode Kemenag), koreksi &plusmn;60 menit per waktu.</div>' +
+        '<div><b>Panel tengah</b> menampilkan 14 doa Al-Qur\'an bergantian, bisa diganti pengumuman takmir dari menu Pengaturan.</div>' +
+        '<div><b>Latar</b> foto masjid bawaan, citra satelit, peta jalan, tautan, atau unggahan sendiri.</div>' +
+        '<div><b>Asisten chat</b> menjawab jadwal, Ramadhan, kiblat, zakat, dan mencari sumber daring.</div>' +
+        '<div><b>My Apps</b> berisi 61 aplikasi programmer, bisa dicari per nama atau kategori.</div>' +
+        '<div><b>Screensaver</b> otomatis saat layar diam, dapat diatur 1&ndash;10 menit.</div>' +
+      '</div>' +
+      '<div class="hsFoot">Semua pengaturan tersimpan lokal di perangkat ini (localStorage).</div>' +
+    '</div></div>');
+    setTimeout(function(){
+      const box = $('msbChatBody'); if(!box) return;
+      box.scrollTop = box.scrollHeight;
+      box.querySelectorAll('.hsStat b[data-n]').forEach(function(el){
+        const target = Number(el.dataset.n) || 0;
+        const t0 = performance.now();
+        function tick(now){
+          const p = Math.min(1, (now - t0) / 850);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if(p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }, 80);
+  };
+
+  /* pengaturan pengumuman takmir */
+  const _open = window.msbOpen;
+  if(typeof _open === 'function'){
+    window.msbOpen = function(){
+      const r = _open.apply(null, arguments);
+      const id = arguments[0];
+      if(String(id) === 'msbSetModal'){
+        const t = $('msbPengumuman');
+        if(t) t.value = (window.MSBS && window.MSBS.pengumuman) ? window.MSBS.pengumuman : '';
+      }
+      return r;
+    };
+  }
+  const _save = window.msbSaveSet;
+  if(typeof _save === 'function'){
+    window.msbSaveSet = function(){
+      const t = $('msbPengumuman');
+      if(t && window.MSBS) window.MSBS.pengumuman = t.value.trim();
+      const r = _save.apply(null, arguments);
+      setTimeout(function(){ if(window.msbDoaRefresh) window.msbDoaRefresh(); }, 90);
+      return r;
+    };
+  }
+  window.msbFillPengumumanContoh = function(){
+    const t = $('msbPengumuman'); if(!t) return;
+    t.value = [
+      'Jamaah yang dirahmati Allah, sholat Jumat pekan ini dimulai pukul 11.45 WIB. Mohon hadir lebih awal.',
+      'Kajian rutin Ahad pagi pukul 06.00 bersama Ust. Adi di aula Masjid Al Huda. Terbuka untuk umum.',
+      'Infaq pembangunan tempat wudhu dapat disalurkan melalui bendahara takmir atau kotak infaq di serambi masjid.'
+    ].join('\n');
+    t.focus();
+  };
+  window.msbClearPengumuman = function(){
+    const t = $('msbPengumuman'); if(t){ t.value = ''; t.focus(); }
+  };
 })();
 </script>
 </body>
