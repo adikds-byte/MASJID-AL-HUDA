@@ -859,6 +859,7 @@ body[data-msbtheme="kiswah"] #msbDock .dk.tg{background:linear-gradient(135deg,r
         <div class="clock-box">
             <div class="clock" id="clock">00:00:00</div>
             <div class="date" id="date"></div>
+            <div class="hijri" id="hijriDate" aria-live="polite"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 2.6a9.6 9.6 0 1 0 0 18.8 10.4 10.4 0 0 1 0-18.8z" fill="currentColor"/></svg><span id="hijriText">—</span></div>
         </div>
     </div>
 
@@ -1112,6 +1113,7 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
   <div id="msbSsEarth"></div>
   <div id="msbSsClock">00:00:00</div>
   <div id="msbSsDate">—</div>
+  <div id="msbSsHijri">—</div>
   <div id="msbQuote">
     <span id="msbQChip">DOA</span>
     <div id="msbQT">—</div>
@@ -1160,6 +1162,11 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
   <button class="dk" type="button" onclick="msbOpen('msbSetModal')" title="Pengaturan tampilan">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
     <span class="lbl">PENGATURAN</span>
+  </button>
+  <button class="dk mode" id="msbModeBtn" type="button" onclick="msbModeToggle()" title="Mode gelap / terang" aria-pressed="false">
+    <svg class="icMoon" viewBox="0 0 24 24"><path d="M16.5 3.2a9.2 9.2 0 1 0 0 17.6 9.6 9.6 0 0 1 0-17.6Z"/></svg>
+    <svg class="icSun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.1"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg>
+    <span class="lbl">MODE TERANG</span>
   </button>
   <button class="dk" type="button" onclick="msbAppsOpen()" title="My Aplikasi">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
@@ -1379,6 +1386,16 @@ try{ if(localStorage.getItem('msb_dock_min')==='1'){ var _dk=document.getElement
     <div class="msbSw"><label>Format 24 jam</label><div class="msbTog" id="msbTog24" onclick="msbToggle('clock24')"></div></div>
     <div class="msbSw"><label>Tampilkan detik</label><div class="msbTog" id="msbTogSec" onclick="msbToggle('seconds')"></div></div>
     <div class="msbSw"><label>Tampilkan banner Ramadhan</label><div class="msbTog" id="msbTogRam" onclick="msbToggle('showRamadhan')"></div></div>
+    <div class="msbRow"><label>Koreksi tanggal Hijriah <span id="msbHijriState" style="font-weight:600;opacity:.8">0 hari</span></label>
+      <div class="msbSeg" id="msbHijriSeg">
+        <button type="button" data-hj="-2" onclick="msbSetHijriAdj(-2)">-2</button>
+        <button type="button" data-hj="-1" onclick="msbSetHijriAdj(-1)">-1</button>
+        <button type="button" data-hj="0" onclick="msbSetHijriAdj(0)">0</button>
+        <button type="button" data-hj="1" onclick="msbSetHijriAdj(1)">+1</button>
+        <button type="button" data-hj="2" onclick="msbSetHijriAdj(2)">+2</button>
+      </div>
+    </div>
+    <div class="msbHint">Tanggal Hijriah dihitung dengan kalender Umm al-Qura. Bila berbeda 1 hari dengan kalender Kemenag/masjid, geser di sini.</div>
     <div class="msbRow"><label>Ukuran teks</label>
       <div class="msbSeg">
         <button data-sc="90" onclick="msbSetScale(90)">90%</button>
@@ -3401,5 +3418,418 @@ body[data-msbtheme="marmer"] #msbAppsFab{background:#fff;color:#0f766e;border-co
   else boot();
 })();
 </script>
+<style id="msbV44Css">
+/* ===== v4.4 · TEKS LEBIH BESAR & TANGGAL HIJRIAH DI DASBOR ===== */
+
+/* --- rapatkan jarak supaya tetap satu layar walau teks dibesarkan --- */
+.header{padding:11px 18px!important}
+.info-left,.info-right{margin-bottom:9px!important}
+.sholat-grid{margin-top:9px!important;gap:9px!important}
+.sholat{padding:10px 8px!important}
+.footer{margin-top:9px!important;padding:7px 8px!important}
+#ramadhanBar{padding:9px 14px!important;margin-top:8px!important}
+#msbBar{padding:4px 6px!important}
+
+/* --- header & jam --- */
+.header h1,.header-left h1{font-size:clamp(21px,.62vw + 15px,32px)!important;letter-spacing:.015em;line-height:1.15}
+.header p,.header-left p{font-size:clamp(13px,.34vw + 11px,18px)!important;line-height:1.35;opacity:.95}
+.mosque-icon{font-size:clamp(34px,1vw + 26px,50px)!important}
+.clock-box{padding:8px 16px!important}
+.clock{font-size:clamp(36px,1.5vw + 26px,56px)!important;line-height:1.14;font-variant-numeric:tabular-nums}
+.date{font-size:clamp(15px,.4vw + 12.5px,20px)!important;font-weight:600;margin-top:3px;opacity:1}
+#hijriDate{display:inline-flex;align-items:center;gap:7px;justify-content:flex-end;font-size:clamp(14px,.4vw + 11.5px,19px)!important;
+  font-weight:800;letter-spacing:.03em;color:#ffe6ab;margin-top:3px;text-shadow:0 0 14px rgba(232,196,106,.35);white-space:nowrap}
+#hijriDate svg{width:1.05em;height:1.05em;flex:0 0 auto;filter:drop-shadow(0 0 6px rgba(232,196,106,.55))}
+.clock-box{flex:0 0 auto!important;min-width:max-content!important;width:max-content;max-width:100%}
+body[data-msbtheme="marmer"] #hijriDate{color:#0f766e;text-shadow:none}
+
+/* --- info & jadwal sholat --- */
+.info-left,.info-right{font-size:clamp(14px,.38vw + 12px,18px)!important;padding:7px 14px!important;font-weight:600}
+.info-left b,.info-right b{color:#ffe6ab}
+body[data-msbtheme="marmer"] .info-left b,body[data-msbtheme="marmer"] .info-right b{color:#0f766e}
+.sholat h3{font-size:clamp(14px,.32vw + 12.5px,19px)!important;letter-spacing:.03em}
+.sholat span{font-size:clamp(27px,1.1vw + 20px,42px)!important;line-height:1.05;font-variant-numeric:tabular-nums}
+
+/* --- banner ramadhan --- */
+#ramadhanBar .ttl{font-size:clamp(14px,.34vw + 12.5px,19px)!important}
+#ramadhanBar .sub{font-size:clamp(11px,.3vw + 9.5px,14px)!important}
+#ramadhanBar .unit b{font-size:clamp(20px,.55vw + 17px,27px)!important}
+#ramadhanBar .unit span{font-size:clamp(9.5px,.25vw + 8.5px,12px)!important}
+
+/* --- running text --- */
+.footer,.footer .msbTick,.msbTick{font-size:clamp(13px,.34vw + 11.5px,18px)!important}
+
+/* --- panel doa: tanpa !important agar auto-shrink Arab tetap bekerja --- */
+.doaAr{font-size:clamp(20px,1.35vw + 12px,34px);line-height:1.75}
+.doaId{font-size:clamp(12px,.42vw + 8.5px,15.5px)}
+.doaLatin{font-size:clamp(11px,.4vw + 8px,14px)}
+.doaRef{font-size:clamp(10px,.3vw + 7.5px,12.5px)}
+.doaChip,.doaCount{font-size:clamp(10px,.25vw + 8.8px,11.5px)}
+.doaNav button{width:28px;height:28px;font-size:15px}
+
+/* --- toolbar, dock, chat --- */
+#msbBar .msb-btn{font-size:11px!important;padding:8px 12px!important}
+#msbDock .dk .lbl{font-size:10.5px}
+.msbMsg{font-size:13.5px}
+#msbChips button{font-size:11px}
+#msbChatForm input{font-size:13px}
+
+/* --- screensaver --- */
+#msbSsDate{font-size:clamp(14px,.5vw + 11px,17px);letter-spacing:.14em}
+#msbSsHijri{font-size:clamp(13px,.45vw + 10px,16px);letter-spacing:.16em;color:#ffe6ab;font-weight:700;margin-top:-8px}
+
+/* --- layar rendah (laptop 768-900px): tetap terbaca, tidak dikecilkan ekstrem --- */
+@media (max-height:900px){
+  .header{padding:9px 15px!important}
+  .header h1,.header-left h1{font-size:clamp(20px,.75vw + 12px,26px)!important}
+  .header p,.header-left p{font-size:clamp(12.5px,.45vw + 9px,15px)!important}
+  .clock{font-size:clamp(34px,1.6vw + 20px,44px)!important}
+  .date{font-size:clamp(14.5px,.5vw + 11px,17px)!important}
+  #hijriDate{font-size:clamp(13.5px,.5vw + 10px,16px)!important}
+  .sholat h3{font-size:clamp(13.5px,.4vw + 11px,16px)!important}
+  .sholat span{font-size:clamp(26px,1.3vw + 16px,32px)!important}
+  .info-left,.info-right{font-size:clamp(13.5px,.45vw + 10.5px,16px)!important}
+  .footer,.footer .msbTick,.msbTick{font-size:clamp(12.5px,.4vw + 10px,15px)!important}
+  #ramadhanBar .ttl{font-size:clamp(13.5px,.4vw + 11px,16px)!important}
+  #ramadhanBar .sub{font-size:clamp(11px,.3vw + 9.5px,12.5px)!important}
+  #ramadhanBar .unit b{font-size:clamp(19px,.6vw + 15px,23px)!important}
+  .sholat-grid{margin-top:8px!important}
+  .info-left,.info-right{margin-bottom:8px!important}
+  #doaWrap{max-height:min(40vh,320px)}
+}
+@media (max-height:700px){
+  .clock{font-size:clamp(30px,1.6vw + 18px,38px)!important}
+  .sholat span{font-size:clamp(24px,1.2vw + 14px,28px)!important}
+  #doaWrap{max-height:min(34vh,250px)}
+}
+/* --- modal pengaturan & chat: teks juga diperbesar --- */
+.msbCard h3,.msbCard h3{font-size:17px!important}
+.msbCard p.sm{font-size:12.5px!important;line-height:1.6}
+#msbSetModal h4,#msbViewModal h4,.msbCard h4{font-size:12.5px!important;letter-spacing:.09em}
+.msbRow label{font-size:13px!important}
+.msbRow input[type=text],.msbRow input[type=number],.msbRow select,.msbRow textarea{font-size:13.5px!important}
+.msbHint{font-size:11.5px!important;line-height:1.55}
+.msbBtn{font-size:12.5px!important;padding:10px 15px!important}
+.msbSeg button{font-size:12px!important;padding:9px 13px!important}
+.msbSw label{font-size:12.5px!important}
+#msbChatHead b{font-size:13px!important}
+.msbSrc a{font-size:11px!important}
+.msbThemeGrid button span{font-size:10.5px!important}
+#msbAppsGrid a,#msbAppsGrid button{font-size:12px!important}
+.msbTG span{font-size:10.5px!important}
+
+@media (max-width:760px){
+  .header{padding:8px 12px!important;gap:6px!important}
+  .clock-box{padding:6px 12px!important;margin:0 auto!important}
+  #hijriDate{font-size:14.5px!important;white-space:nowrap!important;justify-content:center!important}
+  .date{font-size:14.5px!important;text-align:center!important}
+  .clock{text-align:center!important}
+  .header p,.header-left p{font-size:12.5px!important;line-height:1.3}
+  .sholat{padding:8px 6px!important}
+  .sholat-grid{gap:8px!important;margin-top:8px!important}
+  .info-left,.info-right{margin-bottom:7px!important;padding:6px 12px!important}
+  .footer{margin-top:8px!important}
+  #ramadhanBar{padding:8px 10px!important;gap:10px!important;margin-top:6px!important}
+  #ramadhanBar .moon{width:34px;height:34px}
+  #ramadhanBar .unit{min-width:46px;padding:4px 5px!important;border-radius:10px}
+  #ramadhanBar .unit b{font-size:18px!important}
+  #ramadhanBar .unit span{font-size:8.5px!important;letter-spacing:.06em}
+  #ramadhanBar .clockbox{gap:6px!important}
+}
+/* ===== v4.5 · TOMBOL IKON MODE GELAP / TERANG ===== */
+#msbModeBtn{position:relative}
+#msbModeBtn svg{transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s}
+#msbModeBtn .icSun{display:none}
+#msbModeBtn .icMoon{display:block}
+body[data-msbmode="light"] #msbModeBtn .icSun{display:block;color:#b8860b}
+body[data-msbmode="light"] #msbModeBtn .icMoon{display:none}
+body[data-msbmode="light"] #msbModeBtn{background:linear-gradient(135deg,#fff7dd,#ffe9ad);border-color:rgba(184,134,11,.55);color:#8a5a00}
+#msbModeBtn:hover svg{transform:rotate(18deg) scale(1.06)}
+
+/* ---- MODE TERANG: latar ikut diterangkan (tema marmer) ---- */
+body[data-msbtheme="marmer"] #bgLayer{background:linear-gradient(165deg,#f2faf7 0%,#dceee9 48%,#cfe6e0 100%)!important}
+body[data-msbtheme="marmer"] #bgShade{background:rgba(236,246,243,.55)!important}
+body[data-msbtheme="marmer"] #bgStars{opacity:.18!important}
+body[data-msbtheme="marmer"] .mosque-icon{color:#0f766e!important;text-shadow:none!important}
+body[data-msbtheme="marmer"] #hijriDate svg{filter:none}
+body[data-msbtheme="marmer"] .sholat{box-shadow:0 8px 20px rgba(6,50,40,.10)!important}
+body[data-msbtheme="marmer"] .clock-box{background:rgba(255,255,255,.84)!important;border:1px solid rgba(15,118,110,.30)!important;box-shadow:0 10px 24px rgba(6,50,40,.12)!important}
+body[data-msbtheme="marmer"] .clock{color:#0b6f66!important}
+body[data-msbtheme="marmer"] .date{color:#1f4d42!important}
+body[data-msbtheme="marmer"] #hijriDate{color:#8a5a00!important}
+body[data-msbtheme="marmer"] .sholat span{color:#8a5a00!important;text-shadow:none!important}
+body[data-msbtheme="marmer"] .sholat h3{color:#2f5b50!important}
+body[data-msbtheme="marmer"] #msbQiblaDeg{color:#8a5a00!important}
+body[data-msbtheme="marmer"] #msbQiblaSub{color:#2f5b50!important}
+body[data-msbtheme="marmer"] #msbHelpModal p.sm{color:#155e4f!important}
+body[data-msbtheme="marmer"] .msbSw span,.msbSw label{color:#155e4f}
+body[data-msbtheme="marmer"] .msbTog{background:rgba(15,118,110,.22)}
+body[data-msbtheme="marmer"] .msbTog.on{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+body[data-msbtheme="marmer"] .msbTog::after{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+body[data-msbtheme="marmer"] .footer{box-shadow:0 -4px 16px rgba(6,50,40,.06)}
+body[data-msbtheme="marmer"] #msbBar .msb-btn.red{background:#fff1f2!important;color:#9f1239!important;border-color:rgba(159,18,57,.35)!important}
+body[data-msbtheme="marmer"] #msbBar .msb-btn.gold{background:#fffaeb!important;color:#8a5a00!important;border-color:rgba(184,134,11,.40)!important}
+body[data-msbtheme="marmer"] .doaChip,body[data-msbtheme="marmer"] .doaRef{background:rgba(15,118,110,.10)!important;color:#0f766e!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] .doaCount{color:#3f6b60!important}
+body[data-msbtheme="marmer"] #doaCard::after{opacity:.45}
+body[data-msbtheme="marmer"] #msbHelpList>div{background:#fff!important;border-color:rgba(15,118,110,.25)!important}
+body[data-msbtheme="marmer"] #msbHelpList>div>b{color:#0f766e!important}
+body[data-msbtheme="marmer"] #msbHelpList>div>div{color:#14532d!important}
+body[data-msbtheme="marmer"] #msbHelpModal div[style*="rgba(244,63,94"]{background:#fff1f2!important;border-color:rgba(159,18,57,.30)!important}
+body[data-msbtheme="marmer"] #msbHelperCredit{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] #msbDock .dk svg{stroke-width:1.9}
+body[data-msbtheme="marmer"] #msbChips button{background:#fff!important;color:#0f766e!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] .msbSrc a{background:#fff!important;color:#0f766e!important;border-color:rgba(15,118,110,.28)!important}
+body[data-msbtheme="marmer"] #msbChatForm input{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.28)!important}
+body[data-msbtheme="marmer"] #msbChatForm button{background:#0f766e!important;color:#fff!important}
+body[data-msbtheme="marmer"] #msbAppsGrid button{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.25)!important}
+body[data-msbtheme="marmer"] #msbAppsGrid a{background:#fff!important;border-color:rgba(15,118,110,.20)!important}
+body[data-msbtheme="marmer"] #msbAppsGrid b{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] #msbAppsGrid span{color:#3f6b60!important}
+body[data-msbtheme="marmer"] #msbAppsWrap{background:rgba(232,244,241,.72)!important}
+body[data-msbtheme="marmer"] #msbAppsCard{background:linear-gradient(165deg,#ffffff,#eef7f4)!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] #msbAppsHead{border-bottom-color:rgba(15,118,110,.20)!important}
+body[data-msbtheme="marmer"] #msbAppsHead h3{color:#0f766e!important}
+body[data-msbtheme="marmer"] #msbAppsHead .sub{color:#4b7a6e!important}
+body[data-msbtheme="marmer"] #msbAppsHead button{background:#fff!important;color:#0f766e!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] #msbAppsQ{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] #msbAppsCats button{background:#fff!important;color:#14532d!important;border-color:rgba(15,118,110,.25)!important}
+body[data-msbtheme="marmer"] #msbAppsCats button.on{background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;border-color:transparent!important}
+body[data-msbtheme="marmer"] #msbAppsList a{background:#fff!important;border-color:rgba(15,118,110,.20)!important}
+body[data-msbtheme="marmer"] #msbAppsList .nm{color:#0b1f1a!important}
+body[data-msbtheme="marmer"] #msbAppsList .ct{color:#3f6b60!important}
+body[data-msbtheme="marmer"] #msbAppsList .no{color:#0f766e!important;background:rgba(15,118,110,.10)!important;border-color:rgba(15,118,110,.25)!important}
+body[data-msbtheme="marmer"] #msbAppsList .arw{color:#0f766e!important}
+body[data-msbtheme="marmer"] #msbAppsEmpty{color:#3f6b60!important}
+body[data-msbtheme="marmer"] #msbAppsSearch{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.28)!important}
+body[data-msbtheme="marmer"] .msbSeg button{background:#fff!important;color:#14532d!important;border-color:rgba(15,118,110,.30)!important}
+body[data-msbtheme="marmer"] .msbSeg button.on{background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;border-color:transparent!important}
+</style>
+
+<script id="msbV44Js">
+/* ===== v4.4 · TANGGAL HIJRIAH + AUTO-FIT YANG TIDAK TERLALU MENGECIL ===== */
+(function(){
+  var MONTHS_H = ['Muharram','Safar','Rabiul Awal','Rabiul Akhir','Jumadil Awal','Jumadil Akhir',
+                  'Rajab',"Sya'ban",'Ramadhan','Syawal','Zulkaidah','Zulhijah'];
+  var ADJ_KEY = 'msb_hijri_adj';
+  function $(id){ return document.getElementById(id); }
+  function adj(){
+    var v = parseInt(localStorage.getItem(ADJ_KEY) || '0', 10);
+    if(isNaN(v)) v = 0;
+    return Math.max(-2, Math.min(2, v));
+  }
+
+  /* konversi cadangan (Hisab tabular) bila Intl tidak punya kalender islam */
+  function hijriTabular(g){
+    var y = g.getFullYear(), m = g.getMonth()+1, d = g.getDate();
+    if(m < 3){ y -= 1; m += 12; }
+    var a = Math.floor(y/100), b = 2 - a + Math.floor(a/4);
+    var jd = Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) + d + b - 1524;
+    var l = jd - 1948440 + 10632;
+    var n = Math.floor((l-1)/10631);
+    l = l - 10631*n + 354;
+    var j = (Math.floor((10985-l)/5316))*(Math.floor((50*l)/17719)) +
+            (Math.floor(l/5670))*(Math.floor((43*l)/15238));
+    l = l - (Math.floor((30-j)/15))*(Math.floor((17719*j)/50)) -
+        (Math.floor(j/16))*(Math.floor((15238*j)/43)) + 29;
+    var mm = Math.floor((24*l)/709);
+    var dd = l - Math.floor((709*mm)/24);
+    var yy = 30*n + j - 30;
+    return {day:dd, month:mm, year:yy};
+  }
+
+  window.msbHijri = function(date){
+    var base = date ? new Date(date.getTime()) : new Date();
+    var g = new Date(base.getTime() + adj()*86400000);
+    var day, mon, yr;
+    try{
+      var parts = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',
+        {day:'numeric', month:'numeric', year:'numeric'}).formatToParts(g), o = {};
+      parts.forEach(function(p){ o[p.type] = p.value; });
+      day = parseInt(o.day, 10);
+      mon = parseInt(o.month, 10);
+      yr  = parseInt(String(o.year || '').replace(/[^0-9]/g,''), 10);
+      if(!day || !mon || !yr) throw new Error('no intl hijri');
+    }catch(e){
+      var t = hijriTabular(g); day = t.day; mon = t.month; yr = t.year;
+    }
+    var name = MONTHS_H[(mon||1)-1] || '';
+    return { day:day, month:mon, year:yr, monthName:name, text: day+' '+name+' '+yr+' H' };
+  };
+
+  function paint(){
+    var h;
+    try{ h = window.msbHijri(); }catch(e){ return; }
+    var dash = $('hijriText') || $('hijriDate');
+    if(dash && dash.textContent !== h.text) dash.textContent = h.text;
+    var ss = $('msbSsHijri');
+    if(ss && ss.textContent !== h.text) ss.textContent = h.text;
+  }
+  window.msbHijriRefresh = paint;
+
+  /* kontrol koreksi ±hari di modal pengaturan */
+  window.msbSetHijriAdj = function(v){
+    var n = Math.max(-2, Math.min(2, Number(v)||0));
+    try{ localStorage.setItem(ADJ_KEY, String(n)); }catch(e){}
+    hijriSync(); paint();
+    if(typeof window.msbToast === 'function'){
+      window.msbToast(n===0 ? 'Tanggal Hijriah kembali ke hitungan standar (Umm al-Qura).'
+                            : 'Tanggal Hijriah digeser '+(n>0?'+':'')+n+' hari.');
+    }
+  };
+  function hijriSync(){
+    var cur = adj();
+    var box = document.getElementById('msbHijriSeg');
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){
+      b.classList.toggle('on', Number(b.dataset.hj) === cur);
+    });
+    var st = document.getElementById('msbHijriState');
+    if(st) st.textContent = (cur>0?'+':'') + cur + ' hari';
+  }
+  window.msbHijriSync = hijriSync;
+
+  /* overlay dipendekkan sebesar tinggi toolbar+dock supaya tidak ada scroll sia-sia */
+  function fitOverlay(){
+    var ov = document.querySelector('.overlay'); if(!ov) return;
+    ov.style.minHeight = '';
+    var bar = document.getElementById('msbBar'), dock = document.getElementById('msbDock');
+    var extra = (bar ? bar.offsetHeight : 0) + (dock ? dock.offsetHeight : 0) + 18;
+    ov.style.minHeight = 'calc(100vh - ' + extra + 'px)';
+  }
+  window.msbFitOverlay = fitOverlay;
+
+  /* auto-fit: batas bawah zoom dinaikkan supaya teks tidak jadi kecil */
+  window.msbAutoFit = function(){
+    var base = (window.MSBS && Number(MSBS.scale) ? Number(MSBS.scale) : 100)/100;
+    var floor = (window.innerWidth <= 480) ? 0.86 : 0.9;
+    document.body.style.zoom = 1;
+    fitOverlay();
+    var z = 1, guard = 0;
+    while(document.documentElement.scrollHeight > window.innerHeight + 2 && z > floor && guard < 20){
+      z = Math.round((z - 0.02)*100)/100;
+      document.body.style.zoom = z;
+      guard++;
+    }
+    window.msbFitFactor = z;
+    document.body.style.zoom = Math.min(Math.round(z*base*100)/100, 1.4);
+  };
+
+  function boot(){
+    paint();
+    hijriSync();
+    setTimeout(paint, 1200);
+    setTimeout(paint, 6000);
+    setTimeout(window.msbAutoFit, 500);
+    setTimeout(window.msbAutoFit, 1600);
+    setTimeout(window.msbAutoFit, 3200);
+    // segarkan tanggal tiap menit (aman untuk pergantian hari)
+    setInterval(paint, 60000);
+    // buka modal pengaturan -> sinkronkan chip koreksi
+    var open = window.msbOpen;
+    if(typeof open === 'function' && !open.__hijri){
+      window.msbOpen = function(id){
+        var r = open.apply(this, arguments);
+        if(id === 'msbSetModal'){ setTimeout(function(){ hijriSync(); if(typeof window.msbFillSet === 'function') {} }, 60); }
+        return r;
+      };
+      window.msbOpen.__hijri = true;
+    }
+    // reset default ikut menghapus koreksi hijriah
+    var rst = window.msbResetDefault;
+    if(typeof rst === 'function' && !rst.__hijri){
+      window.msbResetDefault = function(){
+        try{ localStorage.removeItem(ADJ_KEY); }catch(e){}
+        return rst.apply(this, arguments);
+      };
+      window.msbResetDefault.__hijri = true;
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+</script>
+
+<script id="msbV45Js">
+/* ===== v4.5 · MODE GELAP / TERANG (tombol ikon di dock) ===== */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function curTheme(){
+    try{ if(window.MSBS && window.MSBS.theme) return window.MSBS.theme; }catch(e){}
+    return document.body.getAttribute('data-msbtheme') || 'nabawi';
+  }
+  function isLight(){ return curTheme() === 'marmer'; }
+
+  function sync(){
+    var light = isLight();
+    if(document.body.getAttribute('data-msbmode') !== (light?'light':'dark')){
+      document.body.setAttribute('data-msbmode', light?'light':'dark');
+    }
+    var b = $('msbModeBtn'); if(!b) return;
+    b.classList.toggle('on', light);
+    b.setAttribute('aria-pressed', light ? 'true' : 'false');
+    b.setAttribute('title', light ? 'Sekarang MODE TERANG — ketuk untuk mode gelap'
+                                  : 'Sekarang MODE GELAP — ketuk untuk mode terang');
+    var l = b.querySelector('.lbl');
+    if(l) l.textContent = light ? 'MODE GELAP' : 'MODE TERANG';
+  }
+  window.msbModeIsLight = isLight;
+  window.msbModeSync = sync;
+
+  window.msbModeToggle = function(){
+    var t = curTheme(), next;
+    if(t === 'marmer'){
+      next = 'nabawi';
+      try{ var back = localStorage.getItem('msb_last_dark'); if(back && back !== 'marmer') next = back; }catch(e){}
+    }else{
+      try{ localStorage.setItem('msb_last_dark', t); }catch(e){}
+      next = 'marmer';
+    }
+    try{
+      var st = JSON.parse(localStorage.getItem('msb_set_v3') || '{}') || {};
+      st.theme = next;
+      localStorage.setItem('msb_set_v3', JSON.stringify(st));
+    }catch(e){}
+    try{ if(window.MSBS) window.MSBS.theme = next; }catch(e){}
+    document.body.setAttribute('data-msbtheme', next);
+    if(typeof window.msbPickTheme === 'function'){ try{ window.msbPickTheme(next); }catch(e){} }
+    sync();
+    if(typeof window.msbAutoFit === 'function') setTimeout(window.msbAutoFit, 280);
+    if(typeof window.msbToast === 'function'){
+      window.msbToast(next === 'marmer' ? 'Mode TERANG aktif 🌤️' : 'Mode GELAP aktif 🌙');
+    }
+  };
+
+  /* ikon & label ikut berubah bila tema diganti lewat menu Pengaturan */
+  function hook(){
+    var pt = window.msbPickTheme;
+    if(typeof pt === 'function' && !pt.__mode){
+      window.msbPickTheme = function(){ var r = pt.apply(this, arguments); setTimeout(sync, 30); return r; };
+      window.msbPickTheme.__mode = true;
+    }
+    sync();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+  setTimeout(hook, 900);
+
+  /* ---- tambahan dokumentasi di modal BANTUAN ---- */
+  function help(){
+    var list = document.getElementById('msbHelpList');
+    if(!list || list.dataset.v45) return;
+    list.dataset.v45 = '1';
+    var add = document.createElement('div');
+    add.style.cssText = 'background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);border-radius:11px;padding:9px 11px';
+    add.innerHTML = '<b style="color:#8ff0c2;font-size:11px">Mode Gelap / Terang</b>'
+      + '<div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">Tombol ikon bulan/matahari di deretan tombol bawah mengganti tampilan gelap dan terang. Pilihan tersimpan otomatis di perangkat.</div>';
+    var add2 = document.createElement('div');
+    add2.style.cssText = add.style.cssText;
+    add2.innerHTML = '<b style="color:#8ff0c2;font-size:11px">Tanggal Hijriah</b>'
+      + '<div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">Di bawah tanggal Masehi tampil tanggal Hijriah (kalender Umm al-Qura). Bila berbeda dengan kalender masjid, geser \u00b11 hari di Pengaturan bagian 7.</div>';
+    list.appendChild(add);
+    list.appendChild(add2);
+  }
+  setInterval(help, 1500);
+})();
+</script>
+
 </body>
 </html>
