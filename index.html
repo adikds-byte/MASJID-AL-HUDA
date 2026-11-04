@@ -1168,6 +1168,11 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     <svg class="icSun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.1"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg>
     <span class="lbl">MODE TERANG</span>
   </button>
+  <button class="dk fs" id="msbFsBtn" type="button" onclick="msbFullscreenToggle()" title="Mode layar penuh" aria-pressed="false">
+    <svg class="icExpand" viewBox="0 0 24 24"><path d="M4 9.5V4h5.5"/><path d="M20 14.5V20h-5.5"/><path d="M14.5 4H20v5.5"/><path d="M9.5 20H4v-5.5"/></svg>
+    <svg class="icCompress" viewBox="0 0 24 24"><path d="M9.5 4v5.5H4"/><path d="M14.5 20v-5.5H20"/><path d="M20 9.5h-5.5V4"/><path d="M4 14.5h5.5V20"/></svg>
+    <span class="lbl">LAYAR PENUH</span>
+  </button>
   <button class="dk" type="button" onclick="msbAppsOpen()" title="My Aplikasi">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
     <span class="lbl">MY APLIKASI</span>
@@ -3601,6 +3606,25 @@ body[data-msbtheme="marmer"] #msbAppsList .ct{color:#3f6b60!important}
 body[data-msbtheme="marmer"] #msbAppsList .no{color:#0f766e!important;background:rgba(15,118,110,.10)!important;border-color:rgba(15,118,110,.25)!important}
 body[data-msbtheme="marmer"] #msbAppsList .arw{color:#0f766e!important}
 body[data-msbtheme="marmer"] #msbAppsEmpty{color:#3f6b60!important}
+
+/* ===== v4.6 · TOMBOL LAYAR PENUH (FULLSCREEN) ===== */
+#msbFsBtn .icCompress{display:none}
+body[data-msbfs="1"] #msbFsBtn .icExpand{display:none}
+body[data-msbfs="1"] #msbFsBtn .icCompress{display:block}
+body[data-msbfs="1"] #msbFsBtn{background:linear-gradient(135deg,#0d9488,#0b6f66)!important;color:#eafff8!important;border-color:rgba(232,196,106,.60)!important;box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 0 3px rgba(20,184,166,.18)!important}
+body[data-msbtheme="marmer"][data-msbfs="1"] #msbFsBtn{background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;border-color:transparent!important}
+/* 8 tombol tetap satu baris di HP */
+@media (max-width:480px){
+  #msbDock{gap:4px!important}
+  #msbDock .dk{width:41px!important;height:41px!important;border-radius:12px!important}
+  #msbDock .dk svg{width:19px!important;height:19px!important}
+  #msbDock .dk.tg{width:33px!important}
+}
+@media (max-width:380px){
+  #msbDock{gap:3px!important}
+  #msbDock .dk{width:38px!important;height:38px!important}
+  #msbDock .dk.tg{width:30px!important}
+}
 body[data-msbtheme="marmer"] #msbAppsSearch{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.28)!important}
 body[data-msbtheme="marmer"] .msbSeg button{background:#fff!important;color:#14532d!important;border-color:rgba(15,118,110,.30)!important}
 body[data-msbtheme="marmer"] .msbSeg button.on{background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;border-color:transparent!important}
@@ -3826,6 +3850,82 @@ body[data-msbtheme="marmer"] .msbSeg button.on{background:linear-gradient(135deg
       + '<div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">Di bawah tanggal Masehi tampil tanggal Hijriah (kalender Umm al-Qura). Bila berbeda dengan kalender masjid, geser \u00b11 hari di Pengaturan bagian 7.</div>';
     list.appendChild(add);
     list.appendChild(add2);
+  }
+  setInterval(help, 1500);
+})();
+</script>
+
+<script id="msbV46Js">
+/* ===== v4.6 · MODE LAYAR PENUH (tombol ikon di dock) ===== */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function fsElement(){
+    return document.fullscreenElement || document.webkitFullscreenElement ||
+           document.mozFullScreenElement || document.msFullscreenElement || null;
+  }
+  function api(){
+    var el = document.documentElement;
+    return {
+      req: el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen || null,
+      exit: document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen || null
+    };
+  }
+  function sync(){
+    var on = !!fsElement();
+    document.body.setAttribute('data-msbfs', on ? '1' : '0');
+    var b = $('msbFsBtn'); if(!b) return;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    var l = b.querySelector('.lbl');
+    if(l) l.textContent = on ? 'KELUAR LAYAR PENUH' : 'LAYAR PENUH';
+    b.title = on ? 'Keluar dari layar penuh (Esc)' : 'Tampilkan layar penuh';
+  }
+  function refit(){
+    if(typeof window.msbAutoFit === 'function'){ try{ window.msbAutoFit(); }catch(e){} }
+  }
+  window.msbFullscreenIsOn = function(){ return !!fsElement(); };
+  window.msbFullscreenSync = sync;
+  window.msbFullscreenToggle = function(){
+    var a = api();
+    if(fsElement()){
+      try{ if(a.exit) a.exit.call(document); }catch(e){}
+    }else if(a.req){
+      try{
+        var r = a.req.call(document.documentElement, {navigationUI:'hide'});
+        if(r && typeof r.then === 'function'){
+          r.catch(function(){
+            if(typeof window.msbToast === 'function') window.msbToast('Layar penuh ditolak browser');
+          });
+        }
+      }catch(e){
+        if(typeof window.msbToast === 'function') window.msbToast('Layar penuh tidak bisa dibuka');
+      }
+    }else{
+      var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if(typeof window.msbToast === 'function'){
+        window.msbToast(ios ? 'Di iPhone/iPad pakai "Tambah ke Layar Utama" untuk tampilan penuh'
+                            : 'Browser ini belum mendukung layar penuh. Coba tekan F11.');
+      }
+    }
+    setTimeout(sync, 220); setTimeout(refit, 520);
+  };
+  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){
+    document.addEventListener(ev, function(){ sync(); setTimeout(refit, 320); }, false);
+  });
+  sync();
+  setTimeout(sync, 1200);
+
+  /* dokumentasi di modal BANTUAN */
+  function help(){
+    var list = $('msbHelpList');
+    if(!list || list.dataset.v46) return;
+    list.dataset.v46 = '1';
+    var add = document.createElement('div');
+    add.style.cssText = 'background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);border-radius:11px;padding:9px 11px';
+    add.innerHTML = '<b style="color:#8ff0c2;font-size:11px">Layar Penuh</b>'
+      + '<div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">Tombol ikon panah di deretan tombol bawah membuka layar penuh tanpa menu browser. Tekan Esc atau ketuk tombol sekali lagi untuk kembali.</div>';
+    list.appendChild(add);
   }
   setInterval(help, 1500);
 })();
