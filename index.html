@@ -1103,7 +1103,7 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
   <button class="msb-btn gold" onclick="msbOpen('msbSetModal');setTimeout(()=>{const g=document.getElementById('msbGallery');if(g)g.scrollIntoView({behavior:'smooth',block:'center'});},250)">🖼️ LATAR</button>
   <button class="msb-btn" onclick="msbQibla()">🧭 KIBLAT</button>
   <button class="msb-btn red" id="msbResetBtn" onclick="msbResetDefault()" title="Kembalikan latar foto masjid & semua pengaturan ke kondisi awal">🔄 RESET DEFAULT</button>
-  <button class="msb-btn" onclick="msbSsOn()">🌙 SCREENSAVER</button>
+  <button class="msb-btn" id="msbSsPrevBtn" onclick="msbSsPreview()">🌙 SCREENSAVER</button>
   <button class="msb-btn" onclick="msbOpen('msbHelpModal')">❓ BANTUAN</button>
 </div>
 
@@ -1172,6 +1172,11 @@ setInterval(ramadhanCountdown, 60 * 60 * 1000);
     <svg class="icExpand" viewBox="0 0 24 24"><path d="M4 9.5V4h5.5"/><path d="M20 14.5V20h-5.5"/><path d="M14.5 4H20v5.5"/><path d="M9.5 20H4v-5.5"/></svg>
     <svg class="icCompress" viewBox="0 0 24 24"><path d="M9.5 4v5.5H4"/><path d="M14.5 20v-5.5H20"/><path d="M20 9.5h-5.5V4"/><path d="M4 14.5h5.5V20"/></svg>
     <span class="lbl">LAYAR PENUH</span>
+  </button>
+  <button class="dk ss" id="msbSsToggleBtn" type="button" onclick="msbScreensaverToggle()" title="Screensaver otomatis aktif / nonaktif" aria-pressed="true">
+    <svg class="icSsOn" viewBox="0 0 24 24"><rect x="2.8" y="4" width="18.4" height="12.8" rx="2.4"/><path d="M8.6 20.2h6.8"/><path d="M12 16.8v3.4"/><path d="M14.7 7.4a3.1 3.1 0 1 0 0 5.7 3.4 3.4 0 0 1 0-5.7z"/></svg>
+    <svg class="icSsOff" viewBox="0 0 24 24"><rect x="2.8" y="4" width="18.4" height="12.8" rx="2.4"/><path d="M8.6 20.2h6.8"/><path d="M12 16.8v3.4"/><path d="M4.6 3.4 19.6 20.4"/></svg>
+    <span class="lbl">SCREENSAVER AKTIF</span>
   </button>
   <button class="dk" type="button" onclick="msbAppsOpen()" title="My Aplikasi">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
@@ -3613,17 +3618,23 @@ body[data-msbfs="1"] #msbFsBtn .icExpand{display:none}
 body[data-msbfs="1"] #msbFsBtn .icCompress{display:block}
 body[data-msbfs="1"] #msbFsBtn{background:linear-gradient(135deg,#0d9488,#0b6f66)!important;color:#eafff8!important;border-color:rgba(232,196,106,.60)!important;box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 0 3px rgba(20,184,166,.18)!important}
 body[data-msbtheme="marmer"][data-msbfs="1"] #msbFsBtn{background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;border-color:transparent!important}
+
+/* ===== v4.7 · TOMBOL SCREENSAVER AKTIF / NONAKTIF ===== */
+#msbSsToggleBtn .icSsOff{display:none}
+body[data-msbss="0"] #msbSsToggleBtn .icSsOn{display:none}
+body[data-msbss="0"] #msbSsToggleBtn .icSsOff{display:block}
+body[data-msbss="1"] #msbSsToggleBtn{color:#9ff5d8}
+body[data-msbss="0"] #msbSsToggleBtn{opacity:.78;color:#ffc9c9!important;border-color:rgba(244,114,114,.60)!important;
+  background:linear-gradient(135deg,rgba(52,14,18,.96),rgba(22,6,8,.96))!important}
+body[data-msbtheme="marmer"][data-msbss="0"] #msbSsToggleBtn{background:linear-gradient(135deg,#fff5f5,#ffe4e6)!important;
+  color:#9f1239!important;border-color:rgba(159,18,57,.40)!important;opacity:1}
+
 /* 8 tombol tetap satu baris di HP */
-@media (max-width:480px){
-  #msbDock{gap:4px!important}
-  #msbDock .dk{width:41px!important;height:41px!important;border-radius:12px!important}
-  #msbDock .dk svg{width:19px!important;height:19px!important}
-  #msbDock .dk.tg{width:33px!important}
-}
-@media (max-width:380px){
+@media (max-width:520px){
   #msbDock{gap:3px!important}
-  #msbDock .dk{width:38px!important;height:38px!important}
-  #msbDock .dk.tg{width:30px!important}
+  #msbDock .dk{width:min(42px,calc((94vw - 22px)/9))!important;height:min(42px,calc((94vw - 22px)/9))!important;border-radius:12px!important}
+  #msbDock .dk svg{width:18px!important;height:18px!important}
+  #msbDock .dk.tg{width:min(34px,calc((94vw - 22px)/9))!important}
 }
 body[data-msbtheme="marmer"] #msbAppsSearch{background:#fff!important;color:#0b1f1a!important;border-color:rgba(15,118,110,.28)!important}
 body[data-msbtheme="marmer"] .msbSeg button{background:#fff!important;color:#14532d!important;border-color:rgba(15,118,110,.30)!important}
@@ -3727,6 +3738,7 @@ body[data-msbtheme="marmer"] .msbSeg button.on{background:linear-gradient(135deg
   window.msbAutoFit = function(){
     var base = (window.MSBS && Number(MSBS.scale) ? Number(MSBS.scale) : 100)/100;
     var floor = (window.innerWidth <= 480) ? 0.86 : 0.9;
+    if(window.innerWidth <= 430 && window.innerHeight <= 860) floor = 0.80;
     document.body.style.zoom = 1;
     fitOverlay();
     var z = 1, guard = 0;
@@ -3928,6 +3940,118 @@ body[data-msbtheme="marmer"] .msbSeg button.on{background:linear-gradient(135deg
     list.appendChild(add);
   }
   setInterval(help, 1500);
+})();
+</script>
+
+<script id="msbV47Js">
+/* ===== v4.7 · SCREENSAVER AKTIF / NONAKTIF (tombol ikon di dock) ===== */
+(function(){
+  var KEY = 'msb_ss_on';
+  function $(id){ return document.getElementById(id); }
+  function enabled(){
+    try{ return localStorage.getItem(KEY) !== '0'; }catch(e){ return true; }
+  }
+  function mins(){
+    try{ var m = Number(window.MSBS && window.MSBS.ssIdle); if(m>0) return m; }catch(e){}
+    return 4;
+  }
+  function ssEl(){ return $('msbSS'); }
+  function isOn(){ var s=ssEl(); return !!(s && s.classList.contains('on')); }
+
+  function sync(){
+    var on = enabled();
+    document.body.setAttribute('data-msbss', on ? '1' : '0');
+    var b = $('msbSsToggleBtn');
+    if(b){
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.title = on ? 'Screensaver otomatis AKTIF — ketuk untuk menonaktifkan'
+                   : 'Screensaver otomatis NONAKTIF — ketuk untuk mengaktifkan';
+      var l = b.querySelector('.lbl');
+      if(l) l.textContent = on ? 'SCREENSAVER AKTIF' : 'SCREENSAVER NONAKTIF';
+    }
+  }
+
+  function toast(msg){
+    if(typeof window.msbToast === 'function'){ try{ window.msbToast(msg); }catch(e){} }
+  }
+
+  /* --- kendali penuh atas pemicu otomatis --- */
+  if(typeof window.msbSsOn === 'function' && !window.msbSsOn.__v47){
+    var origOn = window.msbSsOn;
+    window.msbSsOn = function(){
+      var manual = !!window.__msbSsManual;
+      window.__msbSsManual = false;
+      if(!manual && !enabled()) return;          /* timer bawaan diabaikan */
+      if(!manual && isOn()) return;
+      return origOn.apply(this, arguments);
+    };
+    window.msbSsOn.__v47 = true;
+  }
+
+  /* pratinjau manual dari toolbar tetap boleh walau otomatis dimatikan */
+  window.msbSsPreview = function(){
+    window.__msbSsManual = true;
+    if(typeof window.msbSsOn === 'function') window.msbSsOn();
+    if(!enabled()) toast('Pratinjau screensaver (otomatis sedang nonaktif)');
+  };
+
+  /* --- idle sendiri, mengikuti pilihan 1/2/4/10 menit di Pengaturan --- */
+  var lastAct = Date.now();
+  ['click','keydown','touchstart','mousemove','wheel','scroll'].forEach(function(ev){
+    document.addEventListener(ev, function(){ lastAct = Date.now(); }, {passive:true, capture:true});
+  });
+  setInterval(function(){
+    if(!enabled() || isOn()) return;
+    if(document.hidden) return;
+    if(Date.now() - lastAct >= mins()*60000){
+      window.__msbSsManual = true;
+      if(typeof window.msbSsOn === 'function') window.msbSsOn();
+    }
+  }, 5000);
+
+  window.msbScreensaverIsOn = enabled;
+  window.msbScreensaverSync = sync;
+  window.msbScreensaverToggle = function(){
+    var next = !enabled();
+    try{ localStorage.setItem(KEY, next ? '1' : '0'); }catch(e){}
+    lastAct = Date.now();
+    sync();
+    if(next){
+      toast('Screensaver otomatis AKTIF · ' + mins() + ' menit diam');
+    }else{
+      if(isOn() && typeof window.msbSsOff === 'function'){ try{ window.msbSsOff(); }catch(e){} }
+      toast('Screensaver otomatis NONAKTIF');
+    }
+  };
+
+  /* RESET DEFAULT mengembalikan ke aktif */
+  if(typeof window.msbResetDefault === 'function' && !window.msbResetDefault.__v47){
+    var origReset = window.msbResetDefault;
+    window.msbResetDefault = function(){
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      var r = origReset.apply(this, arguments);
+      setTimeout(sync, 60);
+      return r;
+    };
+    window.msbResetDefault.__v47 = true;
+  }
+
+  /* dokumentasi di modal BANTUAN */
+  function help(){
+    var list = $('msbHelpList');
+    if(!list || list.dataset.v47) return;
+    list.dataset.v47 = '1';
+    var add = document.createElement('div');
+    add.style.cssText = 'background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);border-radius:11px;padding:9px 11px';
+    add.innerHTML = '<b style="color:#8ff0c2;font-size:11px">Screensaver Aktif / Nonaktif</b>'
+      + '<div style="font-size:10.5px;color:#bfe6d8;line-height:1.5;margin-top:3px">Ikon layar di deretan tombol bawah mematikan atau menghidupkan screensaver otomatis (muncul setelah layar diam 1\u201310 menit, diatur di Pengaturan). Bila nonaktif, tombol \ud83c\udf19 SCREENSAVER di toolbar tetap bisa dipakai untuk pratinjau.</div>';
+    list.appendChild(add);
+  }
+  setInterval(help, 1500);
+
+  sync();
+  setTimeout(sync, 1200);
 })();
 </script>
 
